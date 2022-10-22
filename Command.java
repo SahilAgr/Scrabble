@@ -27,6 +27,11 @@ public class Command {
     public ArrayList<Coordinates> getCoordinates(){
         return coordinates;
     }
-
+    public boolean invalidCommand(){
+        if (commandWord == null){
+            return true;
+        }
+        return false;
+    }
 
 }
