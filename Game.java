@@ -7,14 +7,12 @@ public class Game {
     private Dictionary dictionary;
     private Board board;
     private Parser parser;
-    private Map<letter,Integer> letterScores;
     private LetterBag letterBag;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
 
     public Game(){
-        createLetterScores();
         this.parser = new Parser();
         this.board = new Board();
         this.letterBag = new LetterBag();
@@ -78,6 +76,18 @@ public class Game {
     }
 
     private void printHelp() {
-        System.out.print("get gud noob");
+        System.out.print("There are 4 different Commands."
+        +"\n2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
+        +"\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
+        +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag."
+        +"\n However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
+        +"X coordinates are A to O, not case sensitive. Y coordinates are 1 to 9, or ONE to FIFTEEN. 10-15 does not work. letter is a letter in your hand."
+        +"\n \n Sidenote: 10 to 15 does not work for the same reason that place is so clunky: the parser is \'going out to the family farm\' if you know what i mean when we add the GUI");
+    }
+
+    public static void main(String[] args){
+        Game game = new Game();
+        Parser parser = new Parser();
+        game.processCommand(parser.getCommand());
     }
 }

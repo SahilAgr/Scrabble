@@ -39,15 +39,6 @@ public class Parser {
                     i++;
                 }
             }
-            /*else if (word1.equals("test")){
-                int i = 0;
-                while(userIn.hasNext()){
-                    final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
-                    System.out.println(thing.getXCoordinate());
-                    System.out.println(thing.getYCoordinate());
-                    coordinates.add(i, thing);
-                }
-            }*/
             else{
                 word1 = null;
             }

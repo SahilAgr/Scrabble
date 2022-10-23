@@ -22,7 +22,7 @@ public class Coordinates {
 
     public static Coordinates.xCoordinate toXCoordinate(char next) {
         if(Character.isLetter(next)){
-            Character.toUpperCase(next);
+            next = Character.toUpperCase(next);
         }
         switch(next){
             case 'A': return xCoordinate.A;
