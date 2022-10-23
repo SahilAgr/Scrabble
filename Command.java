@@ -3,13 +3,13 @@ import java.util.ArrayList;
 public class Command {
     String commandWord;
     String secondLine;
-    ArrayList<String> letters;
+    String letters;
     ArrayList<Coordinates> coordinates;
 
-    public Command(String word1, String word2, ArrayList<String> letters, ArrayList<Coordinates> coords){
+    public Command(String word1, String word2, String word, ArrayList<Coordinates> coords){
         commandWord = word1;
         secondLine = word2;
-        this.letters = letters;
+        this.letters = word;
         coordinates = coords;
     }
 
@@ -21,7 +21,7 @@ public class Command {
         return secondLine;
     }
 
-    public ArrayList<String> getLetters(){
+    public String getLetters(){
         return letters;
     }
     public ArrayList<Coordinates> getCoordinates(){

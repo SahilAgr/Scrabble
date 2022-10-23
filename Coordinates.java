@@ -45,11 +45,7 @@ public class Coordinates {
     }
 
     public static Coordinates.yCoordinate toYCoordinate(String next){
-        if(Character.isDigit(next.charAt(0))){
-            int irank = Character.digit(next.charAt(0), 10);
-            return yCoordinate.values()[irank-1];
-        }
-        next.toUpperCase();
+        next = next.toUpperCase();
         switch(next){
             case "ONE": return yCoordinate.ONE;
             case "TWO": return yCoordinate.TWO;

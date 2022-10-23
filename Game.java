@@ -64,10 +64,10 @@ public class Game {
         
     }
 
-    private void shuffleHand(ArrayList<String> letters) {
+    private void shuffleHand(String letters) {
     }
 
-    private void place(String secondWord, ArrayList<Coordinates> coordinates, ArrayList<String> letters) {
+    private void place(String secondWord, ArrayList<Coordinates> coordinates, String letters) {
 
     }
 
@@ -81,8 +81,7 @@ public class Game {
         +"\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
         +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag."
         +"\n However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
-        +"X coordinates are A to O, not case sensitive. Y coordinates are 1 to 9, or ONE to FIFTEEN. 10-15 does not work. letter is a letter in your hand."
-        +"\n \n Sidenote: 10 to 15 does not work for the same reason that place is so clunky: the parser is \'going out to the family farm\' if you know what i mean when we add the GUI");
+        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Letter is a letter in your hand.");
     }
 
     public static void main(String[] args){
