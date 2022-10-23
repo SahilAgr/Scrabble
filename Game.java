@@ -67,7 +67,7 @@ public class Game {
     private void shuffleHand(String letters) {
     }
 
-    private void place(String secondWord, ArrayList<Coordinates> coordinates, String letters) {
+    private void place(String secondWord, Coordinates coordinates, String letters) {
 
     }
 

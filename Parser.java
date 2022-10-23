@@ -12,7 +12,7 @@ public class Parser {
     public Command getCommand(){
         String word1 = null;
         String word2 = null;
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
+        Coordinates coordinates = null;
         String word = null;
         String inputLine;
        
@@ -29,13 +29,10 @@ public class Parser {
             }
             else if (word1.equals("place")){
                 word2 = userIn.next();
-                int i = 0;
-                while(userIn.hasNext()){
-                    final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
-                    coordinates.add(i, thing);
-                    word = userIn.next();
-                    i++;
-                }
+                final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
+                coordinates = thing;
+                word = userIn.next();
+
             }
             else{
                 word1 = null;
@@ -51,11 +48,9 @@ public class Parser {
             System.out.println(command.getCommandWord());
             System.out.println(command.getSecondWord());
             System.out.println(command.getLetters());
-            ArrayList<Coordinates> coordinates = command.getCoordinates();
-            for(int i = 0; i < coordinates.size(); i++){
-                System.out.println(coordinates.get(i).getXCoordinate());
-                System.out.println(coordinates.get(i).getYCoordinate());
-            }
+            Coordinates coordinates = command.getCoordinates();
+            System.out.println(coordinates.getXCoordinate());
+            System.out.println(coordinates.getYCoordinate());
     }
 
 }
