@@ -66,45 +66,73 @@ public class Game {
 
     private void shuffleHand(String letters) {
     }
-/*
+
     private void place(String direction, Coordinates cord, String word) {
 
-
+        //Coordinates tempCord = cord;
         //this will get rid of the brackets leaving the original word behind
         String temp = word.replaceAll("[^a-zA-Z0-9]","");
         //check if its a legal word
-        if(Dictionary.searchWord(temp)){
+       // if(Dictionary.searchWord(temp)){
 
-        }
+        //}
 
         for(int i = 0; i < temp.length(); i++) {
             //check if the tiles are free or not
-            if (checkAvialibility(cord.getXCoordinate().ordinal() + i) == null) {
+
+
+            Coordinates tempCordX = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()+1)),cord.getYCoordinate());
+            Coordinates tempCordY = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()+1)));
+            //this is only if we need to check right of the x axis
+            if (Board.checkFree(tempCordX)) {
                 //check that if the letter is already on the board
-                if(temp.indexOf(i) == Board.getChar(cord)){
-                    addLetter(temp.indexOf(i));
-                }
-            }
-
-
-            if (checkAvialibility(cord.getYCoordinate().ordinal() + i) == null) {
                 if(temp.indexOf(i) == Board.getLetter(cord)){
+                    //addLetter(temp.indexOf(i));
                 }
+            }
+            //this will check down the y axis
+            if(Board.checkFree(tempCordY)){
+                if(temp.indexOf(i) == Board.getLetter(cord)){
+                    //addLetter(temp.indexOf(i));
+                }
+            }
+
 
             }
+
+
+        String possibleWord = "";
+        Coordinates tempCord = cord;
+        while(!Board.checkFree(tempCord)){
+            //if we are checking right
+            tempCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()+1)),cord.getYCoordinate());
+            possibleWord+=Board.getLetter(tempCord);
+
+        }
+        while(!Board.checkFree(tempCord)){
+            //if we are checking left
+            tempCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()-1)),cord.getYCoordinate());
+            possibleWord+=Board.getLetter(tempCord);
+
         }
 
-
-        //after getting the brackets out all we need to do is check if the word still exists
-        for(int j = 0; j < word.length(); j++){
+        while(!Board.checkFree(tempCord)){
+            //if we are checking up
+            tempCord = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()-1)));
+            possibleWord+=Board.getLetter(tempCord);
 
         }
+        while(!Board.checkFree(tempCord)){
+            //if we are checking down
+            tempCord = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()+1)));
+            possibleWord+=Board.getLetter(tempCord);
 
+        }
 
 
 }
 
-*/
+
 private void passPlayers() {
         //probably should have some way to autoprint next player's letters and score and boardstate.
     }
