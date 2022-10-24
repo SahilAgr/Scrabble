@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Board {
 
-    static Tile[][] gameBoard = new Tile[15][15];
+    static Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
 
 
     public Board() {
@@ -31,9 +31,12 @@ public class Board {
     }
 
     public void printBoard(){
+        int leftIndex = 0;
+        System.out.println("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O");
         for(int x=0 ; x<15 ; x++){
+            System.out.print(String.format("%02d ", ++leftIndex));
             for (int y=0 ; y<15 ; y++) {
-                System.out.print(gameBoard[x][y].letter+" ");
+                System.out.print(gameBoard[x][y].letter+"  ");
             }
             System.out.println();
         }System.out.println();
