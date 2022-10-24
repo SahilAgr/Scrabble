@@ -67,7 +67,41 @@ public class Game {
     private void shuffleHand(String letters) {
     }
 
-    private void place(String secondWord, Coordinates coordinates, String letters) {
+    private void place(String direction, Coordinates cord, String word) {
+
+
+        //this will get rid of the brackets leaving the original word behind
+        String temp = word.replaceAll("[^a-zA-Z0-9]","");
+        //check if its a legal word
+        if(Dictionary.searchWord(temp)){
+
+        }
+
+        for(int i = 0; i < temp.length(); i++) {
+            //check if the tiles are free or not
+            if (checkAvialibility(cord.getXCoordinate().ordinal() + i) == null) {
+                //check that if the letter is already on the board
+                if(temp.indexOf(i) == Board.getChar(cord)){
+                    addLetter(temp.indexOf(i));
+                }
+            }
+
+
+            if (checkAvialibility(cord.getYCoordinate().ordinal() + i) == null) {
+                if(temp.indexOf(i) == Board.getLetter(cord)){
+                }
+
+            }
+        }
+
+
+        //after getting the brackets out all we need to do is check if the word still exists
+        for(int j = 0; j < word.length(); j++){
+
+        }
+
+
+
 
     }
 
@@ -83,6 +117,16 @@ public class Game {
         +"\n However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
         +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Letter is a letter in your hand.");
     }
+
+    private void legalWord(){
+
+
+    }
+
+    private void legalPlacing(Parser getCords, Parser getWord){
+
+    }
+
 
     public static void main(String[] args){
         Game game = new Game();
