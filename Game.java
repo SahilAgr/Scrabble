@@ -58,7 +58,7 @@ public class Game {
             shuffleHand(command.getLetters());
         }
         else if (command.commandWord.equals("place")){
-            place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
+            //place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
         }
 
         
@@ -66,7 +66,7 @@ public class Game {
 
     private void shuffleHand(String letters) {
     }
-
+/*
     private void place(String direction, Coordinates cord, String word) {
 
 
@@ -102,10 +102,10 @@ public class Game {
 
 
 
+}
 
-    }
-
-    private void passPlayers() {
+*/
+private void passPlayers() {
         //probably should have some way to autoprint next player's letters and score and boardstate.
     }
 

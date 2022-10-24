@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 
 public class Board {
-    Tile[][] gameBoard = new Tile[15][15];
+
+    static Tile[][] gameBoard = new Tile[15][15];
+
 
     public Board() {
         for(int x=0 ; x<15 ; x++){
@@ -10,6 +12,14 @@ public class Board {
             }
         }
         gameBoard[7][7].letter = '⛝';
+    }
+
+    public static char getLetter(Coordinates coords) {
+        return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].letter;
+    }
+
+    public static boolean checkFree(Coordinates coords) {
+        return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].letter=='⬜';
     }
 
     private void placeTile(Coordinates coords, Tile tile){
@@ -33,6 +43,7 @@ public class Board {
         Tile Atile = new Tile('A',1);
         Coordinates coordinates = new Coordinates(Coordinates.xCoordinate.F, Coordinates.yCoordinate.NINE);
         board.printBoard();
+
         board.placeTile(coordinates,Atile);
         board.printBoard();
     }
