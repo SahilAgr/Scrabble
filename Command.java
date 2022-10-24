@@ -1,15 +1,13 @@
-import java.util.ArrayList;
-
 public class Command {
     String commandWord;
     String secondLine;
-    ArrayList<String> letters;
-    ArrayList<Coordinates> coordinates;
+    String letters;
+    Coordinates coordinates;
 
-    public Command(String word1, String word2, ArrayList<String> letters, ArrayList<Coordinates> coords){
+    public Command(String word1, String word2, String word, Coordinates coords){
         commandWord = word1;
         secondLine = word2;
-        this.letters = letters;
+        this.letters = word;
         coordinates = coords;
     }
 
@@ -21,10 +19,10 @@ public class Command {
         return secondLine;
     }
 
-    public ArrayList<String> getLetters(){
+    public String getLetters(){
         return letters;
     }
-    public ArrayList<Coordinates> getCoordinates(){
+    public Coordinates getCoordinates(){
         return coordinates;
     }
     public boolean invalidCommand(){

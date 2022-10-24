@@ -12,8 +12,8 @@ public class Parser {
     public Command getCommand(){
         String word1 = null;
         String word2 = null;
-        ArrayList<Coordinates> coordinates = new ArrayList<>();
-        ArrayList<String> letters = new ArrayList<>();
+        Coordinates coordinates = null;
+        String word = null;
         String inputLine;
        
         inputLine = userInput.nextLine();
@@ -25,26 +25,21 @@ public class Parser {
             if(word1.equals("help") || (word1.equals("pass"))){
             }
             else if (word1.equals("shuffle")){
-                while(userIn.hasNext()){
-                    letters.add(userIn.next());
-                }
+                word = userIn.next();
             }
             else if (word1.equals("place")){
                 word2 = userIn.next();
-                int i = 0;
-                while(userIn.hasNext()){
-                    final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
-                    coordinates.add(i, thing);
-                    letters.add(userIn.next());
-                    i++;
-                }
+                final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
+                coordinates = thing;
+                word = userIn.next();
+
             }
             else{
                 word1 = null;
             }
         }
         userIn.close();
-        return new Command(word1, word2, letters, coordinates);
+        return new Command(word1, word2, word, coordinates);
     } 
 
         public static void main(String[] args){
@@ -53,11 +48,9 @@ public class Parser {
             System.out.println(command.getCommandWord());
             System.out.println(command.getSecondWord());
             System.out.println(command.getLetters());
-            ArrayList<Coordinates> coordinates = command.getCoordinates();
-            for(int i = 0; i < coordinates.size(); i++){
-                System.out.println(coordinates.get(i).getXCoordinate());
-                System.out.println(coordinates.get(i).getYCoordinate());
-            }
+            Coordinates coordinates = command.getCoordinates();
+            System.out.println(coordinates.getXCoordinate());
+            System.out.println(coordinates.getYCoordinate());
     }
 
 }

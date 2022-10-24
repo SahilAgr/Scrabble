@@ -64,10 +64,44 @@ public class Game {
         
     }
 
-    private void shuffleHand(ArrayList<String> letters) {
+    private void shuffleHand(String letters) {
     }
 
-    private void place(String secondWord, ArrayList<Coordinates> coordinates, ArrayList<String> letters) {
+    private void place(String direction, Coordinates cord, String word) {
+
+
+        //this will get rid of the brackets leaving the original word behind
+        String temp = word.replaceAll("[^a-zA-Z0-9]","");
+        //check if its a legal word
+        if(Dictionary.searchWord(temp)){
+
+        }
+
+        for(int i = 0; i < temp.length(); i++) {
+            //check if the tiles are free or not
+            if (checkAvialibility(cord.getXCoordinate().ordinal() + i) == null) {
+                //check that if the letter is already on the board
+                if(temp.indexOf(i) == Board.getChar(cord)){
+                    addLetter(temp.indexOf(i));
+                }
+            }
+
+
+            if (checkAvialibility(cord.getYCoordinate().ordinal() + i) == null) {
+                if(temp.indexOf(i) == Board.getLetter(cord)){
+                }
+
+            }
+        }
+
+
+        //after getting the brackets out all we need to do is check if the word still exists
+        for(int j = 0; j < word.length(); j++){
+
+        }
+
+
+
 
     }
 
@@ -81,9 +115,18 @@ public class Game {
         +"\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
         +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag."
         +"\n However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
-        +"X coordinates are A to O, not case sensitive. Y coordinates are 1 to 9, or ONE to FIFTEEN. 10-15 does not work. letter is a letter in your hand."
-        +"\n \n Sidenote: 10 to 15 does not work for the same reason that place is so clunky: the parser is \'going out to the family farm\' if you know what i mean when we add the GUI");
+        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Letter is a letter in your hand.");
     }
+
+    private void legalWord(){
+
+
+    }
+
+    private void legalPlacing(Parser getCords, Parser getWord){
+
+    }
+
 
     public static void main(String[] args){
         Game game = new Game();
