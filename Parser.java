@@ -28,7 +28,7 @@ public class Parser {
             }
             else if (word1.equals("place")){
                 word2 = userIn.next();
-                final Coordinates thing = new Coordinates(Coordinates.toXCoordinate(userIn.next().charAt(0)), Coordinates.toYCoordinate(userIn.next()));
+                final Coordinates thing = new Coordinates(Coordinates.xCoordinate.toXCoordinate(userIn.next().charAt(0)), Coordinates.yCoordinate.toYCoordinate(userIn.next()));
                 coordinates = thing;
                 word = userIn.next();
 
