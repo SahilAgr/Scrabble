@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-import java.util.ArrayList;
 
 public class Parser {
     private Scanner userInput;
