@@ -10,9 +10,6 @@ public class Player {
     public Player(){
         score = 0;
         hand = new ArrayList<>();
-        for(int i = 0; i < 7; i++){
-            //hand.add()
-        }
     }
 
     public void addScore(Integer score){
@@ -21,30 +18,25 @@ public class Player {
     public Integer getScore(){
         return score;
     }
-/*
-    public ArrayList<LetterBag.Letter> getHand(){
+
+    public ArrayList<Tile> getHand(){
         return hand;
     }
-    public void addLettersToHand(ArrayList<LetterBag.Letter> letters){
+    public void addLettersToHand(ArrayList<Tile> letters){
         hand.addAll(letters);
     }
-  */
-    public void removeLetters(ArrayList<LetterBag.Letter> letters){
+    
+    public void removeLetters(ArrayList<Tile> letters){
         hand.removeAll(letters);
     }
-
-    public Tile removeLetter(char letter){
-        int index = 0;
-        for(Tile tile: hand){
-            if(tile.letter == letter){
-                break;
-            }
-            index++;
+    public Tile removeLetter(char c){
+        Tile tile = Tile.charToTile(c);
+        if(hand.remove(tile)){
+            return tile;
         }
-        return hand.remove(index);
-
+        return null;
     }
-    public boolean hasLetter(char letter){
-        return hand.contains(letter);
+    public boolean hasLetter(char c){
+        return hand.contains(c);
     }
 }

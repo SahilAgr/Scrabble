@@ -50,7 +50,15 @@ public class Game {
 
     //checks how many tiles are left in the letterbag, then begins a countdown equal to the number of players. when that reaches zero, the game is over.
     public boolean progressChecker(){
-        if()
+        if(letterBag.isEmpty()){
+            if(countdown != 0){
+                countdown--;
+            }
+            else{
+                return true;
+            }
+        }
+        return false;
     }
 
 

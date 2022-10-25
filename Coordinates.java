@@ -64,8 +64,8 @@ public class Coordinates {
         }
 
     }
-    private final yCoordinate yCoord;
-    private final xCoordinate xCoord;
+    private yCoordinate yCoord;
+    private xCoordinate xCoord;
 
     public Coordinates(xCoordinate xCo, yCoordinate yCo){
         xCoord = xCo;
@@ -124,5 +124,8 @@ public class Coordinates {
             case "FIFTEEN": return yCoordinate.FIFTEEN;
             default: return null; //there's an argument to throw an error here.
         }
+    }
+    public static void main(String[] args){
+        Coordinates thing = new Coordinates(xCoordinate.A, yCoordinate.EIGHT);
     }
 }

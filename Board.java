@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 public class Board {
 
     static Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
