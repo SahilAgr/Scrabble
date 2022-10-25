@@ -10,16 +10,14 @@ import java.util.*;
  */
 public class Dictionary {
     final static String filePath = "/Users/anirudhbakshi/Desktop/Words.txt";  // Text file (Dictionary)
-    static boolean wordFound  = false;
+    static boolean wordFound = false;
 
     /**
      * Checking the dictionary
      */
-    public static Map<String, String> HashMapFromTextFile(){
-        Map<String, String> map = new HashMap<String, String>();
+    public static boolean isLegalWord(String word){
+        
         BufferedReader br = null;
-
-        String word = "abuse";  // Test word
 
         try {
             File file = new File(filePath);  // File Object
@@ -29,15 +27,9 @@ public class Dictionary {
             // Read line by line
             while ((line = br.readLine()) != null){
                 if (line.equalsIgnoreCase(word)){
-                    System.out.println("Yay");  // Found the word
-                    wordFound = true;
-                    break;  // Break the loop
+                    return true;
                 }
 
-            }
-
-            if (wordFound != true){
-                System.out.println("nah");  // Word not found
             }
 
         } catch (FileNotFoundException e) {
@@ -57,15 +49,10 @@ public class Dictionary {
                 };
             }
         }
-        return map;
+        return false;
     }
 
     public static void main(String[] args) {
-        Map<String, String> mapFromFile = HashMapFromTextFile();  // Read text to HashMap
-
-        // Iterate HashMap entries
-        for (Map.Entry<String, String> entry : mapFromFile.entrySet()){
-        }
     }
 
 }
