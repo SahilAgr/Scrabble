@@ -9,7 +9,7 @@ import java.util.*;
  * @version 1.0
  */
 public class Dictionary {
-    final static String filePath = "/Users/anirudhbakshi/Desktop/Words.txt";  // Text file (Dictionary)
+    final static String filePath = "C:\\Users\\sahil\\Desktop\\school ish\\y5\\sem1\\3110\\scrabble 1.0\\dictionary.txt";  // Text file (Dictionary)
     static boolean wordFound = false;
 
     /**
@@ -53,6 +53,7 @@ public class Dictionary {
     }
 
     public static void main(String[] args) {
+
     }
 
 }

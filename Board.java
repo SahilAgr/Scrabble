@@ -22,7 +22,7 @@ public class Board {
         return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].letter=='⬜';
     }
 
-    private void placeTile(Coordinates coords, Tile tile){
+    public static void placeTile(Coordinates coords, Tile tile){
         if (gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].letter == '⬜'){
             gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()] = tile;
         }else{

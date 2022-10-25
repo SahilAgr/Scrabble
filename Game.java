@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Game {
     private List<Player> players;
@@ -19,10 +20,16 @@ public class Game {
         this.dictionary = new Dictionary();
         this.players = new ArrayList<>();
 
-    
-        // print welcome
-        // ask for # of players
-        // ask for names of players, make them
+        Scanner userInput = new Scanner(System.in);
+
+        System.out.println("welcome to scrabble");
+
+        System.out.println("how many players today?");
+        int playerCount = userInput.nextInt();
+        for (int i = 0; i < playerCount; i++){
+            players.add(new Player());
+
+        }
         // do all the hand stuff, you know how it is
 
     }
@@ -69,68 +76,88 @@ public class Game {
 
     private void place(String direction, Coordinates cord, String word) {
 
-        //Coordinates tempCord = cord;
         //this will get rid of the brackets leaving the original word behind
         String temp = word.replaceAll("[^a-zA-Z0-9]","");
         //check if its a legal word
-       // if(Dictionary.searchWord(temp)){
 
-        //}
+        if(Dictionary.isLegalWord(temp)){
+            Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
+            for(int i = 0; i < temp.length(); i++) {
+                //check if the tiles are free or not
 
-        for(int i = 0; i < temp.length(); i++) {
-            //check if the tiles are free or not
+                //this is only if we need to check right of the x axis
+                if (direction == "right") {
+                    if(Board.checkFree(tempCord) && players.get(0).hasLetter(temp.charAt(i))){
+                        Board.placeTile(tempCord,players.get(0).removeLetter(temp.charAt(i)));
+                    }
+                    else if(temp.charAt(i) != Board.getLetter(tempCord)){
+                        break;
+                    }else if(Board.checkFree(tempCord) && !players.get(0).hasLetter(temp.charAt(i))){
+                        break;
+                    }
+                    upDownCheck(tempCord);
+                    tempCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()+i)),cord.getYCoordinate());
+                    //check that if the letter is already on the board
 
 
-            Coordinates tempCordX = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()+1)),cord.getYCoordinate());
-            Coordinates tempCordY = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()+1)));
-            //this is only if we need to check right of the x axis
-            if (Board.checkFree(tempCordX)) {
-                //check that if the letter is already on the board
-                if(temp.indexOf(i) == Board.getLetter(cord)){
-                    //addLetter(temp.indexOf(i));
+
+                }
+                //this will check down the y axis
+                if(direction == "down") {
+                    if(Board.checkFree(tempCord) && players.get(0).hasLetter(temp.charAt(i))){
+                        Board.placeTile(tempCord,players.get(0).removeLetter(temp.charAt(i)));
+                    }
+                    else if(temp.charAt(i) != Board.getLetter(tempCord)){
+                        break;
+                    }else if(Board.checkFree(tempCord) && !players.get(0).hasLetter(temp.charAt(i))){
+                        break;
+                    }
+                    leftRightCheck(tempCord);
+                    tempCord = new Coordinates(cord.getXCoordinate(), (Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal() + i)));
+
                 }
             }
-            //this will check down the y axis
-            if(Board.checkFree(tempCordY)){
-                if(temp.indexOf(i) == Board.getLetter(cord)){
-                    //addLetter(temp.indexOf(i));
-                }
-            }
-
-
-            }
-
-
-        String possibleWord = "";
-        Coordinates tempCord = cord;
-        while(!Board.checkFree(tempCord)){
-            //if we are checking right
-            tempCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()+1)),cord.getYCoordinate());
-            possibleWord+=Board.getLetter(tempCord);
 
         }
-        while(!Board.checkFree(tempCord)){
-            //if we are checking left
-            tempCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(cord.getXCoordinate().ordinal()-1)),cord.getYCoordinate());
-            possibleWord+=Board.getLetter(tempCord);
-
-        }
-
-        while(!Board.checkFree(tempCord)){
-            //if we are checking up
-            tempCord = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()-1)));
-            possibleWord+=Board.getLetter(tempCord);
-
-        }
-        while(!Board.checkFree(tempCord)){
-            //if we are checking down
-            tempCord = new Coordinates(cord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(cord.getYCoordinate().ordinal()+1)));
-            possibleWord+=Board.getLetter(tempCord);
-
-        }
-
 
 }
+
+    public String leftRightCheck(Coordinates checkCord){
+        String possibleWord = "";
+        int direction = -1;
+        while(!Board.checkFree(checkCord)) {
+            //if we are checking left
+            checkCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(checkCord.getXCoordinate().ordinal() + direction)), checkCord.getYCoordinate());
+        }
+        while(!Board.checkFree(checkCord)) {
+            //if we are checking left
+            checkCord = new Coordinates((Coordinates.xCoordinate.ordinalToXCoordinate(checkCord.getXCoordinate().ordinal() + direction*-1)), checkCord.getYCoordinate());
+            possibleWord+=Board.getLetter(checkCord);
+        }
+
+        return possibleWord;
+
+
+
+    }
+    public String upDownCheck(Coordinates checkCord){
+        String possibleWord = "";
+        int direction = -1;
+        while(!Board.checkFree(checkCord)) {
+            //if we are checking up
+            checkCord = new Coordinates(checkCord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(checkCord.getYCoordinate().ordinal()+direction)));
+        }
+        while(!Board.checkFree(checkCord)) {
+            //if we are checking left
+            checkCord = new Coordinates(checkCord.getXCoordinate(),(Coordinates.yCoordinate.ordinalToYCoordinate(checkCord.getYCoordinate().ordinal()+direction*-1)));
+            possibleWord+=Board.getLetter(checkCord);
+        }
+
+        return possibleWord;
+
+
+
+    }
 
 
 private void passPlayers() {
