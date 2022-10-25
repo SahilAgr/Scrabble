@@ -41,17 +41,6 @@ public class Parser {
         return new Command(word1, word2, word, coordinates);
     } 
 
-        public static void main(String[] args){
-            Parser parser = new Parser();
-            Command command = parser.getCommand();
-            System.out.println(command.getCommandWord());
-            System.out.println(command.getSecondWord());
-            System.out.println(command.getLetters());
-            Coordinates coordinates = command.getCoordinates();
-            System.out.println(coordinates.getXCoordinate());
-            System.out.println(coordinates.getYCoordinate());
-    }
-
 }
 
 
