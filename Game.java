@@ -9,6 +9,7 @@ public class Game {
     private Board board;
     private Parser parser;
     private LetterBag letterBag;
+    private int countdown;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
@@ -26,11 +27,14 @@ public class Game {
 
         System.out.println("how many players today?");
         int playerCount = userInput.nextInt();
+        int countdown = playerCount - 1;
         for (int i = 0; i < playerCount; i++){
             players.add(new Player());
 
         }
-        // do all the hand stuff, you know how it is
+        for(Player p:players){
+            p.addLettersToHand(letterBag.getRandomLetters(7));
+        }
 
     }
 
@@ -46,7 +50,7 @@ public class Game {
 
     //checks how many tiles are left in the letterbag, then begins a countdown equal to the number of players. when that reaches zero, the game is over.
     public boolean progressChecker(){
-        return true;
+        if()
     }
 
 
