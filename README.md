@@ -10,7 +10,7 @@ Download the zip file. Open IntelliJ IDE and setup a workspace. To open the zip 
 
 Test Instructions:
 
-To test individual methods open up Tests.java and run each method individually with junit tests.
+To test dictionary class, put the file path of dictionary text file with all words in the code and then run it with the test word. 
 
 
 Group Roles:
