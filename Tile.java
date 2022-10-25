@@ -1,7 +1,15 @@
+/**
+ * The Tile class
+ */
 public class Tile {
     char letter;
     int score;
 
+    /**
+     * The constructor for the tile Class
+     * @param letter char
+     * @param score int
+     */
     public Tile(char letter, int score) {
         this.letter = letter; //FOR M1: 🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉
         this.score = score;
@@ -12,13 +20,27 @@ public class Tile {
         score = 0;
     }
 
+    /**
+     * Returns the letter on a tile
+     * @return char
+     */
     public char getLetter(){
         return letter;
     }
 
+    /**
+     * Returns the score on the tile
+     * @return int
+     */
     public int getScore(){
         return score;
     }
+
+    /**
+     * Turns the char into a tile
+     * @param c char
+     * @return Tile
+     */
     public static Tile charToTile(char c){
         switch (c){
             case 'A': return new Tile(c, 1);
