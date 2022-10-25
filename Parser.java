@@ -1,15 +1,22 @@
 import java.util.Scanner;
 
-import javax.tools.StandardJavaFileManager;
-
-
+/**
+ * Parser Class for the user inputs
+ */
 public class Parser {
     private Scanner userInput;
 
+    /**
+     * The constructor for the class
+     */
     public Parser(){
         userInput = new Scanner(System.in);
     }
 
+    /**
+     * Returns the command that was input by the user
+     * @return Command
+     */
     public Command getCommand(){
         String word1 = null;
         String word2 = null;

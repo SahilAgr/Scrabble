@@ -1,10 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+/**
+ * The LetterBag Class
+ */
 public class LetterBag {
     
     private List<Tile> letterBag;
-    
+
+    /**
+     * The constructor for the LetterBag which creates enough letters and assigns it the proper points
+     */
     public LetterBag(){
         //its also disguisting. I probably should just use a json. i will do this tomorrow.
         letterBag = new ArrayList<>();
@@ -56,6 +63,12 @@ public class LetterBag {
             letterBag.add(new Tile('Y',4));
         } letterBag.add(new Tile('Z',10));
     }
+
+    /**
+     * Returns random letteres from the bag
+     * @param amount Integer
+     * @return Arraylist<Tiles></Tiles>
+     */
     public ArrayList<Tile> getRandomLetters(Integer amount){
         ArrayList<Tile> randomLetters = new ArrayList<>();
         Random random = new Random();
@@ -67,6 +80,11 @@ public class LetterBag {
         }
         return randomLetters;
     }
+
+    /**
+     * Returns the letters that are in the bag
+     * @return List<Tile></Tile>
+     */
     public List<Tile> getLetters(){
         return letterBag;
     } 

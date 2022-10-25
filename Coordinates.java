@@ -1,3 +1,6 @@
+/**
+ * The Coordinates for the board each axis is an enum so there is no user error when picking where to place a piece
+ */
 public class Coordinates {
 
     //enums for the x and y co-ords. Enums doesnt like it when I use integers. ~MH
