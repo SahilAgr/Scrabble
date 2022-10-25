@@ -1,6 +1,6 @@
 public class Tile {
-    char letter;
-    int score;
+    private char letter;
+    private int score;
 
     public Tile(char letter, int score) {
         this.letter = letter; //FOR M1: 🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉
@@ -8,7 +8,7 @@ public class Tile {
     }
 
     public Tile() {
-        letter = '⬜';
+        letter = '.';
         score = 0;
     }
 
@@ -19,7 +19,12 @@ public class Tile {
     public int getScore(){
         return score;
     }
+    public void setLetter(char c){
+        letter = c;
+    }
     public static Tile charToTile(char c){
+        c = Character.toUpperCase(c);
+
         switch (c){
             case 'A': return new Tile(c, 1);
             case 'B': return new Tile(c, 3);

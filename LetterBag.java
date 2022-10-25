@@ -12,7 +12,7 @@ public class LetterBag {
             letterBag.add(new Tile('A',1));
         } for(int i = 0;i < 2;i++){
             letterBag.add(new Tile('B',3));
-        } for(int i = 0;i < 3;i++){
+        } for(int i = 0;i < 2;i++){
             letterBag.add(new Tile('C',3));
         } for(int i = 0;i < 4;i++){
             letterBag.add(new Tile('D',2));
@@ -72,13 +72,5 @@ public class LetterBag {
     } 
     public boolean isEmpty(){
         return (letterBag.size() == 0);
-    }
-
-
-    public static void main(String[] args){
-        LetterBag letterBag = new LetterBag();
-        System.out.println(letterBag.getRandomLetters(110));
-        System.out.println("\n\n");
-        System.out.println(letterBag.getLetters());
     }
 }

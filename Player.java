@@ -34,13 +34,22 @@ public class Player {
         hand.removeAll(letters);
     }
     public Tile removeLetter(char c){
-        Tile tile = Tile.charToTile(c);
-        if(hand.remove(tile)){
-            return tile;
+        c = Character.toUpperCase(c);
+        for(Tile t: hand){
+            if (c == (t.getLetter())){
+                hand.remove(t);
+                return t;
+            }
         }
         return null;
     }
     public boolean hasLetter(char c){
-        return hand.contains(c);
+        c = Character.toUpperCase(c);
+        for(Tile t: hand){
+            if (c == (t.getLetter())){
+                return true;
+            }
+        }
+        return false;
     }
 }

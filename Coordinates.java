@@ -71,6 +71,19 @@ public class Coordinates {
         xCoord = xCo;
         yCoord = yCo;
     }
+    public Coordinates(Integer xCo, yCoordinate yCo){
+        xCoord = xCoordinate.ordinalToXCoordinate(xCo);
+        yCoord = yCo;
+    }
+    public Coordinates(xCoordinate xCo, Integer yCo){
+        xCoord = xCo;
+        yCoord = yCoordinate.ordinalToYCoordinate(yCo);
+    }
+    public Coordinates(Integer xCo, Integer yCo){
+        xCoord = xCoordinate.ordinalToXCoordinate(xCo);
+        yCoord = yCoordinate.ordinalToYCoordinate(yCo);
+    }
+    
 
     public final xCoordinate getXCoordinate(){
         return xCoord;
@@ -124,8 +137,5 @@ public class Coordinates {
             case "FIFTEEN": return yCoordinate.FIFTEEN;
             default: return null; //there's an argument to throw an error here.
         }
-    }
-    public static void main(String[] args){
-        Coordinates thing = new Coordinates(xCoordinate.A, yCoordinate.EIGHT);
     }
 }

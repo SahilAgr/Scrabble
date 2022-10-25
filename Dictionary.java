@@ -9,14 +9,17 @@ import java.util.*;
  * @version 1.0
  */
 public class Dictionary {
-    final static String filePath = "C:\\Users\\sahil\\Desktop\\school ish\\y5\\sem1\\3110\\scrabble 1.0\\dictionary.txt";  // Text file (Dictionary)
+    static final String filePath = "/Users/Matthew/Documents/GitHub/Scrabble/dictionary.txt";
     static boolean wordFound = false;
 
     /**
      * Checking the dictionary
      */
-    public static boolean isLegalWord(String word){
-        
+    public Dictionary(){
+    }
+
+    public boolean isLegalWord(String word){
+        word = word.toLowerCase();
         BufferedReader br = null;
 
         try {
@@ -26,8 +29,8 @@ public class Dictionary {
 
             // Read line by line
             while ((line = br.readLine()) != null){
-                if (line.equalsIgnoreCase(word)){
-                    return true;
+                if(word.equals(line)){
+                    wordFound = true;
                 }
 
             }
@@ -49,11 +52,7 @@ public class Dictionary {
                 };
             }
         }
-        return false;
-    }
-
-    public static void main(String[] args) {
-
+        return wordFound;
     }
 
 }
