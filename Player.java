@@ -4,11 +4,12 @@ public class Player {
     
     Integer score;
     ArrayList<Tile> hand;
-
+    String name;
     
     
-    public Player(){
+    public Player(String name){
         score = 0;
+        this.name = name;
         hand = new ArrayList<>();
     }
 
@@ -17,6 +18,9 @@ public class Player {
     }
     public Integer getScore(){
         return score;
+    }
+    public String getName(){
+        return name;
     }
 
     public ArrayList<Tile> getHand(){

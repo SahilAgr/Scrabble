@@ -1,10 +1,14 @@
+import java.time.temporal.TemporalQueries;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.sound.sampled.SourceDataLine;
+
 public class Game {
     private List<Player> players;
+    private Player currPlayer;
     private Dictionary dictionary;
     private Board board;
     private Parser parser;
@@ -27,14 +31,16 @@ public class Game {
 
         System.out.println("how many players today?");
         int playerCount = userInput.nextInt();
-        int countdown = playerCount - 1;
+        countdown = playerCount - 1;
         for (int i = 0; i < playerCount; i++){
-            players.add(new Player());
+            players.add(new Player("Player" + (i+1)));
 
         }
         for(Player p:players){
             p.addLettersToHand(letterBag.getRandomLetters(7));
         }
+        turnOrder();
+        userInput.close();
 
     }
 
@@ -42,9 +48,22 @@ public class Game {
         boolean gameOver = false;
 
         while (! gameOver){
-            Command command = parser.getCommand();
-            processCommand(command);
-            gameOver = progressChecker();
+            for(Player p: players){
+                currPlayer = p;
+                    board.printBoard();
+                    System.out.println("It is now "+ currPlayer.getName() +"'s turn.");
+                    System.out.println("Their letters are:");
+                    for(Tile t: currPlayer.getHand()){
+                        System.out.print(t.getLetter() +" ");
+                    }
+                    System.out.println("");  
+                Command command;
+                do{
+                    command = parser.getCommand();
+                    gameOver = progressChecker();
+                }
+                while(processCommand(command));
+            }
         }
     }
 
@@ -62,23 +81,28 @@ public class Game {
     }
 
 
-    public void processCommand(Command command){
+    public boolean processCommand(Command command){
         if(command.invalidCommand()){
             System.out.println("invalid command");
             //print help message here?
         }
         else if(command.commandWord.equals("help")){
             printHelp();
+            return true;
         }
         else if (command.commandWord.equals("pass")){
             passPlayers();
+            return false;
         }
         else if (command.commandWord.equals("shuffle")){
             shuffleHand(command.getLetters());
+            return false;
         }
         else if (command.commandWord.equals("place")){
-            //place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
+            place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
+            return false;
         }
+        return true;
 
         
     }
@@ -92,7 +116,7 @@ public class Game {
         String temp = word.replaceAll("[^a-zA-Z0-9]","");
         //check if its a legal word
 
-        if(Dictionary.isLegalWord(temp)){
+        if(dictionary.isLegalWord(temp)){
             Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
             for(int i = 0; i < temp.length(); i++) {
                 //check if the tiles are free or not
@@ -178,17 +202,13 @@ private void passPlayers() {
 
     private void printHelp() {
         System.out.print("There are 4 different Commands."
-        +"\n2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
-        +"\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
+        +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
+        +"shuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
         +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag."
-        +"\n However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
+        +"However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
         +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Letter is a letter in your hand.");
     }
 
-    private void legalWord(){
-
-
-    }
 
     private void legalPlacing(Parser getCords, Parser getWord){
 
