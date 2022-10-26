@@ -3,7 +3,9 @@ import java.util.List;
 import java.util.Scanner;
 
 
-
+/**
+ * The Game class that will drive the whole game
+ */
 
 public class Game {
     private List<Player> players;
@@ -21,6 +23,9 @@ public class Game {
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
 
+    /**
+     * The constructor for the game that will create new players, the borad and all the letters
+     */
     public Game(){
         this.parser = new Parser();
         this.board = new Board();
@@ -49,6 +54,9 @@ public class Game {
 
     }
 
+    /**
+     * The turn order for the players that will also display player information
+     */
     private void turnOrder(){
         boolean gameOver = false;
         
@@ -78,7 +86,11 @@ public class Game {
         }
     }
 
-    //checks how many tiles are left in the letterbag, then begins a countdown equal to the number of players. when that reaches zero, the game is over.
+    /**
+     * checks how many tiles are left in the letterbag, then begins a countdown equal to the number of players. when that reaches zero, the game is over.
+     * @return boolean
+     */
+
     private boolean progressChecker(){
         if(letterBag.isEmpty()){
             if(countdown != 0){
@@ -93,6 +105,11 @@ public class Game {
     }
 
 
+    /**
+     * Process's the users commands
+     * @param command Command
+     * @return boolean
+     */
     private boolean processCommand(Command command){
         if(command.invalidCommand()){
             System.out.println("invalid command");
@@ -121,6 +138,10 @@ public class Game {
         
     }
 
+    /**
+     * Shuffles the players hand if they want it
+     * @param letters String
+     */
     private void shuffleHand(String letters) {
         ArrayList<Tile> shuffles = new ArrayList<>();
         for(int i = 0; i < letters.length(); i ++){
@@ -132,6 +153,13 @@ public class Game {
         currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
     }
 
+    /**
+     * The driver code for all the logic that will decide if any placement is legal or not
+     * @param direction String
+     * @param cord Coordinates
+     * @param word String
+     * @return boolean
+     */
     private boolean place(String direction, Coordinates cord, String word) {
         culmativeScore = 0;
         isTouching = false;
@@ -149,7 +177,6 @@ public class Game {
         if(dictionary.isLegalWord(temp)){
             Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
             for(int i = 0; i < temp.length(); i++) {
-                //check if the tiles are free or not
                 System.out.println(direction);
                 //this is only if we need to check right of the x axis
                 if (direction.equals("right")) {
@@ -176,7 +203,7 @@ public class Game {
                         return false;
                     }
                     tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
-                    //check that if the letter is already on the board 
+
 
 
 
@@ -235,6 +262,11 @@ public class Game {
 
 }
 
+    /**
+     * Checks left and right of each tile to ensure legal placing
+     * @param checkCord Coordinates
+     * @return boolean
+     */
     private boolean leftRightCheck(Coordinates checkCord){
         String possibleWord = "";
         Coordinates tempCoordinates = null;
@@ -263,6 +295,12 @@ public class Game {
         }
         return false;
     }
+
+    /**
+     * Checks up and down of each tile to ensure legal placing
+     * @param checkCord Coordinates
+     * @return boolean
+     */
     private boolean upDownCheck(Coordinates checkCord){
         String possibleWord = "";
         Coordinates tempCoordinates = null;
@@ -293,10 +331,16 @@ public class Game {
     }
 
 
-private void passPlayers() {
+    /**
+     * Passes the turn for the player
+     */
+    private void passPlayers() {
         //probably should have some way to autoprint next player's letters and score and boardstate.
     }
 
+    /**
+     * Help tool tip print function
+     */
     private void printHelp() {
         System.out.print("There are 4 different Commands."
         +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
@@ -307,6 +351,10 @@ private void passPlayers() {
     }
 
 
+    /**
+     * Starts up the game
+     * @param args
+     */
     public static void main(String[] args){
         Game game = new Game();
     }
