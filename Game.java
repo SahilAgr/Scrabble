@@ -54,7 +54,6 @@ public class Game {
         }
         turnOrder();
         userInput.close();
-        tempBoard = board;
 
     }
 
@@ -155,12 +154,10 @@ public class Game {
     }
 
     /**
-<<<<<<< Updated upstream
      * Shuffles the players hand if they want it
+     * 
      * @param letters String
-=======
-     * @param letters
->>>>>>> Stashed changes
+     * 
      */
     private void shuffleHand(String letters) {
         if(letters.isEmpty()){
@@ -198,15 +195,9 @@ public class Game {
         tempBoard = board;
 
         //check if its a legal word
-
         if(dictionary.isLegalWord(temp)){
             Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
             for(int i = 0; i < temp.length(); i++) {
-<<<<<<< Updated upstream
-                System.out.println(direction);
-=======
-                //check if the tiles are free or not
->>>>>>> Stashed changes
                 //this is only if we need to check right of the x axis
                 if (direction.equals("right")) {
                     if(tempBoard.checkFree(tempCord) && currPlayer.hasLetter(temp.charAt(i))){
@@ -216,18 +207,20 @@ public class Game {
                     else if(tempBoard.checkFree(tempCord) && ! currPlayer.hasLetter(temp.charAt(i))){
                         System.out.println("You dont have letter " + temp.charAt(i));
                         currPlayer.addLettersToHand(tilesTaken);
+                        tempBoard = null;
                         return false;
                     }
                     else if(! tempBoard.checkFree(tempCord) && Character.toUpperCase(temp.charAt(i)) != tempBoard.getLetter(tempCord)){
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
+                        tempBoard = null;
                         return false;
-                    } else if(! tempBoard.checkFree(cord)){
-                        isTouching = true;
                     }
                     
                     if( ! upDownCheck(tempCord, word)){
                         currPlayer.addLettersToHand(tilesTaken);
+                        System.out.println("Invalid Placement");
+                        tempBoard = null;
                         return false;
                     }
                     tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
@@ -244,15 +237,18 @@ public class Game {
                     } else if(tempBoard.checkFree(tempCord) && ! currPlayer.hasLetter(temp.charAt(i))){
                         System.out.println("You dont have letter " + temp.charAt(i));
                         currPlayer.addLettersToHand(tilesTaken);
+                        tempBoard = null;
                         return false;
                     } else if(! tempBoard.checkFree(tempCord) && Character.toUpperCase(temp.charAt(i)) != tempBoard.getLetter(tempCord)){
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
+                        tempBoard = null;
                         return false;
                     }
                     if(! leftRightCheck(tempCord, word)){
-                        System.out.println("test");
+                        System.out.println("Invalid Placement");
                         currPlayer.addLettersToHand(tilesTaken);
+                        tempBoard = null;
                         return false;
                     }
                     
@@ -266,25 +262,29 @@ public class Game {
                     if (direction.equals("right")){
                         if(! upDownCheck(tempCord, word)){
                             System.out.println("Invalid Placement");
+                            tempBoard = null;
                             return false;
                         }
                         finalCheck = true;
-                        tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
+                        tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 1), cord.getYCoordinate());
                         leftRightCheck(cord, word);
                     }
                     if (direction.equals("down")){
                         if (! leftRightCheck(tempCord, word)){
                             System.out.println("Invalid Placement");
+                            tempBoard = null;
                             return false;
                         }
                         finalCheck = true;
-                        tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 2 + i));
+                        tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 1 + i));
                         upDownCheck(cord, word);
                     }
                 }
                 if(! isTouching){
                     System.out.println("Floating Word.");
                     currPlayer.addLettersToHand(tilesTaken);
+                    tempBoard = null;
+                    finalCheck = false;
                     return false;
                 }
             } else{
@@ -299,6 +299,7 @@ public class Game {
         }
         else{
             System.out.println("Invalid word.");
+            tempBoard = null;
             return false;
         }
         if (finalCheck){
@@ -315,16 +316,12 @@ public class Game {
         return false;
     }
 
-<<<<<<< Updated upstream
     /**
      * Checks left and right of each tile to ensure legal placing
      * @param checkCord Coordinates
      * @return boolean
      */
-    private boolean leftRightCheck(Coordinates checkCord){
-=======
     private boolean leftRightCheck(Coordinates checkCord, String word){
->>>>>>> Stashed changes
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while( ! tempBoard.checkFree(checkCord)) {
@@ -351,26 +348,22 @@ public class Game {
         }
 
         System.out.println(possibleWord);
-        System.out.println(possibleWord.length());
         if(((possibleWord.length() > 1) && ! possibleWord.equals(word.toUpperCase()))){
             isTouching = true;
         }
-        if(possibleWord.length() <= 1 || dictionary.isLegalWord(possibleWord)){
+
+        if(dictionary.isLegalWord(possibleWord)){
             return true;
         }
         return false;
     }
-<<<<<<< Updated upstream
 
     /**
      * Checks up and down of each tile to ensure legal placing
      * @param checkCord Coordinates
      * @return boolean
      */
-    private boolean upDownCheck(Coordinates checkCord){
-=======
     private boolean upDownCheck(Coordinates checkCord, String word){
->>>>>>> Stashed changes
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while(! tempBoard.checkFree(checkCord)) {
@@ -396,11 +389,11 @@ public class Game {
             
         }
 
+        System.out.println(possibleWord);
         if((possibleWord.length()> 1) && ! possibleWord.equals(word.toUpperCase())){
             isTouching = true;
         }
-
-        if(possibleWord.length() <= 1 || dictionary.isLegalWord(possibleWord)){
+        if(dictionary.isLegalWord(possibleWord.toLowerCase())){
             return true;
         }
         return false;
@@ -408,21 +401,6 @@ public class Game {
 
 
     }
-
-<<<<<<< Updated upstream
-
-    /**
-     * Passes the turn for the player
-     */
-    private void passPlayers() {
-        //probably should have some way to autoprint next player's letters and score and boardstate.
-    }
-
-    /**
-     * Help tool tip print function
-     */
-=======
->>>>>>> Stashed changes
     private void printHelp() {
         System.out.print("There are 4 different Commands."
         +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
