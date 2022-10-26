@@ -191,9 +191,12 @@ public class Game {
         }
         ArrayList<Tile> tilesTaken = new ArrayList<>();
         //this will get rid of the brackets leaving the original word behind
-        String temp = word.replaceAll("[^a-zA-Z0-9]","");
+        String temp = word.toLowerCase();
         tempBoard = board.copyBoard();
-
+        if (temp.length() == 1){
+            System.out.println("Invalid Entry");
+            return false;
+        }
         //check if its a legal word
         if(dictionary.isLegalWord(temp)){
             Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
@@ -234,7 +237,6 @@ public class Game {
                     } else if(tempBoard.checkFree(tempCord) && ! currPlayer.hasLetter(temp.charAt(i))){
                         System.out.println("You dont have letter " + temp.charAt(i));
                         currPlayer.addLettersToHand(tilesTaken);
-                        tempBoard = null;
                         return false;
                     } else if(! tempBoard.checkFree(tempCord) && Character.toUpperCase(temp.charAt(i)) != tempBoard.getLetter(tempCord)){
                         System.out.println("Word mismatch.");
@@ -276,6 +278,7 @@ public class Game {
                 if(! isTouching){
                     System.out.println("Floating Word.");
                     currPlayer.addLettersToHand(tilesTaken);
+                    
                     finalCheck = false;
                     return false;
                 }
@@ -338,7 +341,6 @@ public class Game {
             
         }
 
-        System.out.println(possibleWord);
         if(((possibleWord.length() > 1) && ! possibleWord.equals(word.toUpperCase()))){
             isTouching = true;
         }
@@ -380,7 +382,6 @@ public class Game {
             
         }
 
-        System.out.println(possibleWord);
         if((possibleWord.length()> 1) && ! possibleWord.equals(word.toUpperCase())){
             isTouching = true;
         }
@@ -398,8 +399,7 @@ public class Game {
         +"\n\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
         +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag. you can also just type \"shuffle\" to shuffle all your hand."
         +"\n\nHowever, the most complex command is place. place is split into: place <direction> <x Coordinate> <yCoordinate> <word> Direction is right or down."
-        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Word, however, is compromised of letters you have in your hand and any tiles already on the board you are going to intersect."
-        +"For example, if the first world placed is \'test\' starting from H08 to the right, and you wanted to, using the s, create stop, you would type in the coordinate ABOVE the ");
+        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Word, however, is compromised of letters you have in your hand and any tiles already on the board you are going to intersect.");
     }
 
 
