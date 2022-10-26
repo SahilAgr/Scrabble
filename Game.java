@@ -192,7 +192,7 @@ public class Game {
         ArrayList<Tile> tilesTaken = new ArrayList<>();
         //this will get rid of the brackets leaving the original word behind
         String temp = word.replaceAll("[^a-zA-Z0-9]","");
-        tempBoard = board;
+        tempBoard = board.copyBoard();
 
         //check if its a legal word
         if(dictionary.isLegalWord(temp)){
@@ -207,20 +207,17 @@ public class Game {
                     else if(tempBoard.checkFree(tempCord) && ! currPlayer.hasLetter(temp.charAt(i))){
                         System.out.println("You dont have letter " + temp.charAt(i));
                         currPlayer.addLettersToHand(tilesTaken);
-                        tempBoard = null;
                         return false;
                     }
                     else if(! tempBoard.checkFree(tempCord) && Character.toUpperCase(temp.charAt(i)) != tempBoard.getLetter(tempCord)){
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
-                        tempBoard = null;
                         return false;
                     }
                     
                     if( ! upDownCheck(tempCord, word)){
                         currPlayer.addLettersToHand(tilesTaken);
                         System.out.println("Invalid Placement");
-                        tempBoard = null;
                         return false;
                     }
                     tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
@@ -242,13 +239,11 @@ public class Game {
                     } else if(! tempBoard.checkFree(tempCord) && Character.toUpperCase(temp.charAt(i)) != tempBoard.getLetter(tempCord)){
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
-                        tempBoard = null;
                         return false;
                     }
                     if(! leftRightCheck(tempCord, word)){
                         System.out.println("Invalid Placement");
                         currPlayer.addLettersToHand(tilesTaken);
-                        tempBoard = null;
                         return false;
                     }
                     
@@ -262,7 +257,6 @@ public class Game {
                     if (direction.equals("right")){
                         if(! upDownCheck(tempCord, word)){
                             System.out.println("Invalid Placement");
-                            tempBoard = null;
                             return false;
                         }
                         finalCheck = true;
@@ -272,7 +266,6 @@ public class Game {
                     if (direction.equals("down")){
                         if (! leftRightCheck(tempCord, word)){
                             System.out.println("Invalid Placement");
-                            tempBoard = null;
                             return false;
                         }
                         finalCheck = true;
@@ -283,7 +276,6 @@ public class Game {
                 if(! isTouching){
                     System.out.println("Floating Word.");
                     currPlayer.addLettersToHand(tilesTaken);
-                    tempBoard = null;
                     finalCheck = false;
                     return false;
                 }
@@ -299,7 +291,6 @@ public class Game {
         }
         else{
             System.out.println("Invalid word.");
-            tempBoard = null;
             return false;
         }
         if (finalCheck){

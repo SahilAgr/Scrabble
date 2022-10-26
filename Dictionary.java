@@ -8,8 +8,9 @@ import java.io.*;
  * @version 1.0
  */
 public class Dictionary {
-    static final String filePath = "C:\\Users\\sahil\\Desktop\\school ish\\y5\\sem1\\3110\\scrabble 1.0\\dictionary.txt";
-    static boolean wordFound = false;
+    static final String filePath = "C:\\Users\\Matthew\\Documents\\GitHub\\Scrabble\\dictionary.txt";
+    boolean wordFound = false;
+
 
     /**
      * Checking the dictionary
@@ -18,6 +19,7 @@ public class Dictionary {
     }
 
     public boolean isLegalWord(String word){
+        wordFound = false;
         word = word.toLowerCase();
         BufferedReader br = null;
 
@@ -53,5 +55,4 @@ public class Dictionary {
         }
         return wordFound;
     }
-
 }

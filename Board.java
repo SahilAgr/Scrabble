@@ -19,6 +19,9 @@ public class Board {
         }
         gameBoard[7][7].setLetter('+');
     }
+    public Board(Tile[][] tileArray){
+        gameBoard = tileArray;
+    }
 
     /**
      * Returns the letter at a specific tile coordinate
@@ -64,6 +67,16 @@ public class Board {
             }
             System.out.println();
         }System.out.println();
+    }
+
+    public Board copyBoard(){
+        Tile[][] copyBoard = new Tile[15][15];
+        for(int x=0 ; x<15 ; x++){
+            for (int y=0 ; y<15 ; y++) {
+                copyBoard[y][x] = new Tile(gameBoard[y][x].getLetter(), gameBoard[y][x].getScore());
+            }
+        }
+        return new Board(copyBoard);
     }
 
     
