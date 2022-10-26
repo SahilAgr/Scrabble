@@ -9,7 +9,7 @@ import java.util.*;
  * @version 1.0
  */
 public class Dictionary {
-    static final String filePath = "/Users/Matthew/Documents/GitHub/Scrabble/dictionary.txt";
+    static final String filePath = "C:\\Users\\sahil\\Desktop\\school ish\\y5\\sem1\\3110\\scrabble 1.0\\dictionary.txt";
     static boolean wordFound = false;
 
     /**

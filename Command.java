@@ -1,5 +1,6 @@
 /**
- * The Command Class
+ * The Command Class that processes any available command
+ * @author Matthew Huitema
  */
 public class Command {
     String commandWord;

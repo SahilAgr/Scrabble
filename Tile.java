@@ -1,5 +1,6 @@
 /**
- * The Tile class
+ * The Tile class that creates all available tiles and any tile manipulation
+ * @authors  Matthew Huitema, Patrick Ma
  */
 public class Tile {
     private char letter;

@@ -1,6 +1,7 @@
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
+ * @author Patrick Ma
  */
 public class Board {
 
@@ -8,6 +9,7 @@ public class Board {
 
     /**
      * The constructor for the Board class
+     *
      */
     public Board() {
         for(int x=0 ; x<15 ; x++){

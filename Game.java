@@ -4,7 +4,8 @@ import java.util.Scanner;
 
 
 /**
- * The Game class that will drive the whole game
+ * The Game class that will drive the whole game including creating the board and the players
+ * @authors  Matthew Huitema, Sahil Agrawal, Patrick Ma
  */
 
 public class Game {

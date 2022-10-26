@@ -3,7 +3,8 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * The LetterBag Class
+ * The LetterBag Class that holds all the letters available for the game
+ * @author  Matthew Huitema
  */
 public class LetterBag {
     
@@ -87,7 +88,12 @@ public class LetterBag {
      */
     public List<Tile> getLetters(){
         return letterBag;
-    } 
+    }
+
+    /**
+     * Checks if the letter bag is empty or not
+     * @return boolean
+     */
     public boolean isEmpty(){
         return (letterBag.size() == 0);
     }

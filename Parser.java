@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
 /**
- * Parser Class for the user inputs
+ * Parser Class that handles all the user inputs
+ * @author  Matthew Huitema
  */
 public class Parser {
     private Scanner userInput;

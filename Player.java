@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * The Player Class
+ * The Player Class that assigns a player letters and scores
+ * @authors  Matthew Huitema, Patrick Ma, Sahil Agrawal
  */
 public class Player {
     
