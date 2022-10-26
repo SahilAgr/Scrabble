@@ -26,10 +26,10 @@ Set-up Instructions:
 Download the zip file. Open IntelliJ IDE and setup a workspace. To open the zip file inside IntelliJ, from the main menu, click file then select import. Go to General > Existing Projects into Workspace > Next. Click the Select Archive File and browse for the zip file that was downloaded in the previous steps. The new project should now be visible in the Package Explorer. All the files mentioned above should be in that project. Run the main method inside the Game class to play the game 
 
 Available Commands:
-help -> will give you a tool tip for the game instructions
-shuffle -> will shuffle the letters in hand 
-pass -> passes your turn 
-place -> places the desired word at a specific coordinate 
+1. help -> will give you a tool tip for the game instructions
+2. shuffle -> will shuffle the letters in hand 
+3. pass -> passes your turn 
+4. place -> places the desired word at a specific coordinate 
 
 
 
