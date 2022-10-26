@@ -22,7 +22,7 @@ public class Parser {
         String word1 = null;
         String word2 = null;
         Coordinates coordinates = null;
-        String word = null;
+        String word = "";
         String inputLine;
        
         inputLine = userInput.nextLine();
@@ -41,6 +41,7 @@ public class Parser {
             else if (word1.equals("place")){
                 if(userIn.hasNext()){
                     word2 = userIn.next();
+                    word2 = word2.toLowerCase();
                 }
                 Coordinates.xCoordinate xCoord = null;
                 if(userIn.hasNext()){
@@ -54,7 +55,7 @@ public class Parser {
                 coordinates = thing;
                 if (userIn.hasNext()){
                     word = userIn.next();
-                }
+                } else{word = null;}
 
             }
             else{

@@ -3,10 +3,10 @@
  * @author Matthew Huitema
  */
 public class Command {
-    String commandWord;
-    String secondLine;
-    String letters;
-    Coordinates coordinates;
+    private String commandWord;
+    private String secondLine;
+    private String letters;
+    private Coordinates coordinates;
 
     /**
      * The constructor for the command class

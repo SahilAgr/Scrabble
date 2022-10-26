@@ -19,7 +19,6 @@ public class Game {
     private int countdown;
     private boolean isTurnOne;
     private boolean isTouching;
-    private Integer culmativeScore;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
@@ -40,6 +39,10 @@ public class Game {
 
         System.out.println("how many players today?");
         int playerCount = userInput.nextInt();
+        while (  (playerCount < 1) ||  (playerCount > 4)){
+            System.out.println("Between 1 and 4 players must participate.");
+            playerCount = userInput.nextInt();
+        }
         countdown = playerCount - 1;
         isTurnOne = true;
         for (int i = 0; i < playerCount; i++){
@@ -116,19 +119,31 @@ public class Game {
             System.out.println("invalid command");
             //print help message here?
         }
-        else if(command.commandWord.equals("help")){
+        else if(command.getCommandWord().equals("help")){
             printHelp();
             return false;
         }
-        else if (command.commandWord.equals("pass")){
-            passPlayers();
+        else if (command.getCommandWord().equals("pass")){
             return true;
         }
-        else if (command.commandWord.equals("shuffle")){
+        else if (command.getCommandWord().equals("shuffle")){
             shuffleHand(command.getLetters());
             return true;
         }
-        else if (command.commandWord.equals("place")){
+        else if (command.getCommandWord().equals("place")){
+            if( ! command.getSecondWord().equals("down") && ! command.getSecondWord().equals("right")){
+                System.out.println(command.getSecondWord());
+                System.out.println("Unrecognized Direction.");
+                return false;
+            }
+            if(command.getCoordinates().getXCoordinate() == null || command.getCoordinates().getYCoordinate() == null){
+                System.out.println("Unrecognized Coordinate.");
+                return false;
+            }
+            if(command.getLetters().equals(null)){
+                System.out.println("Either no word, no coordinate, or no direction.");
+                return false;
+            }
             return place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
             
         }
@@ -140,18 +155,27 @@ public class Game {
     }
 
     /**
+<<<<<<< Updated upstream
      * Shuffles the players hand if they want it
      * @param letters String
+=======
+     * @param letters
+>>>>>>> Stashed changes
      */
     private void shuffleHand(String letters) {
-        ArrayList<Tile> shuffles = new ArrayList<>();
-        for(int i = 0; i < letters.length(); i ++){
-            if(currPlayer.hasLetter(letters.charAt(i))){
-                shuffles.add(Tile.charToTile(letters.charAt(i)));
-                currPlayer.removeLetter(letters.charAt(i));
+        if(letters.isEmpty()){
+            currPlayer.removeLetters(currPlayer.getHand());
+            currPlayer.addLettersToHand(letterBag.getRandomLetters(7));
+        } else {
+            ArrayList<Tile> shuffles = new ArrayList<>();
+            for(int i = 0; i < letters.length(); i ++){
+                if(currPlayer.hasLetter(letters.charAt(i))){
+                    shuffles.add(Tile.charToTile(letters.charAt(i)));
+                    currPlayer.removeLetter(letters.charAt(i));
+                }
             }
+            currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
-        currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
     }
 
     /**
@@ -162,8 +186,8 @@ public class Game {
      * @return boolean
      */
     private boolean place(String direction, Coordinates cord, String word) {
-        culmativeScore = 0;
         isTouching = false;
+        boolean finalCheck = false;
         if(isTurnOne && (! cord.getXCoordinate().equals(Coordinates.xCoordinate.H) || ! cord.getYCoordinate().equals(Coordinates.yCoordinate.EIGHT))){
             System.out.println("On turn one, you MUST start at H EIGHT.");
             return false;
@@ -178,7 +202,11 @@ public class Game {
         if(dictionary.isLegalWord(temp)){
             Coordinates tempCord = new Coordinates(cord.getXCoordinate(),cord.getYCoordinate());
             for(int i = 0; i < temp.length(); i++) {
+<<<<<<< Updated upstream
                 System.out.println(direction);
+=======
+                //check if the tiles are free or not
+>>>>>>> Stashed changes
                 //this is only if we need to check right of the x axis
                 if (direction.equals("right")) {
                     if(tempBoard.checkFree(tempCord) && currPlayer.hasLetter(temp.charAt(i))){
@@ -194,12 +222,11 @@ public class Game {
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
                         return false;
-                    } else {
+                    } else if(! tempBoard.checkFree(cord)){
                         isTouching = true;
                     }
                     
-                    if( ! upDownCheck(tempCord)){
-                        System.out.println("test");
+                    if( ! upDownCheck(tempCord, word)){
                         currPlayer.addLettersToHand(tilesTaken);
                         return false;
                     }
@@ -222,10 +249,8 @@ public class Game {
                         System.out.println("Word mismatch.");
                         currPlayer.addLettersToHand(tilesTaken);
                         return false;
-                    } else {
-                        isTouching = true;
                     }
-                    if(! leftRightCheck(tempCord)){
+                    if(! leftRightCheck(tempCord, word)){
                         System.out.println("test");
                         currPlayer.addLettersToHand(tilesTaken);
                         return false;
@@ -236,66 +261,106 @@ public class Game {
                 }
             }
             tempCord = cord;
-            culmativeScore = 0;
-            if(!isTurnOne){
-                if(! upDownCheck(cord) || !leftRightCheck(cord) || ! isTouching){
-                    currPlayer.addLettersToHand(tilesTaken);
-                    System.out.println("Invalid Placement.");
-                    return false;
-                    
+            if(! isTurnOne){
+                for(int i = 0; i < word.length(); i++){
+                    if (direction.equals("right")){
+                        if(! upDownCheck(tempCord, word)){
+                            System.out.println("Invalid Placement");
+                            return false;
+                        }
+                        finalCheck = true;
+                        tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
+                        leftRightCheck(cord, word);
+                    }
+                    if (direction.equals("down")){
+                        if (! leftRightCheck(tempCord, word)){
+                            System.out.println("Invalid Placement");
+                            return false;
+                        }
+                        finalCheck = true;
+                        tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 2 + i));
+                        upDownCheck(cord, word);
+                    }
                 }
+                if(! isTouching){
+                    System.out.println("Floating Word.");
+                    currPlayer.addLettersToHand(tilesTaken);
+                    return false;
+                }
+            } else{
+                if (direction.equals("right")){
+                    leftRightCheck(cord, word);
+                }
+                else if(direction.equals("down")){
+                    upDownCheck(cord, word);
+                }
+                finalCheck = true;
             }
-
-                
         }
         else{
             System.out.println("Invalid word.");
             return false;
         }
-        board = tempBoard;
-        for(Tile t: tilesTaken){
-            currPlayer.addScore(t.getScore());
+        if (finalCheck){
+            board = tempBoard;
+            for (int i = 0; i < word.length(); i++){
+                currPlayer.addScore(Tile.charToTile(word.charAt(i)).getScore());
+            }
+            currPlayer.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
+            isTurnOne = false;
+            return true;
+            
         }
-        currPlayer.addScore(culmativeScore);
-        currPlayer.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
-        isTurnOne = false;
-        return true;
+        System.out.println("Unknown error.");
+        return false;
+    }
 
-}
-
+<<<<<<< Updated upstream
     /**
      * Checks left and right of each tile to ensure legal placing
      * @param checkCord Coordinates
      * @return boolean
      */
     private boolean leftRightCheck(Coordinates checkCord){
+=======
+    private boolean leftRightCheck(Coordinates checkCord, String word){
+>>>>>>> Stashed changes
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while( ! tempBoard.checkFree(checkCord)) {
             //if we are checking left
             tempCoordinates = checkCord;
-            checkCord = new Coordinates((checkCord.getXCoordinate().ordinal()), checkCord.getYCoordinate());
+            if(checkCord.getXCoordinate().ordinal() >= 1){
+                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal()), checkCord.getYCoordinate());
+            } else {
+                break;
+            }
             
         }
         checkCord = tempCoordinates;
         while( ! tempBoard.checkFree(checkCord)) {
             //if we are checking left
             possibleWord+=tempBoard.getLetter(checkCord);
-            checkCord = new Coordinates((checkCord.getXCoordinate().ordinal() + 2), checkCord.getYCoordinate());
+            if(checkCord.getXCoordinate().ordinal() <= 14){
+                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal() + 2), checkCord.getYCoordinate());
+            }
+            else{
+                break;
+            }
             
         }
 
-        if(possibleWord.length() > 1){
+        System.out.println(possibleWord);
+        System.out.println(possibleWord.length());
+        if(((possibleWord.length() > 1) && ! possibleWord.equals(word.toUpperCase()))){
             isTouching = true;
         }
         if(possibleWord.length() <= 1 || dictionary.isLegalWord(possibleWord)){
-            for(int i = 0; i < possibleWord.length(); i++){
-                culmativeScore += Tile.charToTile(possibleWord.charAt(i)).getScore();
-            }
             return true;
         }
         return false;
     }
+<<<<<<< Updated upstream
 
     /**
      * Checks up and down of each tile to ensure legal placing
@@ -303,22 +368,35 @@ public class Game {
      * @return boolean
      */
     private boolean upDownCheck(Coordinates checkCord){
+=======
+    private boolean upDownCheck(Coordinates checkCord, String word){
+>>>>>>> Stashed changes
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while(! tempBoard.checkFree(checkCord)) {
             //if we are checking up
             tempCoordinates = checkCord;
-            checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()));
+            if(checkCord.getYCoordinate().ordinal() >= 1){
+                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()));
+            }
+            else{
+                break;
+            }
         }
         checkCord = tempCoordinates;
         while(! tempBoard.checkFree(checkCord)) {
             //if we are checking left
             possibleWord+=tempBoard.getLetter(checkCord);
-            checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()+2));
+            if(checkCord.getYCoordinate().ordinal() <= 14){
+                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()+2));
+            }
+            else{
+                break;
+            }
             
         }
 
-        if(possibleWord.length()> 1){
+        if((possibleWord.length()> 1) && ! possibleWord.equals(word.toUpperCase())){
             isTouching = true;
         }
 
@@ -331,6 +409,7 @@ public class Game {
 
     }
 
+<<<<<<< Updated upstream
 
     /**
      * Passes the turn for the player
@@ -342,13 +421,16 @@ public class Game {
     /**
      * Help tool tip print function
      */
+=======
+>>>>>>> Stashed changes
     private void printHelp() {
         System.out.print("There are 4 different Commands."
         +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
-        +"shuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
-        +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag."
-        +"However, the most complex command is place. place is split into: place <direction> (<x Coordinate> <yCoordinate> <letter>) (<x Coordinate> <yCoordinate> <letter>)"
-        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Letter is a letter in your hand.");
+        +"\n\nshuffle, however is more complicated. type \'shuffle (letter1) (letter2)\' to shuffle any number of letters in your hand."
+        +"For example, with a hand of g d a e f p q you can type \"shuffle g d a\" which would shuffle the g d and a tiles back into the bag. you can also just type \"shuffle\" to shuffle all your hand."
+        +"\n\nHowever, the most complex command is place. place is split into: place <direction> <x Coordinate> <yCoordinate> <word> Direction is right or down."
+        +"X coordinates are A to O, not case sensitive. Y coordinates ONE to FIFTEEN. Word, however, is compromised of letters you have in your hand and any tiles already on the board you are going to intersect."
+        +"For example, if the first world placed is \'test\' starting from H08 to the right, and you wanted to, using the s, create stop, you would type in the coordinate ABOVE the ");
     }
 
 
