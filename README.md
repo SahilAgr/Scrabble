@@ -1,6 +1,14 @@
+Authors: 
+Sahil Agrawal
+Patrick Ma
+Anirudh Bakshi 
+Matthew Huitema
+
+
+
 Files Included:
 
-Dictionary Class : A Class to read the text file and check the word.
+Dictionary Class : A Class to read the text file and check the word.  
 Tile Class: Creates all available tiles and any tile manipulation
 Player Class: Assigns a player letters and scores
 Parser Class: Handles all the user inputs
