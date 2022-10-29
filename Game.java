@@ -185,16 +185,11 @@ public class Game {
     private boolean place(String direction, Coordinates cord, String word) {
         isTouching = false;
         boolean finalCheck = false;
-        if(isTurnOne && (! cord.getXCoordinate().equals(Coordinates.xCoordinate.H) || ! cord.getYCoordinate().equals(Coordinates.yCoordinate.EIGHT))){
-            System.out.println("On turn one, you MUST start at H EIGHT.");
-            return false;
-        }
         ArrayList<Tile> tilesTaken = new ArrayList<>();
-        //this will get rid of the brackets leaving the original word behind
         String temp = word.toLowerCase();
         tempBoard = board.copyBoard();
         if (temp.length() == 1){
-            System.out.println("Invalid Entry");
+            System.out.println("Invalid Entry, words must be longer then 1.");
             return false;
         }
         //check if its a legal word
@@ -283,6 +278,28 @@ public class Game {
                     return false;
                 }
             } else{
+                boolean crossesStart = false;
+                for(int i = 0; i < word.length(); i++){
+                    if (direction.equals("right")){
+                        if (tempCord == new Coordinates(7,7)){
+                            crossesStart = true;
+                        }
+                        tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 1), cord.getYCoordinate());
+                    }
+                    if (direction.equals("down")){
+                        if (! leftRightCheck(tempCord, word)){
+                            System.out.println("Invalid Placement");
+                            return false;
+                        }
+                        finalCheck = true;
+                        tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 1 + i));
+                        upDownCheck(cord, word);
+                    }
+                }
+                if(! crossesStart){
+                    System.out.println("The placed word must cross start (H 08).");
+                    return false;
+                }
                 if (direction.equals("right")){
                     leftRightCheck(cord, word);
                 }
