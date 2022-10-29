@@ -6,9 +6,9 @@ import java.util.ArrayList;
  */
 public class Player {
     
-    Integer score;
-    ArrayList<Tile> hand;
-    String name;
+    private Integer score;
+    private ArrayList<Tile> hand;
+    private String name;
 
     /**
      * The constructor for the Player class

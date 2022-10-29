@@ -5,7 +5,7 @@
  */
 public class Board {
 
-    static Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
+    private Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
 
     /**
      * The constructor for the Board class
