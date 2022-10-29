@@ -223,7 +223,7 @@ public class Game {
                         System.out.println("Invalid Placement");
                         return false;
                     }
-                    tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 2), cord.getYCoordinate());
+                    tempCord = new Coordinates((cord.getXCoordinate().ordinal() + i + 1), cord.getYCoordinate());
 
 
 
@@ -249,7 +249,7 @@ public class Game {
                         return false;
                     }
                     
-                    tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 2 + i));
+                    tempCord = new Coordinates(cord.getXCoordinate(), (cord.getYCoordinate().ordinal() + 1 + i));
 
                 }
             }
@@ -297,7 +297,7 @@ public class Game {
             return false;
         }
         if (finalCheck){
-            board = tempBoard;
+            board = tempBoard.copyBoard();
             for (int i = 0; i < word.length(); i++){
                 currPlayer.addScore(Tile.charToTile(word.charAt(i)).getScore());
             }
@@ -322,7 +322,7 @@ public class Game {
             //if we are checking left
             tempCoordinates = checkCord;
             if(checkCord.getXCoordinate().ordinal() >= 1){
-                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal()), checkCord.getYCoordinate());
+                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal() - 1), checkCord.getYCoordinate());
             } else {
                 break;
             }
@@ -333,7 +333,7 @@ public class Game {
             //if we are checking left
             possibleWord+=tempBoard.getLetter(checkCord);
             if(checkCord.getXCoordinate().ordinal() <= 14){
-                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal() + 2), checkCord.getYCoordinate());
+                checkCord = new Coordinates((checkCord.getXCoordinate().ordinal() + 1), checkCord.getYCoordinate());
             }
             else{
                 break;
@@ -363,7 +363,7 @@ public class Game {
             //if we are checking up
             tempCoordinates = checkCord;
             if(checkCord.getYCoordinate().ordinal() >= 1){
-                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()));
+                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal() - 1));
             }
             else{
                 break;
@@ -374,7 +374,7 @@ public class Game {
             //if we are checking left
             possibleWord+=tempBoard.getLetter(checkCord);
             if(checkCord.getYCoordinate().ordinal() <= 14){
-                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal()+2));
+                checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal() + 1));
             }
             else{
                 break;
