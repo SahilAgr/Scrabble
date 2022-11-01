@@ -139,6 +139,7 @@ public class Game {
                 System.out.println("Unrecognized Coordinate.");
                 return false;
             }
+            System.out.println(command.getLetters());
             if(command.getLetters().equals(null)){
                 System.out.println("Either no word, no coordinate, or no direction.");
                 return false;
