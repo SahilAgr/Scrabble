@@ -35,8 +35,10 @@ public class Game {
 
         Scanner userInput = new Scanner(System.in);
 
+        //gameView.jOptionPane("Welcome to Scrabble");
         System.out.println("welcome to scrabble");
 
+        //gameView.jOptionPane("start replacing souts with gameView.joptionpane etc, once thats made");
         System.out.println("how many players today?");
         int playerCount = userInput.nextInt();
         while (  (playerCount < 1) ||  (playerCount > 4)){
@@ -139,8 +141,7 @@ public class Game {
                 System.out.println("Unrecognized Coordinate.");
                 return false;
             }
-            System.out.println(command.getLetters());
-            if(command.getLetters().equals(null)){
+            if(command.getLetters().length() == 0){
                 System.out.println("Either no word, no coordinate, or no direction.");
                 return false;
             }
@@ -186,7 +187,12 @@ public class Game {
     private boolean place(String direction, Coordinates cord, String word) {
         isTouching = false;
         boolean finalCheck = false;
+        if(isTurnOne && (! cord.getXCoordinate().equals(Coordinates.xCoordinate.H) || ! cord.getYCoordinate().equals(Coordinates.yCoordinate.EIGHT))){
+            System.out.println("On turn one, you MUST start at H EIGHT.");
+            return false;
+        }
         ArrayList<Tile> tilesTaken = new ArrayList<>();
+        //this will get rid of the brackets leaving the original word behind
         String temp = word.toLowerCase();
         tempBoard = board.copyBoard();
         if (temp.length() == 1){
@@ -315,7 +321,7 @@ public class Game {
             return false;
         }
         if (finalCheck){
-            board = tempBoard.copyBoard();
+            board = tempBoard;
             for (int i = 0; i < word.length(); i++){
                 currPlayer.addScore(Tile.charToTile(word.charAt(i)).getScore());
             }

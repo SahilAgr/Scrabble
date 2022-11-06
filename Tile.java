@@ -5,15 +5,22 @@
 public class Tile {
     private char letter;
     private int score;
+    private boolean newTile;
 
     /**
      * The constructor for the tile Class
      * @param letter char
      * @param score int
      */
-    public Tile(char letter, int score) {
-        this.letter = letter; //FOR M1: 🅰🅱🅲🅳🅴🅵🅶🅷🅸🅹🅺🅻🅼🅽🅾🅿🆀🆁🆂🆃🆄🆅🆆🆇🆈🆉
+    public Tile(char letter, int score, boolean placed) {
+        this.letter = letter; 
         this.score = score;
+        this.newTile = placed;
+    }
+    public Tile(char letter, int score){
+        this.letter = letter; 
+        this.score = score;
+        this.newTile = false;
     }
 
     public Tile() {
@@ -40,6 +47,14 @@ public class Tile {
 
     public void setLetter(char c){
         letter = c;
+    }
+
+    public boolean getNewTile(){
+        return newTile;
+    }
+    
+    public void setNewTileToFalse(){
+        newTile = false;
     }
     
     /**
