@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
@@ -68,6 +70,33 @@ public class Board {
             System.out.println();
         }System.out.println();
     }
+    private HashMap<Coordinates, Tile> rightIterator(Coordinates startingCords, String word){
+        HashMap<Coordinates, Tile> iterator = new HashMap<>();
+        String possibleWord = "";
+        Coordinates tempCoordinates = null;
+        while( ! this.checkFree(startingCords)) {
+            //if we are checking left
+            tempCoordinates = startingCords;
+            if(startingCords.getXCoordinate().ordinal() >= 1){
+                startingCords = new Coordinates((startingCords.getXCoordinate().ordinal() - 1), startingCords.getYCoordinate());
+            } else {
+                break;
+            }
+            
+        }
+        startingCords = tempCoordinates;
+        while( ! tempBoard.checkFree(startingCords)) {
+            //if we are checking left
+            possibleWord+=tempBoard.getLetter(startingCords);
+            if(startingCords.getXCoordinate().ordinal() <= 14){
+                startingCords = new Coordinates((startingCords.getXCoordinate().ordinal() + 1), startingCords.getYCoordinate());
+            }
+            else{
+                break;
+            }
+            
+        }
+    }
 
     public Board copyBoard(){
         Tile[][] copyBoard = new Tile[15][15];
@@ -78,6 +107,7 @@ public class Board {
         }
         return new Board(copyBoard);
     }
+
 
     
 }
