@@ -37,7 +37,7 @@ public class Coordinates {
             }
         }
         public static yCoordinate ordinalToYCoordinate(int i){
-            return yCoordinate.values()[i-1];
+            return yCoordinate.values()[i];
         }
     }
     public enum xCoordinate{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O;
@@ -65,7 +65,7 @@ public class Coordinates {
             }
         }
         public static xCoordinate ordinalToXCoordinate(int i){
-            return xCoordinate.values()[i-1];
+            return xCoordinate.values()[i];
         }
 
     }

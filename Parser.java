@@ -55,7 +55,7 @@ public class Parser {
                 coordinates = thing;
                 if (userIn.hasNext()){
                     word = userIn.next();
-                } else{word = null;}
+                } else{word = "";}
 
             }
             else{
