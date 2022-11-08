@@ -13,19 +13,49 @@ public class Tile {
      * @param score int
      */
     public Tile(char letter, int score, boolean placed) {
-        this.letter = letter; 
+        this.letter = Character.toUpperCase(letter); 
         this.score = score;
         this.newTile = placed;
     }
     public Tile(char letter, int score){
-        this.letter = letter; 
+        this.letter = Character.toUpperCase(letter);  
         this.score = score;
         this.newTile = false;
     }
 
-    public Tile() {
-        letter = '.';
-        score = 0;
+    public Tile(char letter, boolean placed){
+        this.letter = Character.toUpperCase(letter);
+        this.newTile = placed;
+
+        switch (this.letter){
+            case 'A': score = 1;
+            case 'B': score = 3;
+            case 'C': score = 3;
+            case 'D': score = 2;
+            case 'E': score = 1;
+            case 'F': score = 4;
+            case 'G': score = 2;
+            case 'H': score = 4;
+            case 'I': score = 1;
+            case 'J': score = 8;
+            case 'K': score = 5;
+            case 'L': score = 1;
+            case 'M': score = 3;
+            case 'N': score = 1;
+            case 'O': score = 1;
+            case 'P': score = 3;
+            case 'Q': score = 10;
+            case 'R': score = 1;
+            case 'S': score = 1;
+            case 'T': score = 1;
+            case 'U': score = 1;
+            case 'V': score = 4;
+            case 'W': score = 4;
+            case 'X': score = 8;
+            case 'Y': score = 4;
+            case 'Z': score = 10;
+            default: score = 0;
+        }
     }
 
     /**
@@ -33,7 +63,7 @@ public class Tile {
      * @return char
      */
     public char getLetter(){
-        return letter;
+        return this.letter;
     }
 
     /**

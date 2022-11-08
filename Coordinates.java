@@ -69,6 +69,7 @@ public class Coordinates {
         }
 
     }
+    
     private yCoordinate yCoord;
     private xCoordinate xCoord;
 
@@ -76,14 +77,17 @@ public class Coordinates {
         xCoord = xCo;
         yCoord = yCo;
     }
+
     public Coordinates(Integer xCo, yCoordinate yCo){
         xCoord = xCoordinate.ordinalToXCoordinate(xCo);
         yCoord = yCo;
     }
+
     public Coordinates(xCoordinate xCo, Integer yCo){
         xCoord = xCo;
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
     }
+
     public Coordinates(Integer xCo, Integer yCo){
         xCoord = xCoordinate.ordinalToXCoordinate(xCo);
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
@@ -96,5 +100,13 @@ public class Coordinates {
 
     public final yCoordinate getYCoordinate(){
         return yCoord;
+    }
+
+    public void setXCoordinate(Integer xCo){
+        xCoord = xCoordinate.ordinalToXCoordinate(xCo);
+    }
+
+    public void setYCoordinate(Integer yCo){
+        yCoord = yCoordinate.ordinalToYCoordinate(yCo);
     }
 }

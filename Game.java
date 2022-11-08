@@ -194,7 +194,7 @@ public class Game {
         ArrayList<Tile> tilesTaken = new ArrayList<>();
         //this will get rid of the brackets leaving the original word behind
         String temp = word.toLowerCase();
-        tempBoard = board.copyBoard();
+        tempBoard = board;
         if (temp.length() == 1){
             System.out.println("Invalid Entry, words must be longer then 1.");
             return false;

@@ -14,7 +14,7 @@ public class LetterBag {
      * The constructor for the LetterBag which creates enough letters and assigns it the proper points
      */
     public LetterBag(){
-        //its also disguisting. I probably should just use a json. i will do this tomorrow.
+        
         letterBag = new ArrayList<>();
         for(int i = 0;i < 9;i++){
             letterBag.add(new Tile('A',1));
