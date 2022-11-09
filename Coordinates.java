@@ -109,4 +109,11 @@ public class Coordinates {
     public void setYCoordinate(Integer yCo){
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
     }
+
+    public static void main (String[] args){
+        Coordinates coord = new Coordinates(1, 1);
+        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
+        coord = new Coordinates(coord.getXCoordinate().ordinal() + 1, coord.getYCoordinate().ordinal() + 1);
+        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
+    }
 }

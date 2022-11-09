@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
+
 /**
  * The Game class that will drive the whole game including creating the board and the players
  * @authors  Matthew Huitema, Sahil Agrawal, Patrick Ma
@@ -11,14 +12,10 @@ import java.util.Scanner;
 public class Game {
     private List<Player> players;
     private Player currPlayer;
-    private Dictionary dictionary;
     private Board board;
-    private Board tempBoard;
     private Parser parser;
     private LetterBag letterBag;
     private int countdown;
-    private boolean isTurnOne;
-    private boolean isTouching;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
@@ -30,7 +27,6 @@ public class Game {
         this.parser = new Parser();
         this.board = new Board();
         this.letterBag = new LetterBag();
-        this.dictionary = new Dictionary();
         this.players = new ArrayList<>();
 
         Scanner userInput = new Scanner(System.in);
@@ -46,7 +42,6 @@ public class Game {
             playerCount = userInput.nextInt();
         }
         countdown = playerCount - 1;
-        isTurnOne = true;
         for (int i = 0; i < playerCount; i++){
             players.add(new Player("Player" + (i+1)));
 
@@ -73,7 +68,7 @@ public class Game {
                     System.out.println("Their score is: " + currPlayer.getScore());
                     System.out.println("Their letters are: ");
                     for(Tile t: currPlayer.getHand()){
-                        System.out.print(t.getLetter() +" ");
+                        System.out.print(t.getString() +" ");
                     }
                     System.out.println("");  
                 Command command;
@@ -155,6 +150,18 @@ public class Game {
         
     }
 
+
+    private boolean place(String direction, Coordinates coords, String word){
+        Board.WordPlacementStatus status = board.checkPlacement(coords, word, direction, false, currPlayer);
+        System.out.println(status.toString());
+        if (status == Board.WordPlacementStatus.VALID){
+            System.out.println(status.getScore());
+            return true;
+        }
+        System.out.println(status.getErrorMessage());
+        return false;
+    }
+
     /**
      * Shuffles the players hand if they want it
      * 
@@ -168,10 +175,10 @@ public class Game {
         } else {
             ArrayList<Tile> shuffles = new ArrayList<>();
             for(int i = 0; i < letters.length(); i ++){
-                if(currPlayer.hasLetter(letters.charAt(i))){
+                /*if(currPlayer.hasLetter(letters.charAt(i))){
                     shuffles.add(Tile.charToTile(letters.charAt(i)));
                     currPlayer.removeLetter(letters.charAt(i));
-                }
+                }*/
             }
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
@@ -184,14 +191,14 @@ public class Game {
      * @param word String
      * @return boolean
      */
-    private boolean place(String direction, Coordinates cord, String word) {
+    /*private boolean place(String direction, Coordinates cord, String word) {
         isTouching = false;
         boolean finalCheck = false;
         if(isTurnOne && (! cord.getXCoordinate().equals(Coordinates.xCoordinate.H) || ! cord.getYCoordinate().equals(Coordinates.yCoordinate.EIGHT))){
             System.out.println("On turn one, you MUST start at H EIGHT.");
             return false;
         }
-        ArrayList<Tile> tilesTaken = new ArrayList<>();
+        ArrayList<String> tilesTaken = new ArrayList<>();
         //this will get rid of the brackets leaving the original word behind
         String temp = word.toLowerCase();
         tempBoard = board;
@@ -206,7 +213,7 @@ public class Game {
                 //this is only if we need to check right of the x axis
                 if (direction.equals("right")) {
                     if(tempBoard.checkFree(tempCord) && currPlayer.hasLetter(temp.charAt(i))){
-                        tilesTaken.add(Tile.charToTile(temp.charAt(i)));
+                        tilesTaken.add(new Tile( temp.charAt(i)), false);
                         tempBoard.placeTile(tempCord,currPlayer.removeLetter(temp.charAt(i)));
                     }
                     else if(tempBoard.checkFree(tempCord) && ! currPlayer.hasLetter(temp.charAt(i))){
@@ -339,7 +346,7 @@ public class Game {
      * @param checkCord Coordinates
      * @return boolean
      */
-    private boolean leftRightCheck(Coordinates checkCord, String word){
+    /*private boolean leftRightCheck(Coordinates checkCord, String word){
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while( ! tempBoard.checkFree(checkCord)) {
@@ -380,7 +387,7 @@ public class Game {
      * @param checkCord Coordinates
      * @return boolean
      */
-    private boolean upDownCheck(Coordinates checkCord, String word){
+    /*private boolean upDownCheck(Coordinates checkCord, String word){
         String possibleWord = "";
         Coordinates tempCoordinates = null;
         while(! tempBoard.checkFree(checkCord)) {
@@ -396,7 +403,7 @@ public class Game {
         checkCord = tempCoordinates;
         while(! tempBoard.checkFree(checkCord)) {
             //if we are checking left
-            possibleWord+=tempBoard.getLetter(checkCord);
+            possibleWord+=tempBoard.getLetter(checkCord);1
             if(checkCord.getYCoordinate().ordinal() <= 14){
                 checkCord = new Coordinates(checkCord.getXCoordinate(),(checkCord.getYCoordinate().ordinal() + 1));
             }
@@ -416,7 +423,7 @@ public class Game {
 
 
 
-    }
+    }*/
     private void printHelp() {
         System.out.print("There are 4 different Commands."
         +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."

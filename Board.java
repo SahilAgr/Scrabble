@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The Board Class that creates the board in the terminal
@@ -10,21 +11,97 @@ public class Board {
 
     private Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
     private boolean isTouching;
+    private boolean firstTurn;
+    private Dictionary dict;
+    private ArrayList<Tile> tilesTaken;
+    private LetterBag letterBag;
 
     /**
      * The constructor for the Board class
      *
      */
     public Board() {
+
+        letterBag = new LetterBag();
+
         for(int x=0 ; x<15 ; x++){
             for (int y=0 ; y<15 ; y++) {
-                gameBoard[y][x] = new Tile('.', 0);
+                gameBoard[x][y] = new Tile(".", 0,"1");
             }
         }
-        gameBoard[7][7].setLetter('+');
+        gameBoard[7][7].setLetter("+");
+
+        gameBoard[0][7].setLetter("3w");
+        gameBoard[7][0].setLetter("3w");
+        gameBoard[14][0].setLetter("3w");
+        gameBoard[0][14].setLetter("3w");
+        gameBoard[14][7].setLetter("3w");
+        gameBoard[7][14].setLetter("3w");
+        gameBoard[14][14].setLetter("3w");
+        gameBoard[0][0].setLetter("3w");
+
+        gameBoard[1][1].setLetter("2w");
+        gameBoard[2][2].setLetter("2w");
+        gameBoard[3][3].setLetter("2w");
+        gameBoard[4][4].setLetter("2w");
+        gameBoard[10][10].setLetter("2w");
+        gameBoard[11][11].setLetter("2w");
+        gameBoard[12][12].setLetter("2w");
+        gameBoard[13][13].setLetter("2w");
+        gameBoard[1][13].setLetter("2w");
+        gameBoard[2][12].setLetter("2w");
+        gameBoard[3][11].setLetter("2w");
+        gameBoard[4][10].setLetter("2w");
+        gameBoard[10][4].setLetter("2w");
+        gameBoard[11][3].setLetter("2w");
+        gameBoard[12][2].setLetter("2w");
+        gameBoard[13][1].setLetter("2w");
+
+        gameBoard[0][3].setLetter("2l");
+        gameBoard[0][11].setLetter("2l");
+        gameBoard[3][0].setLetter("2l");
+        gameBoard[11][0].setLetter("2l");
+        gameBoard[3][7].setLetter("2l");
+        gameBoard[7][3].setLetter("2l");
+        gameBoard[2][8].setLetter("2l");
+        gameBoard[8][2].setLetter("2l");
+        gameBoard[2][6].setLetter("2l");
+        gameBoard[3][14].setLetter("2l");
+        gameBoard[14][3].setLetter("2l");
+        gameBoard[6][6].setLetter("2l");
+        gameBoard[6][8].setLetter("2l");
+        gameBoard[8][6].setLetter("2l");
+        gameBoard[8][8].setLetter("2l");
+        gameBoard[6][2].setLetter("2l");
+        gameBoard[14][11].setLetter("2l");
+        gameBoard[11][14].setLetter("2l");
+        gameBoard[11][7].setLetter("2l");
+        gameBoard[7][11].setLetter("2l");
+        gameBoard[12][6].setLetter("2l");
+        gameBoard[6][12].setLetter("2l");
+        gameBoard[12][8].setLetter("2l");
+        gameBoard[8][12].setLetter("2l");
+
+        gameBoard[1][5].setLetter("3l");
+        gameBoard[5][1].setLetter("3l");
+        gameBoard[1][9].setLetter("3l");
+        gameBoard[9][1].setLetter("3l");
+        gameBoard[5][5].setLetter("3l");
+        gameBoard[5][9].setLetter("3l");
+        gameBoard[9][5].setLetter("3l");
+        gameBoard[9][9].setLetter("3l");
+        gameBoard[13][5].setLetter("3l");
+        gameBoard[5][13].setLetter("3l");
+        gameBoard[13][9].setLetter("3l");
+        gameBoard[9][13].setLetter("3l");
+
+        firstTurn = true;
+        dict = new Dictionary();
+        
     }
     public Board(Tile[][] tileArray){
         gameBoard = tileArray;
+        dict = new Dictionary();
     }
 
     /**
@@ -32,8 +109,8 @@ public class Board {
      * @param coords Coordinate
      * @return char
      */
-    public char getLetter(Coordinates coords) {
-        return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getLetter();
+    public String getLetter(Coordinates coords) {
+        return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getString();
     }
 
     public Tile getTile(Coordinates coords) {
@@ -46,7 +123,8 @@ public class Board {
      * @return boolean
      */
     public boolean checkFree(Coordinates coords) {
-        return gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getLetter()=='.' || gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getLetter()=='+' ;
+        String test = this.getLetter(coords);
+        return (test.equals(".") || test.equals("+") || test.equals("2W") || test.equals("3W") || test.equals("2L") || test.equals("3L"));
     }
 
     /**
@@ -57,12 +135,16 @@ public class Board {
      * @return boolean
      */
     public boolean placeTile(Coordinates coords, Tile tile){
-        if (gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getLetter() == '.'|| gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].getLetter()=='+' ){
+        if (checkFree(coords)){
             gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()] = tile;
             return true;
         }else{
             return false;
         }
+    }
+
+    public Tile[][] getGameBoard(){
+        return gameBoard;
     }
 
     /**
@@ -74,33 +156,32 @@ public class Board {
         for(int x=0 ; x<15 ; x++){
             System.out.print(String.format("%02d ", ++leftIndex));
             for (int y=0 ; y<15 ; y++) {
-                System.out.print(gameBoard[y][x].getLetter()+"  ");
+                if(gameBoard[x][y].getString().length() == 1){
+                    System.out.print(gameBoard[y][x].getString()+"  ");
+                }
+                else{
+                    System.out.print(gameBoard[y][x].getString()+" "); 
+                }
             }
             System.out.println();
         }System.out.println();
     }
-    private HashMap<Coordinates, Tile> rightLeftIterator(Coordinates startingCords){
-        HashMap<Coordinates, Tile> iterator = new HashMap<>();
-        Coordinates tempCoordinates = null;
-        while( ! this.checkFree(startingCords)) {
-            //if we are checking left
-            tempCoordinates = startingCords;
-            if(startingCords.getXCoordinate().ordinal() >= 1){
-                startingCords.setXCoordinate(startingCords.getXCoordinate().ordinal() - 1);
+    private List<Coordinates> rightLeftIterator(Coordinates startingCords){
+        List<Coordinates> iterator = new ArrayList<>();
+        Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
+        while( ! this.checkFree(tempCoordinates)) {
+            
+            if(tempCoordinates.getXCoordinate().ordinal() >= 1){
+                tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() - 1);
             } else {
                 break;
             }
             
         }
-        startingCords = tempCoordinates;
-        int i = 0;
-        while( ! this.checkFree(startingCords)) {
-            //if we are checking left
-            
-            if(startingCords.getXCoordinate().ordinal() <= 14){
-                iterator.put(startingCords, this.getTile(tempCoordinates));
-                startingCords.setXCoordinate(startingCords.getXCoordinate().ordinal() + 1);
-                i++;
+        while( ! this.checkFree(tempCoordinates)) {
+            iterator.add(tempCoordinates);
+            if(tempCoordinates.getXCoordinate().ordinal() <= 14){
+                tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
             }
             else{
                 break;
@@ -110,28 +191,22 @@ public class Board {
         return iterator;
     }
 
-    private HashMap<Coordinates, Tile> upDownIterator(Coordinates startingCords){
-        HashMap<Coordinates, Tile> iterator = new HashMap<>();
-        Coordinates tempCoordinates = null;
-        while( ! this.checkFree(startingCords)) {
-            //if we are checking left
-            tempCoordinates = startingCords;
-            if(startingCords.getXCoordinate().ordinal() >= 1){
-                startingCords.setXCoordinate(startingCords.getXCoordinate().ordinal() + 1);
+    private List<Coordinates> upDownIterator(Coordinates startingCords){
+        List<Coordinates> iterator = new ArrayList<>();
+        Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
+        while( ! this.checkFree(tempCoordinates)) {
+            if(tempCoordinates.getYCoordinate().ordinal() >= 1){
+                tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() - 1);
             } else {
                 break;
             }
             
         }
-        startingCords = tempCoordinates;
-        int i = 0;
-        while( ! this.checkFree(startingCords)) {
-            //if we are checking left
-            
-            if(startingCords.getXCoordinate().ordinal() <= 14){
-                iterator.put(startingCords, this.getTile(tempCoordinates));
-                startingCords.setXCoordinate(startingCords.getXCoordinate().ordinal() + 1);
-                i++;
+        
+        while( ! this.checkFree(tempCoordinates)) {
+            if(tempCoordinates.getYCoordinate().ordinal() <= 14){
+                iterator.add(tempCoordinates);
+                tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() + 1);
             }
             else{
                 break;
@@ -165,109 +240,305 @@ public class Board {
     
     public WordPlacementStatus checkPlacement(Coordinates coords, String word, String direction, boolean test, Player p){
         isTouching = false;
-        WordPlacementStatus status;
+        WordPlacementStatus status = WordPlacementStatus.INVALID;
+        Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
         if (direction.equals("right")){
-            status = check1Right(coords, word, test, p);
+            status = placeRight(tempCord, word, test, p);
+            System.out.println(status);
         }
         else if (direction.equals("down")){
-            status = check1Down(coords, word, test, p);
+            status = placeDown(tempCord, word, test, p);
         }
         else{
             status = WordPlacementStatus.INVALID;
-            status.setErrorMessage("Direction broke somewhere");
-            status.setScore(0);
+            status.setErrorMessage("Direction broke somewhere???");
             return status;
         }
+        if (status == WordPlacementStatus.INVALID){
+            return status;
+        }
+        tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
+        if(! firstTurn){
+            for(int i = 0; i < word.length(); i++){
+                if (direction.equals("right")){
+                    if(! checkDown(coords)){
+                        status.setErrorMessage("Invalid Placement - Vertial Invalid Word");
+                        status = WordPlacementStatus.INVALID;
+                        return status;
+                    }
+                    tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                    
+                }
+                if (direction.equals("down")){
+                    if (! checkRight(tempCord)){
+                        status.setErrorMessage("Invalid Placement - Horizontal Invalid Word");
+                        status = WordPlacementStatus.INVALID;
+                        return status;
+                    }
+                    tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                }
+            }
+            if(! isTouching){
+                status.setErrorMessage("Floating Word.");
+                p.addLettersToHand(tilesTaken);
+                status = WordPlacementStatus.INVALID;
+                return status;
+            }
+        } else{
+            boolean crossesStart = false;
+            for(int i = 0; i < word.length(); i++){
+                if (direction.equals("right")){
+                    if (tempCord.getXCoordinate().ordinal() == 7 && tempCord.getXCoordinate().ordinal() == 7){
+                        crossesStart = true;
+                    }
+                    tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                }
+                else if (direction.equals("down")){
+                    if (tempCord.getXCoordinate().ordinal() == 7 && tempCord.getXCoordinate().ordinal() == 7){
+                        crossesStart = true;
+                    }
+                    tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                }
+            }
+            if(! crossesStart){
+                status = WordPlacementStatus.INVALID;
+                status.setErrorMessage("The placed word must cross start (H 08).");
+                return status;
+            }
+            firstTurn = false;
+        }
 
-        if()
+        p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
+        if(direction.equals("down")){
+            status.setScore(this.scoringInitialDown(coords));
+        }
+        if(direction.equals("right")){
+            status.setScore(this.scoringInitialRight(coords));
+        }
+        status = WordPlacementStatus.VALID;
+        p.removeLetters(tilesTaken);
+        return status;
+
 
     }
-    private WordPlacementStatus check1Down(Coordinates coords, String word, boolean test, Player p) {
-        HashMap<Coordinates, Tile> iterator = rightLeftIterator(coords);
-        ArrayList<Tile> tilesTaken = new ArrayList<>();
-        Board tempBoard = this;
+    private WordPlacementStatus placeDown(Coordinates coords, String word, boolean test, Player p) {
+        //HashMap<Coordinates, Tile> iterator = rightLeftIterator(coords);
+        tilesTaken = new ArrayList<>();
+        word = word.toUpperCase();
         WordPlacementStatus status = WordPlacementStatus.INVALID;
-        for (Coordinates c: iterator.keySet()){
-            if(this.checkFree(c) && p.hasLetter(iterator.get(c).getLetter())){
-                tilesTaken.add(iterator.get(c));
-                this.placeTile(c,p.removeLetter(iterator.get(c).getLetter()));
-            }
-            else if(this.checkFree(c) && ! p.hasLetter(iterator.get(c).getLetter())){
-                status.setErrorMessage(word);
+        Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
+        if (word.length() == 1){
+            status.setErrorMessage("Invalid Entry, words must be longer then 1.");
+            status = WordPlacementStatus.INVALID;
+            return status;
+        }
+        for(int i = 0; i < word.length(); i++) {
+            if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
+                this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
+                tilesTaken.add(this.getTile(tempCord));
+                this.getTile(tempCord).setNewTile(true);
+            } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
+                status.setErrorMessage("You dont have letter " + word.charAt(i));
                 p.addLettersToHand(tilesTaken);
-                //returnBoardToPreviousState
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
                 return status;
-            }
-            else if(! this.checkFree(c) && Character.toUpperCase(iterator.get(c).getLetter()) != tempBoard.getLetter(c)){
+            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).toUpperCase().equals(this.getLetter(tempCord))){
+                status.setErrorMessage("Word mismatch.");
                 p.addLettersToHand(tilesTaken);
-                status.setErrorMessage("word mismatch");
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
                 return status;
+            } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
+                isTouching = true;
             }
-            
-            if( ! check2Right(c)){
+            if( ! checkRight(coords)){
                 p.addLettersToHand(tilesTaken);
                 status.setErrorMessage("Invalid Placement - Horizontal Mismatch");
-                return status;
-            }
-        }
-    }
-    private WordPlacementStatus check1Right(Coordinates coords, String word, boolean test, Player p) {
-        HashMap<Coordinates, Tile> iterator = upDownIterator(coords);
-        ArrayList<Tile> tilesTaken = new ArrayList<>();
-        Board tempBoard = this;
-        WordPlacementStatus status = WordPlacementStatus.INVALID;
-        for (Coordinates c: iterator.keySet()){
-            if(this.checkFree(c) && p.hasLetter(iterator.get(c).getLetter())){
-                tilesTaken.add(iterator.get(c));
-                this.placeTile(c,p.removeLetter(iterator.get(c).getLetter()));
-            }
-            else if(this.checkFree(c) && ! p.hasLetter(iterator.get(c).getLetter())){
-                status.setErrorMessage(word);
-                p.addLettersToHand(tilesTaken);
-                //returnBoardToPreviousState
-                return status;
-            }
-            else if(! this.checkFree(c) && Character.toUpperCase(iterator.get(c).getLetter()) != tempBoard.getLetter(c)){
-                p.addLettersToHand(tilesTaken);
-                status.setErrorMessage("word mismatch");
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
                 return status;
             }
             
-            if( ! check2Down(c)){
+            tempCord = new Coordinates(tempCord.getXCoordinate(), (tempCord.getYCoordinate().ordinal() + 1));
+            
+            
+        }
+        status = WordPlacementStatus.VALID;
+        return status;
+    }
+    private WordPlacementStatus placeRight(Coordinates coords, String word, boolean test, Player p) {
+        tilesTaken = new ArrayList<>();
+        WordPlacementStatus status = WordPlacementStatus.INVALID;
+        word = word.toUpperCase();
+        if (word.length() == 1){
+            status.setErrorMessage("Invalid Entry, words must be longer then 1.");
+            status = WordPlacementStatus.INVALID;
+            return status;
+        }
+        Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
+        for(int i = 0; i < word.length();) {
+            if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
+                this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
+                tilesTaken.add(this.getTile(tempCord));
+                this.getTile(tempCord).setNewTile(true);
+            } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
+                status.setErrorMessage("You dont have letter " + word.charAt(i));
                 p.addLettersToHand(tilesTaken);
-                status.setErrorMessage("Invalid Placement - Vertical Mismatch");
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
+                return status;
+            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
+                status.setErrorMessage("Word mismatch.");
+                p.addLettersToHand(tilesTaken);
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
+                return status;
+            } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
+                isTouching = true;
+            }
+            if( ! checkDown(tempCord)){
+                p.addLettersToHand(tilesTaken);
+                status.setErrorMessage("Invalid Placement - Horizontal Mismatch");
+                //undoTurn()
+                status = WordPlacementStatus.INVALID;
                 return status;
             }
+            
+            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            i++;
+            
         }
+        status = WordPlacementStatus.VALID;
+        return status;
     }
 
-    private boolean check2Right(Coordinates startingCoordinates){
-        HashMap<Coordinates, Tile> iterator = rightLeftIterator(startingCoordinates);
-        int i = 0;
-        for(Coordinates c: iterator.keySet()){
-            Character tempChar = word.charAt(i);
-            if( ! tempChar.equals(iterator.get(c).getLetter())){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean check2Down(Coordinates startingCoordinates) {
-        HashMap<Coordinates, Tile> iterator = upDownIterator(startingCoordinates);
-        int i = 0;
+    private boolean checkRight(Coordinates startingCoordinates){
+        List<Coordinates> iterator = rightLeftIterator(startingCoordinates);
         String temp = "";
-        for(Coordinates c: iterator.keySet()){
-            temp = temp + iterator.get(c).getLetter();
+        for(Coordinates c: iterator){
+            temp = temp + this.getLetter(c);
+        }
+        
+        if (temp.length() > 1){
+            isTouching = true;
+        }
+        else{
+            return true;
+        }
+        if(dict.isLegalWord(temp) || temp.equals("")){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean checkDown(Coordinates startingCoordinates) {
+        List<Coordinates> iterator = upDownIterator(startingCoordinates);
+        String temp = "";
+        for(Coordinates c: iterator){
+            temp = temp + this.getLetter(c);
         }
         
         if (temp.length() > 1){
             isTouching = true;
         }
 
-        return true;
+        if(dict.isLegalWord(temp) || temp.equals("")){
+            return true;
+        }
+        return false;
     }
 
+    private int scoringInitialRight(Coordinates coords){
+        List<Coordinates> iterator = rightLeftIterator(coords);
+        int score = 0;
+        int otherWordsScore = 0;
+        int multi = 1;
+        for(Coordinates c: iterator){
+            if(this.getTile(c).getNewTile()){
+                if(! checkFree(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())) || ! checkFree(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate()))){
+                    otherWordsScore += this.scoringSecondaryDown(coords);
+                }
+                switch(this.getTile(c).getMultiplier()){
+                    case "2w": multi *= 2;
+                    case "3w": multi *= 3;
+                }
+            }
+            score += this.getTile(c).getScore();
+        }
+        return score * multi + otherWordsScore;
+    }
 
+    private int scoringInitialDown(Coordinates coords){
+        List<Coordinates> iterator = upDownIterator(coords);
+        int score = 0;
+        int otherWordsScore = 0;
+        int multi = 1;
+        for(Coordinates c: iterator){
+            if(this.getTile(c).getNewTile()){
+                if(! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
+                    otherWordsScore += this.scoringSecondaryRight(coords);
+                }
+                switch(this.getTile(c).getMultiplier()){
+                    case "2w": multi *= 2;
+                    case "3w": multi *= 3;
+                }
+            }
+            score += this.getTile(c).getScore();
+        }
+        return score * multi + otherWordsScore;
+    }
+    private int scoringSecondaryRight(Coordinates coords) {
+        List<Coordinates> iterator = rightLeftIterator(coords);
+        int score = 0;
+        int multi = 1;
+        for(Coordinates c: iterator){
+            score += this.getTile(c).getScore();
+            if (this.getTile(c).getNewTile()){
+                switch(this.getTile(c).getMultiplier()){
+                    case "2w": multi *= 2;
+                    case "3w": multi *= 3;
+                }
+
+            }
+        }
+
+        return score * multi;
+    }
+
+    private int scoringSecondaryDown(Coordinates coords){
+        List<Coordinates> iterator = upDownIterator(coords);
+        int score = 0;
+        int multi = 1;
+        for(Coordinates c: iterator){
+            score += this.getTile(c).getScore();
+            if (this.getTile(c).getNewTile()){
+                switch(this.getTile(c).getMultiplier()){
+                    case "2w": multi *= 2;
+                    case "3w": multi *= 3;
+                }
+
+            }
+        }
+
+        return score * multi;
+    }
+
+    public static void main(String[] args){
+        Board bord = new Board();
+        bord.placeTile(new Coordinates(7, 7), new Tile("t"));
+        bord.placeTile(new Coordinates(8, 7), new Tile("e"));
+        bord.placeTile(new Coordinates(9, 7), new Tile("a"));
+        bord.printBoard();
+        System.out.println( bord.checkRight(new Coordinates(7, 7)));
+        Player p = new Player(null);
+        ArrayList<Tile> hand = new ArrayList<>();
+        hand.add(new Tile("e"));
+        hand.add(new Tile("a"));
+        p.addLettersToHand(hand);
+        System.out.println(bord.placeDown(new Coordinates(7, 7), "tea", false, p).getErrorMessage());
+        bord.printBoard();
+        
+    }
     
 }

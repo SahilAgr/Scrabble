@@ -17,52 +17,52 @@ public class LetterBag {
         
         letterBag = new ArrayList<>();
         for(int i = 0;i < 9;i++){
-            letterBag.add(new Tile('A',1));
+            letterBag.add(new Tile("A"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('B',3));
+            letterBag.add(new Tile("B"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('C',3));
+            letterBag.add(new Tile("C"));
         } for(int i = 0;i < 4;i++){
-            letterBag.add(new Tile('D',2));
+            letterBag.add(new Tile("D"));
         } for(int i = 0;i < 12;i++){
-            letterBag.add(new Tile('E',1));
+            letterBag.add(new Tile("E"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('F',4));
+            letterBag.add(new Tile("F"));
         } for(int i = 0;i < 3;i++){
-            letterBag.add(new Tile('G',2));
+            letterBag.add(new Tile("G"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('H',4));
+            letterBag.add(new Tile("H"));
         } for(int i = 0;i < 9;i++){
-            letterBag.add(new Tile('I',1));
-        } letterBag.add(new Tile('J',8));
-        letterBag.add(new Tile('K',5));
+            letterBag.add(new Tile("I"));
+        } letterBag.add(new Tile("J"));
+        letterBag.add(new Tile("K"));
         for(int i = 0;i < 4;i++){
-            letterBag.add(new Tile('L',1));
+            letterBag.add(new Tile("L"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('M',3));
+            letterBag.add(new Tile("M"));
         } for(int i = 0;i < 6;i++){
-            letterBag.add(new Tile('N',1));
+            letterBag.add(new Tile("N"));
         } for(int i = 0;i < 8;i++){
-            letterBag.add(new Tile('O',1));
+            letterBag.add(new Tile("O"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('P',3));
-        } letterBag.add(new Tile('Q',10));
+            letterBag.add(new Tile("P"));
+        } letterBag.add(new Tile("Q"));
         for(int i = 0;i < 6;i++){
-            letterBag.add(new Tile('R',1));
+            letterBag.add(new Tile("R"));
         } for(int i = 0;i < 4;i++){
-            letterBag.add(new Tile('S',1));
+            letterBag.add(new Tile("S"));
         } for(int i = 0;i < 6;i++){
-            letterBag.add(new Tile('T',1));
+            letterBag.add(new Tile("T"));
         } for(int i = 0;i < 4;i++){
-            letterBag.add(new Tile('U',1));
+            letterBag.add(new Tile("U"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('V',4));
+            letterBag.add(new Tile("V"));
         } for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('W',4));
-        } letterBag.add(new Tile('X',4));
+            letterBag.add(new Tile("W"));
+        } letterBag.add(new Tile("X"));
         for(int i = 0;i < 2;i++){
-            letterBag.add(new Tile('Y',4));
-        } letterBag.add(new Tile('Z',10));
+            letterBag.add(new Tile("Y"));
+        } letterBag.add(new Tile("Z"));
     }
 
     /**
