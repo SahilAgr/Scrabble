@@ -69,7 +69,7 @@ public class Player {
     }
 
     /**
-     * Removes a specifi letter from the players hand
+     * Removes a specific letter from the players hand
      * @param c char
      * @return Tile
      */
