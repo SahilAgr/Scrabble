@@ -177,8 +177,10 @@ public class Board {
             }
             
         }
+
+        tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
         while( ! this.checkFree(tempCoordinates)) {
-            iterator.add(tempCoordinates);
+            iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
             if(tempCoordinates.getXCoordinate().ordinal() <= 14){
                 tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
             }
@@ -202,9 +204,11 @@ public class Board {
             
         }
         
+        tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() + 1);
+
         while( ! this.checkFree(tempCoordinates)) {
             if(tempCoordinates.getYCoordinate().ordinal() <= 14){
-                iterator.add(tempCoordinates);
+                iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
                 tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() + 1);
             }
             else{
@@ -284,7 +288,6 @@ public class Board {
                 }
             }
             if(! crossesStart){
-                System.out.println("test");
                 place = new Placement(false, "The placed word must cross start (H 08)." , 0);
                 return place;
             }
@@ -294,9 +297,6 @@ public class Board {
 
         if(finalCheck){
             
-            for(Tile t: tilesTaken){
-                System.out.print(t.getString()+ " ");
-            }
             p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
             if(direction.equals("down")){
                 int score = this.scoringInitialDown(coords);
@@ -305,7 +305,6 @@ public class Board {
             }
             if(direction.equals("right")){
                 int score = this.scoringInitialRight(coords);
-                System.out.println(score);
                 p.addScore(score);
                 place = new Placement(true, "No errors", score);
             }
@@ -450,12 +449,13 @@ public class Board {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())) || ! checkFree(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate()))){
+                if(! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(coords.getXCoordinate(),  coords.getYCoordinate().ordinal() - 1))){
                     otherWordsScore += this.scoringSecondaryDown(coords);
                 }
-                switch(this.getTile(c).getMultiplier()){
-                    case "2w": multi *= 2;
-                    case "3w": multi *= 3;
+                if(this.getTile(c).getMultiplier().equals("2w")){
+                    multi *= 2;
+                } else if(this.getTile(c).getMultiplier().equals("3w")){
+                    multi *= 3;
                 }
             }
             score += this.getTile(c).getScore();
@@ -470,12 +470,13 @@ public class Board {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
+                if(! checkFree(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())) || ! checkFree(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate()))){
                     otherWordsScore += this.scoringSecondaryRight(coords);
                 }
-                switch(this.getTile(c).getMultiplier()){
-                    case "2w": multi *= 2;
-                    case "3w": multi *= 3;
+                if(this.getTile(c).getMultiplier().equals("2w")){
+                    multi *= 2;
+                } else if(this.getTile(c).getMultiplier().equals("3w")){
+                    multi *= 3;
                 }
             }
             score += this.getTile(c).getScore();
@@ -489,14 +490,15 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                switch(this.getTile(c).getMultiplier()){
-                    case "2w": multi *= 2;
-                    case "3w": multi *= 3;
+                if(this.getTile(c).getMultiplier().equals("2w")){
+                    multi *= 2;
+                } else if(this.getTile(c).getMultiplier().equals("3w")){
+                    multi *= 3;
                 }
 
             }
         }
-
+        System.out.println(score * multi);
         return score * multi;
     }
 
@@ -507,14 +509,15 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                switch(this.getTile(c).getMultiplier()){
-                    case "2w": multi *= 2;
-                    case "3w": multi *= 3;
+                if(this.getTile(c).getMultiplier().equals("2w")){
+                    multi *= 2;
+                } else if(this.getTile(c).getMultiplier().equals("3w")){
+                    multi *= 3;
                 }
 
             }
         }
-
+        System.out.println(score * multi);
         return score * multi;
     }
 
@@ -540,14 +543,8 @@ public class Board {
 
     public static void main(String[] args){
         Board bord = new Board();
-        Tile tile = new Tile("t");
-        System.out.println(tile.getScore());
-        bord.placeTile(new Coordinates(7, 7), new Tile("t"));
-        bord.placeTile(new Coordinates(7, 8), new Tile("e"));
-        bord.placeTile(new Coordinates(7, 9), new Tile("a"));
-        int score = bord.scoringInitialDown(new Coordinates(7, 7));
-        //bord.printBoard();
-        //System.out.println(score);
+        System.out.println(bord.getTile(new Coordinates(7, 7)).getMultiplier());
+        
     }
     
 }

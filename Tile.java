@@ -30,41 +30,39 @@ public class Tile {
 
     public Tile(String letter){
         letter = letter.toUpperCase();
-        multiplier = null;
+        multiplier = "none";
         this.letter = letter;
         if(letter.length() == 1){
             Character c = letter.charAt(0);
-            System.out.println("hi");
-            System.out.println(c);
             switch (c){
-                case 'A': score = 1;
-                case 'B': score = 3;
-                case 'C': score = 3;
-                case 'D': score = 2;
-                case 'E': score = 1;
-                case 'F': score = 4;
-                case 'G': score = 2;
-                case 'H': score = 4;
-                case 'I': score = 1;
-                case 'J': score = 8;
-                case 'K': score = 5;
-                case 'L': score = 1;
-                case 'M': score = 3;
-                case 'N': score = 1;
-                case 'O': score = 1;
-                case 'P': score = 3;
-                case 'Q': score = 10;
-                case 'R': score = 1;
-                case 'S': score = 1;
-                case 'T': score = 1;
-                case 'U': score = 1;
-                case 'V': score = 4;
-                case 'W': score = 4;
-                case 'X': score = 8;
-                case 'Y': score = 4;
-                case 'Z': score = 10;
-                case '+': multiplier = "2w";
-                default: score = 0;
+                case 'A': score = 1; break;
+                case 'B': score = 3; break;
+                case 'C': score = 3; break;
+                case 'D': score = 2; break;
+                case 'E': score = 1; break;
+                case 'F': score = 4; break;
+                case 'G': score = 2; break;
+                case 'H': score = 4; break;
+                case 'I': score = 1; break;
+                case 'J': score = 8; break;
+                case 'K': score = 5; break;
+                case 'L': score = 1; break;
+                case 'M': score = 3; break;
+                case 'N': score = 1; break;
+                case 'O': score = 1; break;
+                case 'P': score = 3; break;
+                case 'Q': score = 10; break;
+                case 'R': score = 1; break;
+                case 'S': score = 1; break;
+                case 'T': score = 1; break;
+                case 'U': score = 1; break;
+                case 'V': score = 4; break;
+                case 'W': score = 4; break;
+                case 'X': score = 8; break;
+                case 'Y': score = 4;break;
+                case 'Z': score = 10; break;
+                case '+': multiplier = "2w"; break;
+                default: score = 0; break;
             }
         }
         else {
@@ -105,7 +103,6 @@ public class Tile {
                 return score;
             }
         }
-        
         else{
             return score;
         }
@@ -126,34 +123,34 @@ public class Tile {
         if(letter.length() == 1){
             char d = letter.charAt(0);
             switch (d){
-                case 'A': score = 1;
-                case 'B': score = 3;
-                case 'C': score = 3;
-                case 'D': score = 2;
-                case 'E': score = 1;
-                case 'F': score = 4;
-                case 'G': score = 2;
-                case 'H': score = 4;
-                case 'I': score = 1;
-                case 'J': score = 8;
-                case 'K': score = 5;
-                case 'L': score = 1;
-                case 'M': score = 3;
-                case 'N': score = 1;
-                case 'O': score = 1;
-                case 'P': score = 3;
-                case 'Q': score = 10;
-                case 'R': score = 1;
-                case 'S': score = 1;
-                case 'T': score = 1;
-                case 'U': score = 1;
-                case 'V': score = 4;
-                case 'W': score = 4;
-                case 'X': score = 8;
-                case 'Y': score = 4;
-                case 'Z': score = 10;
-                case '+': multiplier = "2w";
-                default: score = 0;
+                case 'A': score = 1; break;
+                case 'B': score = 3; break;
+                case 'C': score = 3; break;
+                case 'D': score = 2; break;
+                case 'E': score = 1; break;
+                case 'F': score = 4; break;
+                case 'G': score = 2; break;
+                case 'H': score = 4; break;
+                case 'I': score = 1; break;
+                case 'J': score = 8; break;
+                case 'K': score = 5; break;
+                case 'L': score = 1; break;
+                case 'M': score = 3; break;
+                case 'N': score = 1; break;
+                case 'O': score = 1; break;
+                case 'P': score = 3; break;
+                case 'Q': score = 10; break;
+                case 'R': score = 1; break;
+                case 'S': score = 1; break;
+                case 'T': score = 1; break;
+                case 'U': score = 1; break;
+                case 'V': score = 4; break;
+                case 'W': score = 4; break;
+                case 'X': score = 8; break;
+                case 'Y': score = 4;break;
+                case 'Z': score = 10; break;
+                case '+': multiplier = "2w"; break;
+                default: score = 0; break;
             }
         }
         else {
@@ -188,8 +185,8 @@ public class Tile {
         this.setLetter(oldLetter);
     }
     public static void main(String[] args) {
-        Tile tile = new Tile("t");
+        Tile tile = new Tile("z");
         System.out.println(tile.getScore());
-        System.out.println(tile.getString().length());
+        System.out.println(tile.getMultiplier());
     }
 }
