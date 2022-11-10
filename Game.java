@@ -155,6 +155,7 @@ public class Game {
         Board.WordPlacementStatus status = board.checkPlacement(coords, word, direction, false, currPlayer);
         System.out.println(status.toString());
         if (status == Board.WordPlacementStatus.VALID){
+            System.out.println(status.getErrorMessage());
             System.out.println(status.getScore());
             return true;
         }

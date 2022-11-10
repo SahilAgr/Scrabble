@@ -224,6 +224,9 @@ public class Board {
         VALID, INVALID;
         private String errorMessage = "";
         private int score = 0;
+        public static WordPlacementStatus ordToPlacementStatus(int ord){
+            return WordPlacementStatus.values()[ord];
+        }
         public void setErrorMessage(String message){
             errorMessage = message;
         }
@@ -244,20 +247,26 @@ public class Board {
         Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
         if (direction.equals("right")){
             status = placeRight(tempCord, word, test, p);
+            System.out.println("check 1");
             System.out.println(status);
         }
         else if (direction.equals("down")){
             status = placeDown(tempCord, word, test, p);
+            System.out.println("check 1");
+            System.out.println(status);
         }
         else{
             status = WordPlacementStatus.INVALID;
             status.setErrorMessage("Direction broke somewhere???");
             return status;
         }
+        System.out.println("check 2");
+        System.out.println(status);
         if (status == WordPlacementStatus.INVALID){
             return status;
         }
         tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
+        boolean finalCheck = false;
         if(! firstTurn){
             for(int i = 0; i < word.length(); i++){
                 if (direction.equals("right")){
@@ -284,6 +293,7 @@ public class Board {
                 status = WordPlacementStatus.INVALID;
                 return status;
             }
+            finalCheck = true;
         } else{
             boolean crossesStart = false;
             for(int i = 0; i < word.length(); i++){
@@ -306,17 +316,28 @@ public class Board {
                 return status;
             }
             firstTurn = false;
+            finalCheck = true;
         }
 
-        p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
-        if(direction.equals("down")){
-            status.setScore(this.scoringInitialDown(coords));
+        if(finalCheck){
+            
+            status = WordPlacementStatus.VALID;
+            for(Tile t: tilesTaken){
+                System.out.print(t.getString()+ " ");
+            }
+            p.removeLetters(tilesTaken);
+            if(direction.equals("down")){
+                int score = this.scoringInitialDown(coords);
+                p.addScore(score);
+                status.setScore(score);
+            }
+            if(direction.equals("right")){
+                int score = this.scoringInitialRight(coords);
+                System.out.println(score);
+                p.addScore(score);
+                status.setScore(score);
+            }
         }
-        if(direction.equals("right")){
-            status.setScore(this.scoringInitialRight(coords));
-        }
-        status = WordPlacementStatus.VALID;
-        p.removeLetters(tilesTaken);
         return status;
 
 
@@ -335,6 +356,7 @@ public class Board {
         for(int i = 0; i < word.length(); i++) {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
+                p.removeLetter(String.valueOf(word.charAt(i)));
                 tilesTaken.add(this.getTile(tempCord));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
@@ -356,7 +378,7 @@ public class Board {
                 p.addLettersToHand(tilesTaken);
                 status.setErrorMessage("Invalid Placement - Horizontal Mismatch");
                 //undoTurn()
-                status = WordPlacementStatus.INVALID;
+                status = WordPlacementStatus.ordToPlacementStatus(1);
                 return status;
             }
             
@@ -380,6 +402,7 @@ public class Board {
         for(int i = 0; i < word.length();) {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
+                p.removeLetter(String.valueOf(word.charAt(i)));
                 tilesTaken.add(this.getTile(tempCord));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
@@ -530,15 +553,13 @@ public class Board {
         bord.placeTile(new Coordinates(8, 7), new Tile("e"));
         bord.placeTile(new Coordinates(9, 7), new Tile("a"));
         bord.printBoard();
-        System.out.println( bord.checkRight(new Coordinates(7, 7)));
         Player p = new Player(null);
         ArrayList<Tile> hand = new ArrayList<>();
         hand.add(new Tile("e"));
         hand.add(new Tile("a"));
         p.addLettersToHand(hand);
-        System.out.println(bord.placeDown(new Coordinates(7, 7), "tea", false, p).getErrorMessage());
+        System.out.println(bord.placeDown(new Coordinates(7, 8), "ea", false, p).getErrorMessage());
         bord.printBoard();
-        
     }
     
 }
