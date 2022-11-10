@@ -152,14 +152,14 @@ public class Game {
 
 
     private boolean place(String direction, Coordinates coords, String word){
-        Board.WordPlacementStatus status = board.checkPlacement(coords, word, direction, false, currPlayer);
-        System.out.println(status.toString());
-        if (status == Board.WordPlacementStatus.VALID){
-            System.out.println(status.getErrorMessage());
-            System.out.println(status.getScore());
+        Placement place = board.checkPlacement(coords, word, direction, false, currPlayer);
+        System.out.println(place.isLegalPlace());
+        if (place.isLegalPlace()){
+            System.out.println(place.getErrorMessage());
+            System.out.println(place.getScore());
             return true;
         }
-        System.out.println(status.getErrorMessage());
+        System.out.println(place.getErrorMessage());
         return false;
     }
 
@@ -176,10 +176,10 @@ public class Game {
         } else {
             ArrayList<Tile> shuffles = new ArrayList<>();
             for(int i = 0; i < letters.length(); i ++){
-                /*if(currPlayer.hasLetter(letters.charAt(i))){
-                    shuffles.add(Tile.charToTile(letters.charAt(i)));
-                    currPlayer.removeLetter(letters.charAt(i));
-                }*/
+                if(currPlayer.hasLetter(String.valueOf(letters.charAt(i)))){
+                    shuffles.add(new Tile(String.valueOf(letters.charAt(i))));
+                    currPlayer.removeLetter(String.valueOf(letters.charAt(i)));
+                }
             }
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
