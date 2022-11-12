@@ -1,4 +1,3 @@
-import java.rmi.StubNotFoundException;
 
 /**
  * The Tile class that creates all available tiles and any tile manipulation

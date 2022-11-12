@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 import static java.lang.String.valueOf;
 
@@ -28,7 +27,7 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         while ((numPlayers < 1) ||  (numPlayers > 4)) {
                 numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
         }
-        model.setNumPlayers(numPlayers);
+
         for (int i = 0; i < numPlayers; i++){
             String playerName = JOptionPane.showInputDialog("Please enter P"+i+"'s name:");
             model.addPlayer(new Player(playerName));
@@ -49,7 +48,7 @@ public class BoardFrame extends JFrame implements ScrabbleView{
             JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
             this.add(label);
             for (int j = 0; j < BOARDLENGTH; j++) {
-                Controller controller = new Controller(model,new Coordinates(i,j));
+                ScrabbleController controller = new ScrabbleController(model,new Coordinates(i,j));
                 JButton b = new JButton(" ");
                 b.setActionCommand(i + " " + j);
                 buttons[i][j] = b;
