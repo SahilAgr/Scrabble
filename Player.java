@@ -6,9 +6,9 @@ import java.util.ArrayList;
  */
 public class Player {
     
-    Integer score;
-    ArrayList<Tile> hand;
-    String name;
+    private Integer score;
+    private ArrayList<Tile> hand;
+    private String name;
 
     /**
      * The constructor for the Player class
@@ -70,13 +70,13 @@ public class Player {
 
     /**
      * Removes a specifi letter from the players hand
-     * @param c char
+     * @param string char
      * @return Tile
      */
-    public Tile removeLetter(char c){
-        c = Character.toUpperCase(c);
+    public Tile removeLetter(String string){
+        string = string.toUpperCase();
         for(Tile t: hand){
-            if (c == (t.getLetter())){
+            if (string.equals(t.getString())){
                 hand.remove(t);
                 return t;
             }
@@ -86,13 +86,13 @@ public class Player {
 
     /**
      * Checks if the player has a specific letter
-     * @param c char
+     * @param string char
      * @return boolean
      */
-    public boolean hasLetter(char c){
-        c = Character.toUpperCase(c);
+    public boolean hasLetter(String string){
+        string = string.toUpperCase();
         for(Tile t: hand){
-            if (c == (t.getLetter())){
+            if (string.equals(t.getString())){
                 return true;
             }
         }

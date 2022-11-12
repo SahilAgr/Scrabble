@@ -37,7 +37,7 @@ public class Coordinates {
             }
         }
         public static yCoordinate ordinalToYCoordinate(int i){
-            return yCoordinate.values()[i-1];
+            return yCoordinate.values()[i];
         }
     }
     public enum xCoordinate{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O;
@@ -65,10 +65,11 @@ public class Coordinates {
             }
         }
         public static xCoordinate ordinalToXCoordinate(int i){
-            return xCoordinate.values()[i-1];
+            return xCoordinate.values()[i];
         }
 
     }
+    
     private yCoordinate yCoord;
     private xCoordinate xCoord;
 
@@ -76,14 +77,17 @@ public class Coordinates {
         xCoord = xCo;
         yCoord = yCo;
     }
+
     public Coordinates(Integer xCo, yCoordinate yCo){
         xCoord = xCoordinate.ordinalToXCoordinate(xCo);
         yCoord = yCo;
     }
+
     public Coordinates(xCoordinate xCo, Integer yCo){
         xCoord = xCo;
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
     }
+
     public Coordinates(Integer xCo, Integer yCo){
         xCoord = xCoordinate.ordinalToXCoordinate(xCo);
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
@@ -96,5 +100,20 @@ public class Coordinates {
 
     public final yCoordinate getYCoordinate(){
         return yCoord;
+    }
+
+    public void setXCoordinate(Integer xCo){
+        xCoord = xCoordinate.ordinalToXCoordinate(xCo);
+    }
+
+    public void setYCoordinate(Integer yCo){
+        yCoord = yCoordinate.ordinalToYCoordinate(yCo);
+    }
+
+    public static void main (String[] args){
+        Coordinates coord = new Coordinates(1, 1);
+        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
+        coord = new Coordinates(coord.getXCoordinate().ordinal() + 1, coord.getYCoordinate().ordinal() + 1);
+        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
     }
 }
