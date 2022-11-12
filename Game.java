@@ -16,6 +16,7 @@ public class Game {
     private Parser parser;
     private LetterBag letterBag;
     private int countdown;
+    private int numPlayers;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
@@ -185,7 +186,15 @@ public class Game {
         }
     }
 
-    
+    public void setNumPlayers(int numPlayers){
+        this.numPlayers = numPlayers;
+    }
+
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+
     private void printHelp() {
         System.out.print("There are 4 different Commands."
         +"2 of them, \'help\' and \'pass\'. These both only require you to input those words alone."
