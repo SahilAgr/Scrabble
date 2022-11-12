@@ -20,9 +20,9 @@ public class ScrabbleController implements ActionListener {
                 "Select an Option",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null, options2, options2[1]);
         String word = JOptionPane.showInputDialog(null, "Enter your Word:");
         if(testPlace == 0){
-            model.place(options[rightDown].toLowerCase(), coords, word, true);
+            model.place(options2[rightDown].toLowerCase(), coords, word, true);
         }else if(testPlace == 1){
-            model.place(options[rightDown].toLowerCase(), coords, word, false);
+            model.place(options2[rightDown].toLowerCase(), coords, word, false);
         }
 
     }

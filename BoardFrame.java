@@ -28,19 +28,23 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         }
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++){
-            String playerName = JOptionPane.showInputDialog("Please enter P"+i+"'s name:");
+            String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
             players.add(new Player(playerName));
+            System.out.println(playerName);
         }
 
+
+
         model = new Game(players);
+
         model.addScrabbleView(this);
+
 
         currentPlayer = model.getCurrPlayer();
 
         buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
         tileButtons = new JLabel[PLAYERTILES];
 
-        System.out.println("test1");
         for (int i = 0; i < BOARDLENGTH+1; i++) {
             JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
             this.add(label);
@@ -66,13 +70,11 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         this.add(currPlayerDisplay);
         this.add(turnDisplay);
         for (int i = 0; i<PLAYERTILES; i++){
-            JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i)),SwingConstants.CENTER);
+            JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
             tileButtons[i] = l;
             this.add(l);
         }
 
-
-        System.out.println("yo");
 
         setSize(690,706);
         this.setVisible(true);
@@ -86,7 +88,11 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         currentPlayer= e.getPlayer();
         Placement place = e.getPlace();
         board = e.getBoard();
+        System.out.println("hi");
+        this.removeAll();
+        this.revalidate();
         this.repaint();
+        board.printBoard();
         //The row (ABC)
         for (int i = 0; i < BOARDLENGTH+1; i++) {
             JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
