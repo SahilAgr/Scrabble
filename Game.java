@@ -31,7 +31,7 @@ public class Game {
 
         currPlayerIndex = 0;
         currPlayer =players.get(currPlayerIndex);
-        
+
         for(Player p:players){
             p.addLettersToHand(letterBag.getRandomLetters(7));
         }
@@ -73,7 +73,7 @@ public class Game {
 
     public void place(String direction, Coordinates coords, String word, boolean b){
         Placement place = board.checkPlacement(coords, word, direction, false, currPlayer);
-        
+
         if(currPlayerIndex < players.size()){
             currPlayerIndex++;
         }else{
@@ -84,7 +84,7 @@ public class Game {
         for (ScrabbleView view: views){
             view.update(new GameEvent(this, place, currPlayer, board));
         }
-        
+
     }
 
     /**
@@ -108,6 +108,19 @@ public class Game {
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
     }
+
+    public void addPlayer(Player player){
+        this.players.add(player);
+    }
+
+    /**
+     * Starts up the game
+     * @param args
+     */
+    public static void main(String[] args){
+        Game game = new Game();
+    }
+
     public void addScrabbleView(BoardFrame boardFrame) {
         views.add(boardFrame);
     }
