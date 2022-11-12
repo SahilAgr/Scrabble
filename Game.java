@@ -11,9 +11,11 @@ import java.util.List;
 public class Game {
     private List<Player> players;
     private Player currPlayer;
+    private int currPlayerIndex;
     private Board board;
     private LetterBag letterBag;
     private int countdown;
+    private List<ScrabbleView> views;
 
 
     //hardcoding the letters so we dont get reliant on strings...
@@ -22,11 +24,13 @@ public class Game {
     /**
      * The constructor for the game that will create new players, the borad and all the letters
      */
-    public Game(){
+    public Game(List<Player> players){
         this.board = new Board();
         this.letterBag = new LetterBag();
-        this.players = new ArrayList<>();
+        this.players = players;
 
+        currPlayerIndex = 0;
+        currPlayer =players.get(currPlayerIndex);
         
         for(Player p:players){
             p.addLettersToHand(letterBag.getRandomLetters(7));
@@ -67,16 +71,20 @@ public class Game {
         return false;
     }
 
-    public boolean place(String direction, Coordinates coords, String word, boolean b){
+    public void place(String direction, Coordinates coords, String word, boolean b){
         Placement place = board.checkPlacement(coords, word, direction, false, currPlayer);
-        System.out.println(place.isLegalPlace());
-        if (place.isLegalPlace()){
-            System.out.println(place.getErrorMessage());
-            System.out.println(place.getScore());
-            return true;
+        
+        if(currPlayerIndex < players.size()){
+            currPlayerIndex++;
+        }else{
+            currPlayerIndex = 0;
         }
-        System.out.println(place.getErrorMessage());
-        return false;
+        currPlayer = players.get(currPlayerIndex);
+
+        for (ScrabbleView view: views){
+            view.update(new GameEvent(this, place, currPlayer, board));
+        }
+        
     }
 
     /**
@@ -100,23 +108,11 @@ public class Game {
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
     }
-
-    public void addPlayer(Player player){
-        this.players.add(player);
-    }
-
-    /**
-     * Starts up the game
-     * @param args
-     */
-    public static void main(String[] args){
-        Game game = new Game();
-    }
-
     public void addScrabbleView(BoardFrame boardFrame) {
+        views.add(boardFrame);
     }
 
     public Player getCurrPlayer() {
-        return null;
+        return currPlayer;
     }
 }

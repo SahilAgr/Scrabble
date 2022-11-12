@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 import static java.lang.String.valueOf;
 
@@ -20,19 +21,19 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
 
-        Game model = new Game();
-        model.addScrabbleView(this);
 
         int numPlayers = 0;
         while ((numPlayers < 1) ||  (numPlayers > 4)) {
                 numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
         }
-
+        ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++){
             String playerName = JOptionPane.showInputDialog("Please enter P"+i+"'s name:");
-            model.addPlayer(new Player(playerName));
-
+            players.add(new Player(playerName));
         }
+
+        Game model = new Game(players);
+        model.addScrabbleView(this);
 
         currentPlayer = model.getCurrPlayer();
 
