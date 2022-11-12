@@ -241,9 +241,11 @@ public class Board {
         }
         else{
             place = new Placement(false, "Direction broke somewhere??", 0);
+            this.undoTurn();
             return place;
         }
         if (! place.isLegalPlace()){
+            this.undoTurn();
             return place;
         }
 
@@ -254,6 +256,7 @@ public class Board {
                 if (direction.equals("right")){
                     if(! checkDown(coords)){
                         place = new Placement(false, "Invalid Placement - Vertial Invalid Word" , 0);
+                        this.undoTurn();
                         return place;
                     }
                     tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
@@ -262,6 +265,7 @@ public class Board {
                 if (direction.equals("down")){
                     if (! checkRight(tempCord)){
                         place = new Placement(false, "Invalid Placement - Horizontal Invalid Word" , 0);
+                        this.undoTurn();
                         return place;
                     }
                     tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
@@ -270,6 +274,7 @@ public class Board {
             if(! isTouching){
                 p.addLettersToHand(tilesTaken);
                 place = new Placement(false, "Floating Word." , 0);
+                this.undoTurn();
                 return place;
             }
             finalCheck = true;
@@ -292,6 +297,7 @@ public class Board {
             }
             if(! crossesStart){
                 place = new Placement(false, "The placed word must cross start (H 08)." , 0);
+                this.undoTurn();
                 return place;
             }
             firstTurn = false;
