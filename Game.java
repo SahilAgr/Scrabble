@@ -17,6 +17,7 @@ public class Game {
     private LetterBag letterBag;
     private int countdown;
     private int numPlayers;
+    private List<ScrabbleView> views;
 
     //hardcoding the letters so we dont get reliant on strings...
     //not that a single letter is likely to create a typo... but hey
@@ -33,26 +34,21 @@ public class Game {
         Scanner userInput = new Scanner(System.in);
 
         //gameView.jOptionPane("Welcome to Scrabble");
-        System.out.println("welcome to scrabble");
 
-        //gameView.jOptionPane("start replacing souts with gameView.joptionpane etc, once thats made");
-        System.out.println("how many players today?");
-        int playerCount = userInput.nextInt();
-        while (  (playerCount < 1) ||  (playerCount > 4)){
-            System.out.println("Between 1 and 4 players must participate.");
-            playerCount = userInput.nextInt();
-        }
-        countdown = playerCount - 1;
-        for (int i = 0; i < playerCount; i++){
-            players.add(new Player("Player" + (i+1)));
-
-        }
         for(Player p:players){
             p.addLettersToHand(letterBag.getRandomLetters(7));
         }
         turnOrder();
         userInput.close();
 
+        for(ScrabbleView view: views){
+            view.update(new GameEvent(this, new Placement(true, null, 0), currPlayer, board));
+        }
+
+    }
+
+    public void addScrabbleView(ScrabbleView v){
+        views.add(v);
     }
 
     /**
@@ -141,7 +137,7 @@ public class Game {
                 System.out.println("Either no word, no coordinate, or no direction.");
                 return false;
             }
-            return place(command.getSecondWord(), command.getCoordinates(), command.getLetters());
+            return place(command.getSecondWord(), command.getCoordinates(), command.getLetters(), true);
             
         }
         System.out.println("Unrecognized Command. Type help for help.");
@@ -152,8 +148,8 @@ public class Game {
     }
 
 
-    private boolean place(String direction, Coordinates coords, String word){
-        Placement place = board.checkPlacement(coords, word, direction, false, currPlayer);
+    public boolean place(String direction, Coordinates coords, String word, boolean testPlace){
+        Placement place = board.checkPlacement(coords, word, direction, testPlace, currPlayer);
         System.out.println(place.isLegalPlace());
         if (place.isLegalPlace()){
             System.out.println(place.getErrorMessage());
@@ -194,6 +190,9 @@ public class Game {
         this.players.add(player);
     }
 
+    public Player getCurrPlayer() {
+        return currPlayer;
+    }
 
     private void printHelp() {
         System.out.print("There are 4 different Commands."
