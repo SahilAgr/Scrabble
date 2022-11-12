@@ -13,6 +13,8 @@ public class BoardFrame extends JFrame implements ScrabbleView{
     private JLabel[] tileButtons;
     private Player currentPlayer;
     private Game model;
+    private JLabel Score;
+    private JLabel name;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
@@ -33,12 +35,9 @@ public class BoardFrame extends JFrame implements ScrabbleView{
             System.out.println(playerName);
         }
 
-
-
         model = new Game(players);
 
         model.addScrabbleView(this);
-
 
         currentPlayer = model.getCurrPlayer();
 
@@ -54,7 +53,7 @@ public class BoardFrame extends JFrame implements ScrabbleView{
             JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
             this.add(label);
             for (int j = 0; j < BOARDLENGTH; j++) {
-                ScrabbleController controller = new ScrabbleController(model,new Coordinates(i,j));
+                ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
                 JButton b = new JButton(" ");
                 buttons[i][j] = b;
                 b.addActionListener(controller);
@@ -65,9 +64,10 @@ public class BoardFrame extends JFrame implements ScrabbleView{
             JLabel l = new JLabel("");
             this.add(l);
         }
-        JLabel currPlayerDisplay = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
+
+        name = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
         JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
-        this.add(currPlayerDisplay);
+        this.add(name);
         this.add(turnDisplay);
         for (int i = 0; i<PLAYERTILES; i++){
             JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
@@ -75,64 +75,50 @@ public class BoardFrame extends JFrame implements ScrabbleView{
             this.add(l);
         }
 
+        JLabel blank = new JLabel("");
+        this.add(blank);
+        JLabel score = new JLabel("Score:", SwingConstants.CENTER);
+        this.add(score);
+        Score = new JLabel(valueOf(currentPlayer.getScore()), SwingConstants.CENTER);
+        this.add(Score);
 
-        setSize(690,706);
+        //set larger
+        setSize(705,752);
         this.setVisible(true);
     }
 
-    public void errorMessage(){
-        JOptionPane.showMessageDialog(null, "You cannot place this word here!");
+    public void returnMessage(Placement place){
+        if (place.isLegalPlace()){
+            JOptionPane.showMessageDialog(null, "Placement Successful! You got: " + place.getScore()+ " points");
+        } else {
+            JOptionPane.showMessageDialog(null, "You cannot place this word here!");
+        }
+
     }
 
     public void update(GameEvent e) {
         currentPlayer= e.getPlayer();
         Placement place = e.getPlace();
         board = e.getBoard();
-        System.out.println("hi");
-        this.removeAll();
-        this.revalidate();
-        this.repaint();
+
         board.printBoard();
         //The row (ABC)
-        for (int i = 0; i < BOARDLENGTH+1; i++) {
-            JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
-            this.add(label);
-        }
 
         for (int i = 0; i < BOARDLENGTH; i++) {
-            JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
-            this.add(label);
             for (int j = 0; j < BOARDLENGTH; j++) {
-                ScrabbleController controller = new ScrabbleController(model,new Coordinates(i,j));
-                if (board.getLetter(new Coordinates(i,j)).equals(".")) {
-                    JButton b = new JButton("");
-                    buttons[i][j] = b;
-                    b.addActionListener(controller);
-                    this.add(b);
-                }else{
-                    JButton b = new JButton(board.getLetter(new Coordinates(i,j)));
-                    buttons[i][j] = b;
-                    b.addActionListener(controller);
-                    this.add(b);
+                if(!board.getLetter(new Coordinates(j,i)).equals(".")) {
+                    buttons[i][j].setText(board.getLetter(new Coordinates(j, i)));
                 }
-
-
             }
         }
-        for (int i = 0; i<4; i++){
-            JLabel l = new JLabel("");
-            this.add(l);
-        }
-        JLabel currPlayerDisplay = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
-        JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
-        this.add(currPlayerDisplay);
-        this.add(turnDisplay);
+        name.setText(currentPlayer.getName()+"\'s");
+        Score.setText(valueOf(currentPlayer.getScore()));
+
         for (int i = 0; i<PLAYERTILES; i++){
-            JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i)),SwingConstants.CENTER);
-            tileButtons[i] = l;
-            this.add(l);
+            tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
 
+        returnMessage(place);
     }
 
     public static void main(String[] args) {

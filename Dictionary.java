@@ -8,7 +8,7 @@ import java.io.*;
  * @version 1.0
  */
 public class Dictionary {
-    static final String filePath = "C:\\Users\\Matthew\\Documents\\GitHub\\Scrabble\\dictionary.txt";
+    static final String filePath = "C:\\Users\\patri\\IdeaProjects\\Scrabble\\dictionary.txt";
     private boolean wordFound = false;
 
 
