@@ -1,14 +1,12 @@
 public class Placement {
     private boolean isLegalPlace;
     private String errorMessage;
-    private Board board;
 
     private int score;
     public Placement(boolean isLegalPlace, String errorMessage, int score) {
         this.isLegalPlace = isLegalPlace;
         this.errorMessage = errorMessage;
         this.score = score;
-        this.board = board;
     }
 
     public int getScore() {
@@ -32,13 +30,5 @@ public class Placement {
 
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
     }
 }
