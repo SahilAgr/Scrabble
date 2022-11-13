@@ -300,9 +300,10 @@ public class Board {
             if(! crossesStart){
                 place = new Placement(false, "The placed word must cross start (H 08)." , 0);
                 this.undoTurn();
+                this.giveTilesBack(p);
                 return place;
             }
-            firstTurn = false;
+
             finalCheck = true;
         }
         int score = 0;
@@ -321,11 +322,11 @@ public class Board {
             p.addLettersToHand(tilesTaken);
             place.setErrorMessage("You would've got: ");
         } else {
+            firstTurn = false;
             confirmTurn();
             p.addScore(score);
             p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
         }
-
         return place;
 
 
@@ -345,7 +346,7 @@ public class Board {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
                 p.removeLetter(String.valueOf(word.charAt(i)));
-                tilesTaken.add(this.getTile(tempCord));
+                tilesTaken.add(new Tile (this.getTile(tempCord).getString()));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.giveTilesBack(p);
@@ -388,7 +389,7 @@ public class Board {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
                 p.removeLetter(String.valueOf(word.charAt(i)));
-                tilesTaken.add(this.getTile(tempCord));
+                tilesTaken.add(new Tile (this.getTile(tempCord).getString()));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.giveTilesBack(p);
@@ -406,7 +407,7 @@ public class Board {
             if( ! checkDown(tempCord)){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Invalid Placement - Vertical Mismatch" + word.charAt(i), 0);
+                place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
             
@@ -428,9 +429,7 @@ public class Board {
         if (temp.length() > 1){
             isTouching = true;
         }
-        else{
-            return true;
-        }
+
         if(dict.isLegalWord(temp) || temp.equals("")){
             return true;
         }

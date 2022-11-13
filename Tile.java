@@ -34,6 +34,7 @@ public class Tile {
         this.letter = letter;
         if(letter.length() == 1){
             Character c = letter.charAt(0);
+            c = Character.toUpperCase(c);
             switch (c){
                 case 'A': score = 1; break;
                 case 'B': score = 3; break;
@@ -125,6 +126,7 @@ public class Tile {
         letter = c;
         if(letter.length() == 1){
             char d = letter.charAt(0);
+            d = Character.toUpperCase(d);
             switch (d){
                 case 'A': score = 1; break;
                 case 'B': score = 3; break;
