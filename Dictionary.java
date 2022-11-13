@@ -10,12 +10,11 @@ import java.util.*;
  */
 public class Dictionary {
 
-    static boolean wordFound = false;  // Default found word value
 
     /**
      * Checking the dictionary if the word is legal or not
      */
-    public static boolean isLegalWord(String word){
+    public boolean isLegalWord(String word){
 
         InputStream input = Dictionary.class.getResourceAsStream("dictionary.txt");  // File name(Words.txt) in src folder
         InputStreamReader inputReader = new InputStreamReader(input);
@@ -50,5 +49,10 @@ public class Dictionary {
             }
         }
         return false;  // Word not found
+    }
+
+    public static void main(String[] args) {
+        Dictionary dict = new Dictionary();
+        System.out.println(dict.isLegalWord("yurt"));
     }
 }

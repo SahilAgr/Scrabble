@@ -116,7 +116,10 @@ public class Tile {
     }
 
     public void setLetter(String c){
-        c = c.toUpperCase();
+        System.out.println(oldLetter);
+        if(! oldLetter.equals(null)){
+            c = c.toUpperCase();
+        }
         oldLetter = letter;
         letter = c;
         if(letter.length() == 1){
@@ -149,7 +152,7 @@ public class Tile {
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
                 case '+': multiplier = "2w"; break;
-                default: score = 0; break;
+                default: score = 0; letter = "."; break;
             }
         }
         else {
@@ -161,6 +164,10 @@ public class Tile {
                 multiplier = this.letter;
             } else if(this.letter.equals("2W")){
                 multiplier = this.letter;
+            }
+            else {
+                score = 0; 
+                letter = ".";
             }
         }
     }

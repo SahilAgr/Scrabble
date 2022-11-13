@@ -36,22 +36,6 @@ public class Game {
         for(Player p:players){
             p.addLettersToHand(letterBag.getRandomLetters(7));
         }
-        //turnOrder();
-    }
-
-    /**
-     * The turn order for the players that will also display player information
-     */
-    private void turnOrder(){
-        boolean gameOver = false;
-        
-        while (! gameOver){
-            gameOver = progressChecker();
-        }
-        
-        for(Player p: players){
-            //something that displays how people did
-        }
     }
 
     /**
@@ -77,12 +61,15 @@ public class Game {
         System.out.println(word);
         System.out.println(direction);
         System.out.println(place.getErrorMessage());
-        if(currPlayerIndex < players.size()-1){
-            currPlayerIndex++;
-        }else{
-            currPlayerIndex = 0;
+
+        if(place.isLegalPlace()){
+            if(currPlayerIndex < players.size()-1){
+                currPlayerIndex++;
+            }else{
+                currPlayerIndex = 0;
+            }
+            currPlayer = players.get(currPlayerIndex);
         }
-        currPlayer = players.get(currPlayerIndex);
 
         for (ScrabbleView view: views){
             view.update(new GameEvent(this, place, currPlayer, board));
@@ -97,6 +84,7 @@ public class Game {
      * 
      */
     public void shuffleHand(String letters) {
+        String shuffled = "";
         if(letters.isEmpty()){
             currPlayer.removeLetters(currPlayer.getHand());
             currPlayer.addLettersToHand(letterBag.getRandomLetters(7));
@@ -105,11 +93,20 @@ public class Game {
             for(int i = 0; i < letters.length(); i ++){
                 if(currPlayer.hasLetter(String.valueOf(letters.charAt(i)))){
                     shuffles.add(new Tile(String.valueOf(letters.charAt(i))));
-                    currPlayer.removeLetter(String.valueOf(letters.charAt(i)));
+                    Tile tile = currPlayer.removeLetter(String.valueOf(letters.charAt(i)));
+                    shuffled += tile.getString() + " ";
                 }
             }
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
+        if(currPlayerIndex < players.size()-1){
+            currPlayerIndex++;
+        }else{
+            currPlayerIndex = 0;
+        }
+        currPlayer = players.get(currPlayerIndex);
+        Placement place = new Placement(true, "Shuffled these letters back into the bag: " + shuffled, 0);
+        this.turnOrder(place);
     }
 
     public void addPlayer(Player player){
@@ -122,5 +119,25 @@ public class Game {
 
     public Player getCurrPlayer() {
         return currPlayer;
+    }
+
+    private void turnOrder(Placement place){
+        for (ScrabbleView view: views){
+            view.update(new GameEvent(this, place, currPlayer, board));
+        }
+        if(letterBag.isEmpty()){
+            //something that tells the users that this is their last turn?
+            
+            countdown -= 1;
+            if (countdown == 0){
+                for (ScrabbleView view: views){
+                    //view.endGame();
+                }
+            }
+        }
+    }
+
+    public void passTurn(){
+        new Placement(true, "You passed your turn.", 0);
     }
 }
