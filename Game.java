@@ -18,11 +18,8 @@ public class Game {
     private List<ScrabbleView> views;
 
 
-    //hardcoding the letters so we dont get reliant on strings...
-    //not that a single letter is likely to create a typo... but hey
-
     /**
-     * The constructor for the game that will create new players, the borad and all the letters
+     * The constructor for the game that will create new players, the board and all the letters
      */
     public Game(List<Player> players){
         this.board = new Board();
@@ -38,37 +35,29 @@ public class Game {
         }
     }
 
+
     /**
-     * checks how many tiles are left in the letterbag, then begins a countdown equal to the number of players. when that reaches zero, the game is over.
-     * @return boolean
+     * place either places a letter or makes a 
+     * 
+     * @param direction
+     * @param coords
+     * @param word
+     * @param b
      */
-
-    private boolean progressChecker(){
-        if(letterBag.isEmpty()){
-            if(countdown != 0){
-                countdown--;
-                System.out.println("This is your Last Turn!");
-            }
-            else{
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void place(String direction, Coordinates coords, String word, boolean b){
-        Placement place = board.checkPlacement(coords, word, direction, false, currPlayer);
+        Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
         System.out.println(word);
         System.out.println(direction);
         System.out.println(place.getErrorMessage());
-
-        if(place.isLegalPlace()){
-            if(currPlayerIndex < players.size()-1){
-                currPlayerIndex++;
-            }else{
-                currPlayerIndex = 0;
+        if(!b){
+            if(place.isLegalPlace()){
+                if(currPlayerIndex < players.size()-1){
+                    currPlayerIndex++;
+                }else{
+                    currPlayerIndex = 0;
+                }
+                currPlayer = players.get(currPlayerIndex);
             }
-            currPlayer = players.get(currPlayerIndex);
         }
 
         for (ScrabbleView view: views){
@@ -127,7 +116,7 @@ public class Game {
         }
         if(letterBag.isEmpty()){
             //something that tells the users that this is their last turn?
-            
+
             countdown -= 1;
             if (countdown == 0){
                 for (ScrabbleView view: views){
@@ -138,6 +127,7 @@ public class Game {
     }
 
     public void passTurn(){
-        new Placement(true, "You passed your turn.", 0);
+        Placement place = new Placement(false, "You passed your turn.", 0);
+        turnOrder(place);
     }
 }

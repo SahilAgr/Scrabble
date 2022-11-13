@@ -29,6 +29,7 @@ public class Tile {
 
     public Tile(String letter){
         letter = letter.toUpperCase();
+        oldLetter = "";
         multiplier = "none";
         this.letter = letter;
         if(letter.length() == 1){
@@ -117,7 +118,7 @@ public class Tile {
 
     public void setLetter(String c){
         System.out.println(oldLetter);
-        if(! oldLetter.equals(null)){
+        if(oldLetter.length() != 0){
             c = c.toUpperCase();
         }
         oldLetter = letter;

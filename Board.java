@@ -328,7 +328,7 @@ public class Board {
 
     }
     private Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
-        //HashMap<Coordinates, Tile> iterator = rightLeftIterator(coords);
+        System.out.println(word);
         tilesTaken = new ArrayList<>();
         word = word.toUpperCase();
         Placement place;
@@ -372,6 +372,7 @@ public class Board {
         return place;
     }
     private Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
+        System.out.println(word);
         tilesTaken = new ArrayList<>();
         Placement place;
         word = word.toUpperCase();
@@ -552,7 +553,16 @@ public class Board {
 
     public static void main(String[] args){
         Board bord = new Board();
-        System.out.println(bord.getTile(new Coordinates(7, 7)).getMultiplier());
+        Player p = new Player(null);
+        ArrayList<Tile> hand = new ArrayList<>();
+        hand.add(new Tile("t"));
+        hand.add(new Tile("e"));
+        hand.add(new Tile("a"));
+        hand.add(new Tile("e"));
+        hand.add(new Tile("a"));
+        p.addLettersToHand(hand);
+        bord.placeDown(new Coordinates(7, 7), "tea", false, p);
+
         
     }
     
