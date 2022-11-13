@@ -1,35 +1,35 @@
-import java.io.*;
+mport java.io.*;
 import java.util.*;
 
 /**
  * This is the Dictionary Class.
- * For Milestone 1, Reading the text file and checking the word
+ * For Milestone 2, Reading the text file and checking the word
  *
  * @author Anirudh Bakshi (101158699)
- * @version 1.0
+ * @version 2.0
  */
 public class Dictionary {
-    final static String filePath = "/Users/anirudhbakshi/Desktop/Words.txt";  // Text file (Dictionary)
-    static boolean wordFound = false;
+
+    static boolean wordFound = false;  // Default found word value
 
     /**
-     * Checking the dictionary
+     * Checking the dictionary if the word is legal or not
      */
     public static boolean isLegalWord(String word){
-        
-        BufferedReader br = null;
+
+        InputStream input = Dictionary.class.getResourceAsStream("Words.txt");  // File name(Words.txt) in src folder
+        InputStreamReader inputReader = new InputStreamReader(input);
+
+        BufferedReader br = new BufferedReader(inputReader); // Buffer object
+        String line = null;
 
         try {
-            File file = new File(filePath);  // File Object
-            br = new BufferedReader(new FileReader(file));  // Buffered Object
-            String line = null;
 
             // Read line by line
             while ((line = br.readLine()) != null){
                 if (line.equalsIgnoreCase(word)){
-                    return true;
+                    return true;  // Word found in the dictionary
                 }
-
             }
 
         } catch (FileNotFoundException e) {
@@ -37,6 +37,7 @@ public class Dictionary {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         finally {
 
             // Closing BufferedReader
@@ -45,11 +46,10 @@ public class Dictionary {
                     br.close();
                 }
                 catch (IOException e){
-
                 };
             }
         }
-        return false;
+        return false;  // Word not found
     }
 
     public static void main(String[] args) {
