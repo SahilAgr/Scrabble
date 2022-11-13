@@ -461,11 +461,11 @@ public class Board {
                 if(! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(coords.getXCoordinate(),  coords.getYCoordinate().ordinal() - 1))){
                     otherWordsScore += this.scoringSecondaryDown(coords);
                 }
-                if(this.getTile(c).getMultiplier().equals("2w")){
+                /*if(this.getTile(c).getMultiplier().equals("2w")){
                     multi *= 2;
                 } else if(this.getTile(c).getMultiplier().equals("3w")){
                     multi *= 3;
-                }
+                }*/
             }
             score += this.getTile(c).getScore();
         }
@@ -482,11 +482,11 @@ public class Board {
                 if(! checkFree(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())) || ! checkFree(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate()))){
                     otherWordsScore += this.scoringSecondaryRight(coords);
                 }
-                if(this.getTile(c).getMultiplier().equals("2w")){
+                /*if(this.getTile(c).getMultiplier().equals("2w")){
                     multi *= 2;
                 } else if(this.getTile(c).getMultiplier().equals("3w")){
                     multi *= 3;
-                }
+                }*/
             }
             score += this.getTile(c).getScore();
         }
@@ -499,11 +499,11 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                if(this.getTile(c).getMultiplier().equals("2w")){
+                /*if(this.getTile(c).getMultiplier().equals("2w")){
                     multi *= 2;
                 } else if(this.getTile(c).getMultiplier().equals("3w")){
                     multi *= 3;
-                }
+                }*/
 
             }
         }
@@ -518,11 +518,11 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                if(this.getTile(c).getMultiplier().equals("2w")){
+                /*if(this.getTile(c).getMultiplier().equals("2w")){
                     multi *= 2;
                 } else if(this.getTile(c).getMultiplier().equals("3w")){
                     multi *= 3;
-                }
+                }*/
 
             }
         }
