@@ -1,10 +1,12 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import static java.lang.String.valueOf;
 
-public class BoardFrame extends JFrame implements ScrabbleView{
+public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public static final int BOARDLENGTH = 15;
     public static final int PLAYERTILES = 7;
@@ -15,6 +17,9 @@ public class BoardFrame extends JFrame implements ScrabbleView{
     private Game model;
     private JLabel Score;
     private JLabel name;
+    private JMenuBar menuBar;
+    private JMenu menu;
+    private JMenuItem m1, m2, m3;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
@@ -38,6 +43,21 @@ public class BoardFrame extends JFrame implements ScrabbleView{
         model = new Game(players);
 
         model.addScrabbleView(this);
+
+        menuBar = new JMenuBar();
+        menu = new JMenu("Menu");
+        m1 = new JMenuItem("Shuffle");
+        m2 = new JMenuItem("Pass");
+        m3 = new JMenuItem("Help");
+        m1.addActionListener(this);
+        m2.addActionListener(this);
+        m3.addActionListener(this);
+        menu.add(m1);
+        menu.add(m2);
+        menu.add(m3);
+
+        menuBar.add(menu);
+        this.setJMenuBar(menuBar);
 
         currentPlayer = model.getCurrPlayer();
 
@@ -89,11 +109,32 @@ public class BoardFrame extends JFrame implements ScrabbleView{
 
     public void returnMessage(Placement place){
         if (place.isLegalPlace()){
-            JOptionPane.showMessageDialog(null, "Placement Successful! You got: " + place.getScore()+ " points");
+            JOptionPane.showMessageDialog(null, place.getErrorMessage()+ place.getScore()+ " points");
         } else {
-            JOptionPane.showMessageDialog(null, "You cannot place this word here!");
+            JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
 
+    }
+
+    public void actionPerformed(ActionEvent e)
+    {
+        String s = e.getActionCommand();
+        switch(s){
+            case "Shuffle": String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
+            model.shuffleHand(letters);
+                break;
+            case "Pass": model.passTurn();
+                break;
+            case "Help": help();
+                break;
+        }
+
+    }
+
+    public void help(){
+        JOptionPane.showMessageDialog(null, "How to Play: Look at the board and select a square " +
+                "to which you would like place \na legal word that can be generated using your tiles (Displayed at the" +
+                " bottom). \nFor further in-depths rules see: https://scrabble.hasbro.com/en-us/rules");
     }
 
     public void update(GameEvent e) {

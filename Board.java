@@ -273,7 +273,7 @@ public class Board {
             }
             if(! isTouching){
                 p.addLettersToHand(tilesTaken);
-                place = new Placement(false, "Floating Word." , 0);
+                place = new Placement(false, "Invalid Placement - Floating Word." , 0);
                 this.undoTurn();
                 return place;
             }
@@ -303,24 +303,25 @@ public class Board {
             firstTurn = false;
             finalCheck = true;
         }
-
+        int score = 0;
         if(finalCheck){
-            
-            p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
             if(direction.equals("down")){
-                int score = this.scoringInitialDown(coords);
-                p.addScore(score);
-                place = new Placement(true, "No errors", score);
+                score = this.scoringInitialDown(coords);
+                place = new Placement(true, "Placement Successful! You got: ", score);
             }
             if(direction.equals("right")){
-                int score = this.scoringInitialRight(coords);
-                p.addScore(score);
-                place = new Placement(true, "No errors", score);
+                score = this.scoringInitialRight(coords);
+                place = new Placement(true, "Placement Successful! You got: ", score);
             }
         }
         if(test){
             undoTurn();
-        } else { confirmTurn();
+            p.addLettersToHand(tilesTaken);
+            place.setErrorMessage("You would've got: ");
+        } else {
+            confirmTurn();
+            p.addScore(score);
+            p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
         }
 
         return place;

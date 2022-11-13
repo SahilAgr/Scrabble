@@ -94,7 +94,7 @@ public class Game {
             currPlayerIndex = 0;
         }
         currPlayer = players.get(currPlayerIndex);
-        Placement place = new Placement(true, "Shuffled these letters back into the bag: " + shuffled, 0);
+        Placement place = new Placement(false, "Shuffled these letters back into the bag: " + shuffled, 0);
         this.turnOrder(place);
     }
 
@@ -127,7 +127,14 @@ public class Game {
     }
 
     public void passTurn(){
+        if(currPlayerIndex < players.size()-1){
+            currPlayerIndex++;
+        }else{
+            currPlayerIndex = 0;
+        }
+        currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
     }
+
 }
