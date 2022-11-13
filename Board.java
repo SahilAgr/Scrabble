@@ -255,6 +255,7 @@ public class Board {
             for(int i = 0; i < word.length(); i++){
                 if (direction.equals("right")){
                     if(! checkDown(coords)){
+                        this.giveTilesBack(p);
                         place = new Placement(false, "Invalid Placement - Vertial Invalid Word" , 0);
                         this.undoTurn();
                         return place;
@@ -264,6 +265,7 @@ public class Board {
                 }
                 if (direction.equals("down")){
                     if (! checkRight(tempCord)){
+                        this.giveTilesBack(p);
                         place = new Placement(false, "Invalid Placement - Horizontal Invalid Word" , 0);
                         this.undoTurn();
                         return place;
@@ -272,7 +274,7 @@ public class Board {
                 }
             }
             if(! isTouching){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 place = new Placement(false, "Invalid Placement - Floating Word." , 0);
                 this.undoTurn();
                 return place;
@@ -346,12 +348,12 @@ public class Board {
                 tilesTaken.add(this.getTile(tempCord));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
                 return place;
             } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).toUpperCase().equals(this.getLetter(tempCord))){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
                 return place;
@@ -359,7 +361,7 @@ public class Board {
                 isTouching = true;
             }
             if( ! checkRight(coords)){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "Invalid Placement - Horizontal Mismatch" + word.charAt(i), 0);
                 return place;
@@ -389,12 +391,12 @@ public class Board {
                 tilesTaken.add(this.getTile(tempCord));
                 this.getTile(tempCord).setNewTile(true);
             } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
                 return place;
             } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
                 return place;
@@ -402,8 +404,7 @@ public class Board {
                 isTouching = true;
             }
             if( ! checkDown(tempCord)){
-                p.addLettersToHand(tilesTaken);
-                p.addLettersToHand(tilesTaken);
+                this.giveTilesBack(p);
                 this.undoTurn();
                 place = new Placement(false, "Invalid Placement - Vertical Mismatch" + word.charAt(i), 0);
                 return place;
@@ -550,6 +551,13 @@ public class Board {
                 }
             }
         }
+    }
+    private void giveTilesBack(Player p){
+        ArrayList<Tile> hand = new ArrayList<>();
+        for(Tile t: tilesTaken){
+            hand.add(new Tile(t.getString()));
+        }
+        p.addLettersToHand(hand);
     }
 
     public static void main(String[] args){
