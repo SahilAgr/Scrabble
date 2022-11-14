@@ -5,6 +5,12 @@ Anirudh Bakshi
 Matthew Huitema
 
 
+Design Decisions:
+
+The choice to have a central game class was made early on. Game handles all the logic. It handles what happens and when. We decided to make sure it did as little as possible, which in most cases other then board was done. Several things are going to change when we move to GUI, mainly including the way board works. We also will delete parser as user inputs will be from the GUI.
+
+Also, we decided that a player must play from H EIGHT as that was the way we interprited the rules.
+
 
 Files Included:
 
