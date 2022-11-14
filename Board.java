@@ -450,7 +450,7 @@ public class Board {
         }
         System.out.println(temp);
         System.out.println(dict.isLegalWord(temp));
-        if(dict.isLegalWord(temp) || temp.length() == 1){
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
@@ -468,7 +468,7 @@ public class Board {
         }
         System.out.println(temp);
         System.out.println(dict.isLegalWord(temp));
-        if(dict.isLegalWord(temp) || temp.length() == 1){
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
