@@ -184,6 +184,7 @@ public class Board {
         }
 
         tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
+        
         while( ! this.checkFree(tempCoordinates)) {
             iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
             if(tempCoordinates.getXCoordinate().ordinal() <= 14){
@@ -359,29 +360,30 @@ public class Board {
                 this.undoTurn();
                 place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
                 return place;
-            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).toUpperCase().equals(this.getLetter(tempCord))){
+            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
+                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
                 return place;
             } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 isTouching = true;
             }
-            if( ! checkRight(coords)){
+            if( ! checkRight(tempCord)){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Invalid Placement - Horizontal Mismatch" + word.charAt(i), 0);
+                place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
-            
             if(tempCord.getYCoordinate().ordinal() == 14){
                 if (i < word.length()){
                     this.undoTurn();
                     this.giveTilesBack(p);
                     return new Placement(false, "You went out of bounds! Your word is too long.", 0);
+
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            this.printBoard();
+            tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
             i++;
             
             
@@ -431,6 +433,7 @@ public class Board {
 
                 }
             }
+            this.printBoard();
             tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
             i++;
         }
@@ -594,7 +597,7 @@ public class Board {
         hand.add(new Tile("s"));
         p.addLettersToHand(hand);
         bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
-        bord.checkPlacement(new Coordinates(7, 10), "test","right", false, p);
+        bord.checkPlacement(new Coordinates(10, 7), "test","down", false, p);
         bord.printBoard();
 
         
