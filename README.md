@@ -46,5 +46,5 @@ Available Commands:
 
 Known Issues: 
 1. Some classes do not have junit tests yet
-2. Game does not end properly when the letter bag is empty
+
 
