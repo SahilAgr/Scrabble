@@ -260,7 +260,7 @@ public class Board {
                 if (direction.equals("right")){
                     if(! checkDown(coords)){
                         this.giveTilesBack(p);
-                        place = new Placement(false, "Invalid Placement - Vertical Invalid Word" , 0);
+                        place = new Placement(false, "Invalid Placement - Vertial Invalid Word" , 0);
                         this.undoTurn();
                         return place;
                     }
@@ -443,7 +443,7 @@ public class Board {
         }
         System.out.println(temp);
         System.out.println(dict.isLegalWord(temp));
-        if(dict.isLegalWord(temp) || temp.length() == 1){
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
@@ -461,7 +461,7 @@ public class Board {
         }
         System.out.println(temp);
         System.out.println(dict.isLegalWord(temp));
-        if(dict.isLegalWord(temp) || temp.length() == 1){
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
