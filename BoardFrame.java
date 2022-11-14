@@ -169,6 +169,17 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         returnMessage(place);
     }
+    @Override
+    public void gameOver(ArrayList<Player> players) {
+        String message = "The game has finished. Scores are as follows:\n" ;
+        for(Player p: players){
+            message += "Player " + p.getName() + " Scored " + p.getScore() +",\n";
+        }
+        JOptionPane.showMessageDialog(null, message , "Game Over", ABORT);
+        this.dispose();
+        this.setVisible(false);
+        
+    }
 
     public static void main(String[] args) {
         new BoardFrame();

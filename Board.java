@@ -372,7 +372,13 @@ public class Board {
                 return place;
             }
             
-            tempCord = new Coordinates(tempCord.getXCoordinate(), (tempCord.getYCoordinate().ordinal() + 1));
+            if(tempCord.getYCoordinate().ordinal() >= 14){
+                tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
+                if (i < word.length()){
+                    return new Placement(false, "You went out of bounds! Your word is too long.", 0);
+                }
+            }
+            i++;
             
             
         }
@@ -413,10 +419,13 @@ public class Board {
                 place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
-            
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            if(tempCord.getXCoordinate().ordinal() >= 14){
+                tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+                if (i < word.length()){
+                    return new Placement(false, "You went out of bounds! Your word is too long.", 0);
+                }
+            }
             i++;
-            
         }
         place = new Placement(true, word, 0);
         return place;
