@@ -62,6 +62,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         currentPlayer = model.getCurrPlayer();
 
         buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
+        Color blankColor = new Color(233,224,206);
         tileButtons = new JLabel[PLAYERTILES];
 
         for (int i = 0; i < BOARDLENGTH+1; i++) {
@@ -76,6 +77,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
                 JButton b = new JButton(" ");
                 buttons[i][j] = b;
+                b.setBackground(blankColor);
                 b.addActionListener(controller);
                 this.add(b);
             }
@@ -94,6 +96,10 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             tileButtons[i] = l;
             this.add(l);
         }
+
+        Color c1 = new Color(255,102,102);
+        buttons[7][7].setBackground(c1);
+        buttons[7][7].setOpaque(true);
 
         JLabel blank = new JLabel("");
         this.add(blank);
@@ -141,6 +147,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         currentPlayer= e.getPlayer();
         Placement place = e.getPlace();
         board = e.getBoard();
+        Color tileColor = new Color(247, 243, 237);
 
         board.printBoard();
         //The row (ABC)
@@ -149,6 +156,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             for (int j = 0; j < BOARDLENGTH; j++) {
                 if(!board.getLetter(new Coordinates(j,i)).equals(".")) {
                     buttons[i][j].setText(board.getLetter(new Coordinates(j, i)));
+                    buttons[i][j].setBackground(tileColor);
                 }
             }
         }
