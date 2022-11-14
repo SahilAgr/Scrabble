@@ -183,11 +183,7 @@ public class Tile {
         newTile = b;
     }
     
-    /**
-     * Turns the char into a tile
-     * @param c char
-     * @return Tile
-     */
+
     
 
     public void resetTile(){
