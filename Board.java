@@ -174,7 +174,6 @@ public class Board {
         List<Coordinates> iterator = new ArrayList<>();
         Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
         while( ! this.checkFree(tempCoordinates)) {
-            
             if(tempCoordinates.getXCoordinate().ordinal() >= 1){
                 tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() - 1);
             } else {
@@ -349,7 +348,7 @@ public class Board {
             this.undoTurn();
             return place;
         }
-        for(int i = 0; i < word.length(); i++) {
+        for(int i = 0; i < word.length();) {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
                 p.removeLetter(String.valueOf(word.charAt(i)));
@@ -382,9 +381,9 @@ public class Board {
 
                 }
             }
-            this.printBoard();
             tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
             i++;
+            
             
             
         }
@@ -433,7 +432,6 @@ public class Board {
 
                 }
             }
-            this.printBoard();
             tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
             i++;
         }
