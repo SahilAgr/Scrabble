@@ -163,8 +163,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         name.setText(currentPlayer.getName()+"\'s");
         Score.setText(valueOf(currentPlayer.getScore()));
 
-        for (int i = 0; i<PLAYERTILES; i++){
+        for (int i = 0; i<currentPlayer.getHand().size()-1; i++){
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
+        }
+        for (int j =0; j<PLAYERTILES-currentPlayer.getHand().size()-1; j++){
+            tileButtons[j+currentPlayer.getHand().size()].setText("");
         }
 
         returnMessage(place);

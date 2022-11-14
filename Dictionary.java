@@ -53,6 +53,6 @@ public class Dictionary {
 
     public static void main(String[] args) {
         Dictionary dict = new Dictionary();
-        System.out.println(dict.isLegalWord("KITTEN"));
+        System.out.println(dict.isLegalWord("kitten"));
     }
 }
