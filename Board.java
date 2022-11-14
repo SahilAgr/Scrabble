@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.openmbean.SimpleType;
-
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
@@ -374,14 +372,12 @@ public class Board {
                 return place;
             }
             
-            if(tempCord.getYCoordinate().ordinal() == 14){
+            if(tempCord.getYCoordinate().ordinal() >= 14){
+                tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
                 if (i < word.length()){
-                    this.undoTurn();
-                    this.giveTilesBack(p);
                     return new Placement(false, "You went out of bounds! Your word is too long.", 0);
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
             i++;
             
             
@@ -412,7 +408,7 @@ public class Board {
             } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
+                place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
                 return place;
             } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 isTouching = true;
@@ -423,15 +419,12 @@ public class Board {
                 place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
-            if(tempCord.getXCoordinate().ordinal() == 14){
+            if(tempCord.getXCoordinate().ordinal() >= 14){
+                tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
                 if (i < word.length()){
-                    this.undoTurn();
-                    this.giveTilesBack(p);
                     return new Placement(false, "You went out of bounds! Your word is too long.", 0);
-
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
             i++;
         }
         place = new Placement(true, word, 0);
