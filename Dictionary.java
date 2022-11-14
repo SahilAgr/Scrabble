@@ -15,7 +15,7 @@ public class Dictionary {
      * Checking the dictionary if the word is legal or not
      */
     public boolean isLegalWord(String word){
-
+        
         InputStream input = Dictionary.class.getResourceAsStream("dictionary.txt");  // File name(Words.txt) in src folder
         InputStreamReader inputReader = new InputStreamReader(input);
 
@@ -53,6 +53,6 @@ public class Dictionary {
 
     public static void main(String[] args) {
         Dictionary dict = new Dictionary();
-        System.out.println(dict.isLegalWord("yurt"));
+        System.out.println(dict.isLegalWord("KITTEN"));
     }
 }

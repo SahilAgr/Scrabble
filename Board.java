@@ -231,6 +231,10 @@ public class Board {
     public Placement checkPlacement(Coordinates coords, String word, String direction, boolean test, Player p){
         isTouching = false;
         Placement place;
+        if(! dict.isLegalWord(word)){
+            return new Placement(false,"Not a Valid Word", 0);
+        }
+        
         Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
         direction = direction.toLowerCase();
         if (direction.equals("right")){
@@ -376,7 +380,6 @@ public class Board {
         return place;
     }
     private Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
-        System.out.println(word);
         tilesTaken = new ArrayList<>();
         Placement place;
         word = word.toUpperCase();
@@ -429,8 +432,9 @@ public class Board {
         if (temp.length() > 1){
             isTouching = true;
         }
-
-        if(dict.isLegalWord(temp) || temp.equals("")){
+        System.out.println(temp);
+        System.out.println(dict.isLegalWord(temp));
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
@@ -446,8 +450,9 @@ public class Board {
         if (temp.length() > 1){
             isTouching = true;
         }
-
-        if(dict.isLegalWord(temp) || temp.equals("")){
+        System.out.println(temp);
+        System.out.println(dict.isLegalWord(temp));
+        if(dict.isLegalWord(temp)){
             return true;
         }
         return false;
@@ -563,13 +568,18 @@ public class Board {
         Board bord = new Board();
         Player p = new Player(null);
         ArrayList<Tile> hand = new ArrayList<>();
+        bord.printBoard();
         hand.add(new Tile("t"));
         hand.add(new Tile("e"));
-        hand.add(new Tile("a"));
+        hand.add(new Tile("s"));
+        hand.add(new Tile("t"));
+        hand.add(new Tile("t"));
         hand.add(new Tile("e"));
-        hand.add(new Tile("a"));
+        hand.add(new Tile("s"));
         p.addLettersToHand(hand);
-        bord.placeDown(new Coordinates(7, 7), "tea", false, p);
+        bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
+        bord.checkPlacement(new Coordinates(7, 10), "test","right", false, p);
+        bord.printBoard();
 
         
     }
