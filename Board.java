@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.openmbean.SimpleType;
+
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
@@ -172,7 +174,6 @@ public class Board {
         List<Coordinates> iterator = new ArrayList<>();
         Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
         while( ! this.checkFree(tempCoordinates)) {
-            
             if(tempCoordinates.getXCoordinate().ordinal() >= 1){
                 tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() - 1);
             } else {
@@ -182,6 +183,7 @@ public class Board {
         }
 
         tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
+        
         while( ! this.checkFree(tempCoordinates)) {
             iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
             if(tempCoordinates.getXCoordinate().ordinal() <= 14){
@@ -346,7 +348,7 @@ public class Board {
             this.undoTurn();
             return place;
         }
-        for(int i = 0; i < word.length(); i++) {
+        for(int i = 0; i < word.length();) {
             if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
                 this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
                 p.removeLetter(String.valueOf(word.charAt(i)));
@@ -357,28 +359,31 @@ public class Board {
                 this.undoTurn();
                 place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
                 return place;
-            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).toUpperCase().equals(this.getLetter(tempCord))){
+            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
+                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
                 return place;
             } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 isTouching = true;
             }
-            if( ! checkRight(coords)){
+            if( ! checkRight(tempCord)){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Invalid Placement - Horizontal Mismatch" + word.charAt(i), 0);
+                place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
-            
-            if(tempCord.getYCoordinate().ordinal() >= 14){
-                tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
+            if(tempCord.getYCoordinate().ordinal() == 14){
                 if (i < word.length()){
+                    this.undoTurn();
+                    this.giveTilesBack(p);
                     return new Placement(false, "You went out of bounds! Your word is too long.", 0);
+
                 }
             }
+            tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
             i++;
+            
             
             
         }
@@ -408,7 +413,7 @@ public class Board {
             } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 this.giveTilesBack(p);
                 this.undoTurn();
-                place = new Placement(false, "Word mismatch." + word.charAt(i), 0);
+                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
                 return place;
             } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
                 isTouching = true;
@@ -419,12 +424,15 @@ public class Board {
                 place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
                 return place;
             }
-            if(tempCord.getXCoordinate().ordinal() >= 14){
-                tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            if(tempCord.getXCoordinate().ordinal() == 14){
                 if (i < word.length()){
+                    this.undoTurn();
+                    this.giveTilesBack(p);
                     return new Placement(false, "You went out of bounds! Your word is too long.", 0);
+
                 }
             }
+            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
             i++;
         }
         place = new Placement(true, word, 0);
@@ -587,7 +595,7 @@ public class Board {
         hand.add(new Tile("s"));
         p.addLettersToHand(hand);
         bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
-        bord.checkPlacement(new Coordinates(7, 10), "test","right", false, p);
+        bord.checkPlacement(new Coordinates(10, 7), "test","down", false, p);
         bord.printBoard();
 
         
