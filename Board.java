@@ -262,7 +262,7 @@ public class Board {
                 if (direction.equals("right")){
                     if(! checkDown(coords)){
                         this.giveTilesBack(p);
-                        place = new Placement(false, "Invalid Placement - Vertial Invalid Word" , 0);
+                        place = new Placement(false, "Invalid Placement - Vertical Invalid Word" , 0);
                         this.undoTurn();
                         return place;
                     }

@@ -109,7 +109,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         this.add(Score);
 
         //set larger
-        setSize(705,752);
+        setSize(750,800);
         this.setVisible(true);
     }
 
