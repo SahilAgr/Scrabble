@@ -185,4 +185,3 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         new BoardFrame();
     }
 }
-
