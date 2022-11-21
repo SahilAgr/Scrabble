@@ -97,10 +97,13 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             this.add(l);
         }
 
-        Color centreColor = new Color(255,102,102);
-        buttons[7][7].setBackground(centreColor);
-        buttons[7][7].setOpaque(true);
         Color doubleWordColor = new Color(249,188,166);
+        ImageIcon iconA = new ImageIcon("BlackStar.png");
+        buttons[7][7].setBackground(doubleWordColor);
+        buttons[7][7].setIcon(iconA);
+        buttons[7][7].setText(null);
+        buttons[7][7].setOpaque(true);
+
         buttons[1][1].setBackground(doubleWordColor);
         buttons[2][2].setBackground(doubleWordColor);
         buttons[3][3].setBackground(doubleWordColor);
@@ -233,7 +236,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         this.add(Score);
 
         //set larger
-        setSize(705,752);
+        setSize(750,800);
         this.setVisible(true);
     }
 
