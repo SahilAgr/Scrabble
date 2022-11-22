@@ -9,7 +9,7 @@ import java.util.List;
  */
 
 public class Game {
-    private List<Player> players;
+    private ArrayList<Player> players;
     private Player currPlayer;
     private int currPlayerIndex;
     private Board board;
@@ -21,7 +21,7 @@ public class Game {
     /**
      * The constructor for the game that will create new players, the board and all the letters
      */
-    public Game(List<Player> players){
+    public Game(ArrayList<Player> players){
         this.board = new Board();
         this.letterBag = new LetterBag();
         this.players = players;
@@ -120,7 +120,7 @@ public class Game {
             countdown -= 1;
             if (countdown == 0){
                 for (ScrabbleView view: views){
-                    //view.endGame();
+                    view.gameOver(players);
                 }
             }
         }
