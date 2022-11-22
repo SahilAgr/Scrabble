@@ -62,6 +62,7 @@ public class Tile {
                 case 'X': score = 8; break;
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
+                case '*': score = 0; break;
                 case '+': colour = new Color(249, 188, 166); break;
                 default: score = 0; break;
             }
@@ -118,7 +119,6 @@ public class Tile {
     }
 
     public void setLetter(String c){
-        System.out.println(oldLetter);
         colour = new Color(233,224,206);
         if(oldLetter.length() != 0){
             c = c.toUpperCase();
@@ -155,6 +155,7 @@ public class Tile {
                 case 'X': score = 8; break;
                 case 'Y': score = 4; break;
                 case 'Z': score = 10; break;
+                case '*': score = 0; break;
                 case '+': colour = new Color(249, 188, 166); break;
                 default: score = 0; letter = "."; break;
             }
