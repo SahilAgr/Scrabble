@@ -128,7 +128,7 @@ public class Board {
      */
     public boolean checkFree(Coordinates coords) {
         String test = this.getLetter(coords);
-        return (test.equals(".") || test.equals("+") || test.equals("2W") || test.equals("3W") || test.equals("2L") || test.equals("3L"));
+        return (test.equals(".") || test.equals("+") || test.equals("2W") || test.equals("3W") || test.equals("2L") || test.equals("3L")||test.equals(""));
     }
 
     /**

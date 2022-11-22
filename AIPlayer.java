@@ -11,6 +11,8 @@ public class AIPlayer extends Player{
     Random rand;
 
 
+    Placement placement;
+
     static final int SIZE = 26;
 
 
@@ -24,9 +26,10 @@ public class AIPlayer extends Player{
 
         player.addLettersToHand(letters.getRandomLetters(7));
 
-        String testWord = createLetterSet(player.getHand());
+       /* String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();
         System.out.println(findValidWords(dictionary.allWords(),testing));
+*/
 
 
     }
@@ -34,25 +37,40 @@ public class AIPlayer extends Player{
     public void playTurn(Game game, Board board, ArrayList<Tile> hand, Player player){
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
+                String playerLetters = createLetterSet(player.getHand());
+                char [] playerLetterArray = playerLetters.toCharArray();
+                List<String> allPossibleWords = findValidWords(dictionary.allWords(),playerLetterArray);
                 Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
-                if(wordOnBoard(board) == ""){
-                    //place in the middle of the tile - this is for first turn
+                if(wordOnBoard(board).length() == 0){
+                    System.out.println("this is going through " + coord.getYCoordinate().toString() + coord.getXCoordinate().toString());
+                    Coordinates middle = new Coordinates(Coordinates.xCoordinate.H, Coordinates.yCoordinate.EIGHT);
+                    game.place("right",middle,allPossibleWords.get(rand.nextInt(allPossibleWords.size())),false);
+                    return;
                 }else{
-                    String playerLetters = createLetterSet(player.getHand());
-                    char [] playerLetterArray = playerLetters.toCharArray();
-                    List<String> allPossibleWords = findValidWords(dictionary.allWords(),playerLetterArray);
-                    String wordToPlace = allPossibleWords.get(rand.nextInt(allPossibleWords.size()));
-                    int k=0;
-                    for(k = 0; k < wordToPlace.length();k++){
-                        if(wordOnBoard(board).charAt(0) == wordToPlace.charAt(k)){
-                            break;
+                    System.out.println("please help me 2");
+                    for(int k = 0; k < allPossibleWords.size(); k++){
+                        System.out.println("the 3rd for loop");
+                        char[] eachWord = allPossibleWords.get(k).toCharArray();
+                        char charOnBoard = wordOnBoard(board).charAt(0);
+                        if(eachWord.equals(charOnBoard)){
+                            if(board.checkPlacement(coord,allPossibleWords.get(k),"right",true, player).isLegalPlace()){
+                                System.out.println("hello right");
+                                game.place("right",coord,allPossibleWords.get(k),false);
+                                return;
+                            } else if (board.checkPlacement(coord,allPossibleWords.get(k),"down",true, player).isLegalPlace()) {
+                                System.out.println("hello left");
+                                game.place("down",coord,allPossibleWords.get(k),false);
+                                return;
+                            }
+
+                        }
                         }
                     }
 
                 }
             }
         }
-    }
+
 
     public String createLetterSet(ArrayList<Tile> hand){
         String set = new String();
@@ -78,17 +96,16 @@ public class AIPlayer extends Player{
 
 
     public String wordOnBoard(Board board){
+        String reeee = "";
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
                 if(!board.checkFree(coord)){
-                    return board.getLetter(coord);
-                }else {
-                    return"";
+                    reeee += board.getLetter(coord);
                 }
             }
         }
-        return "";
+        return reeee;
     }
 
 
@@ -119,12 +136,12 @@ public class AIPlayer extends Player{
         }
         return result;
     }
-
+/*
     public static void main(String[] args) {
         AIPlayer play = new AIPlayer("help");
 
 
-    }
+    }*/
 
 
 

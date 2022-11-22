@@ -27,6 +27,7 @@ public class Game {
         this.players = players;
         this.views = new ArrayList<>();
 
+
         currPlayerIndex = 0;
         currPlayer = players.get(currPlayerIndex);
 
@@ -112,6 +113,7 @@ public class Game {
 
     private void turnOrder(Placement place){
         for (ScrabbleView view: views){
+
             view.update(new GameEvent(this, place, currPlayer, board));
         }
         if(letterBag.isEmpty()){
@@ -124,6 +126,10 @@ public class Game {
                 }
             }
         }
+        if(currPlayer instanceof AIPlayer){
+            System.out.println("instance of in turn order");
+            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+        }
     }
 
     public void passTurn(){
@@ -135,6 +141,9 @@ public class Game {
         currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
+        if(currPlayer instanceof AIPlayer){
+            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+        }
     }
 
 }

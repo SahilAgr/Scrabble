@@ -30,13 +30,24 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
 
         int numPlayers = 0;
-        while ((numPlayers < 1) ||  (numPlayers > 4)) {
+        int numAI = 0;
+        while ((numPlayers < 1) ||  (numPlayers > 4 )) {
             numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
         }
+
+        while ((numAI < 1) ||  (numAI > 4 && numPlayers+numAI < 4 )) {
+            numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (1-4)"));
+        }
+
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++){
             String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
             players.add(new Player(playerName));
+            System.out.println(playerName);
+        }
+        for (int i = 0; i < numPlayers; i++){
+            String playerName = JOptionPane.showInputDialog("Please enter AI "+(i+1)+"'s name:");
+            players.add(new AIPlayer(playerName));
             System.out.println(playerName);
         }
 
@@ -114,12 +125,13 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     }
 
     public void returnMessage(Placement place){
-        if (place.isLegalPlace()){
-            JOptionPane.showMessageDialog(null, place.getErrorMessage()+ place.getScore()+ " points");
-        } else {
-            JOptionPane.showMessageDialog(null, place.getErrorMessage());
+        if(!(currentPlayer instanceof AIPlayer)) {
+            if (place.isLegalPlace() ) {
+                JOptionPane.showMessageDialog(null, place.getErrorMessage() + place.getScore() + " points");
+            } else {
+                JOptionPane.showMessageDialog(null, place.getErrorMessage());
+            }
         }
-
     }
 
     public void actionPerformed(ActionEvent e)
