@@ -16,10 +16,10 @@ public class Board {
     private ArrayList<Tile> tilesTaken;
     private LetterBag letterBag;
 
-    private final String THREE_TIMES_WORD = "3w";
-    private final String TWO_TIMES_WORD = "2w";
-    private final String THREE_TIMES_LETTER = "3l";
-    private final String TWO_TIMES_LETTER = "2l";
+    private final String THREE_TIMES_WORD = "3W";
+    private final String TWO_TIMES_WORD = "2W";
+    private final String THREE_TIMES_LETTER = "3L";
+    private final String TWO_TIMES_LETTER = "2L";
 
 
     /**

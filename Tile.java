@@ -160,7 +160,8 @@ public class Tile {
             }
         }
         else {
-            if(this.letter.equals("3L")){
+
+            if(letter.equals("3L")){
                 colour = new Color(65,159,184);
             } else if(this.letter.equals("2L")){
                 colour = new Color(194, 214, 213);
