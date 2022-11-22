@@ -29,6 +29,7 @@ public class Tile {
 
     public Tile(String letter){
         letter = letter.toUpperCase();
+        colour = new Color(233,224,206);
         oldLetter = "";
         this.letter = letter;
         if(letter.length() == 1){
