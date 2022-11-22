@@ -257,7 +257,10 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         } else {
             JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
-
+    }
+    public void returnAIMessage(Placement place){
+        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + "for "
+                + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
     }
 
     public void actionPerformed(ActionEvent e)
@@ -282,7 +285,8 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     }
 
     public void update(GameEvent e) {
-        currentPlayer= e.getPlayer();
+        currentPlayer = e.getPlayer();
+
         Placement place = e.getPlace();
         board = e.getBoard();
         Color tileColor = new Color(247, 243, 237);
@@ -305,8 +309,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         for (int i = 0; i<PLAYERTILES; i++){
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
-
-        returnMessage(place);
+        //if (currentPlayer instanceof AIPlayer) {
+        //    returnAIMessage(place);
+        //} else {
+            returnMessage(place);
+        //}
     }
 
 
