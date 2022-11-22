@@ -191,7 +191,7 @@ public class Tile {
         this.setLetter(oldLetter);
     }
     public static void main(String[] args) {
-        Tile tile = new Tile("z");
+        Tile tile = new Tile("3w");
         System.out.println(tile.getScore());
         System.out.println(tile.getColour());
     }
