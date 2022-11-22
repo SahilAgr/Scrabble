@@ -1,10 +1,13 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ScrabbleController implements ActionListener {
     private Game model;
     private Coordinates coords;
+
+
     public ScrabbleController(Game model, Coordinates coords) {
         this.model=model;
         this.coords=coords;

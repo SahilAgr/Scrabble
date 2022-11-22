@@ -326,7 +326,7 @@ public class Board {
 
 
     }
-    private Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
+    public Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
         System.out.println(word);
         tilesTaken = new ArrayList<>();
         word = word.toUpperCase();
@@ -356,7 +356,7 @@ public class Board {
         place = new Placement(true, word, 0);
         return place;
     }
-    private Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
+    public Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
         tilesTaken = new ArrayList<>();
         Placement place;
         word = word.toUpperCase();
@@ -421,7 +421,7 @@ public class Board {
         return false;
     }
 
-    private int scoringInitialRight(Coordinates coords){
+    public int scoringInitialRight(Coordinates coords){
         List<Coordinates> iterator = rightLeftIterator(coords);
         int score = 0;
         int otherWordsScore = 0;
@@ -442,7 +442,7 @@ public class Board {
         return score * multi + otherWordsScore;
     }
 
-    private int scoringInitialDown(Coordinates coords){
+    public int scoringInitialDown(Coordinates coords){
         List<Coordinates> iterator = upDownIterator(coords);
         int score = 0;
         int otherWordsScore = 0;
@@ -462,7 +462,7 @@ public class Board {
         }
         return score * multi + otherWordsScore;
     }
-    private int scoringSecondaryRight(Coordinates coords) {
+    public int scoringSecondaryRight(Coordinates coords) {
         List<Coordinates> iterator = rightLeftIterator(coords);
         int score = 0;
         int multi = 1;
@@ -481,7 +481,7 @@ public class Board {
         return score * multi;
     }
 
-    private int scoringSecondaryDown(Coordinates coords){
+    public int scoringSecondaryDown(Coordinates coords){
         List<Coordinates> iterator = upDownIterator(coords);
         int score = 0;
         int multi = 1;

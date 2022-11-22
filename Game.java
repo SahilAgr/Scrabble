@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,6 +112,11 @@ public class Game {
     }
 
     private void turnOrder(Placement place){
+        System.out.println("turnorder");
+        for (Tile t: currPlayer.getHand()){
+
+            System.out.print(t.getString());
+        }
         for (ScrabbleView view: views){
             view.update(new GameEvent(this, place, currPlayer, board));
         }

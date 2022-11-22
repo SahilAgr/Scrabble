@@ -44,6 +44,8 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         model.addScrabbleView(this);
 
+        board = model.getBoard();
+
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         m1 = new JMenuItem("Shuffle");
@@ -104,6 +106,13 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         buttons[7][7].setText(null);
         buttons[7][7].setOpaque(true);
 
+        for (int i = 0; i < BOARDLENGTH; i++) {
+            for (int j = 0; j < BOARDLENGTH; j++) {
+                buttons[i][j].setBackground(board.getGameBoard()[i][j].getColour());
+                buttons[i][j].setOpaque(true);
+            }
+        }
+        /*
         buttons[1][1].setBackground(doubleWordColor);
         buttons[2][2].setBackground(doubleWordColor);
         buttons[3][3].setBackground(doubleWordColor);
@@ -228,6 +237,8 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         buttons[13][9].setOpaque(true);
         buttons[9][13].setOpaque(true);
 
+         */
+
         JLabel blank = new JLabel("");
         this.add(blank);
         JLabel score = new JLabel("Score:", SwingConstants.CENTER);
@@ -269,7 +280,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 "to which you would like place \na legal word that can be generated using your tiles (Displayed at the" +
                 " bottom). \nFor further in-depths rules see: https://scrabble.hasbro.com/en-us/rules");
     }
-
 
     public void update(GameEvent e) {
         currentPlayer= e.getPlayer();

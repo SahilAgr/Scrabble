@@ -16,6 +16,7 @@ public class LetterBag {
     public LetterBag(){
         
         letterBag = new ArrayList<>();
+
         for(int i = 0;i < 9;i++){
             letterBag.add(new Tile("A"));
         } for(int i = 0;i < 2;i++){
@@ -63,6 +64,8 @@ public class LetterBag {
         for(int i = 0;i < 2;i++){
             letterBag.add(new Tile("Y"));
         } letterBag.add(new Tile("Z"));
+
+
     }
 
     /**
