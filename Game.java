@@ -141,6 +141,7 @@ public class Game {
         currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
+        
     }
 
     public Board getBoard(){

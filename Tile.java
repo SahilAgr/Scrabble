@@ -9,6 +9,7 @@ public class Tile {
     private boolean newTile;
     private Color colour;
     private String oldLetter;
+    private Color oldColour;
 
     /**
      * The constructor for the tile Class
@@ -31,6 +32,8 @@ public class Tile {
         letter = letter.toUpperCase();
         colour = new Color(233,224,206);
         oldLetter = "";
+        oldColour = null;
+        newTile = true;
         this.letter = letter;
         if(letter.length() == 1){
             Character c = letter.charAt(0);
@@ -95,10 +98,10 @@ public class Tile {
      */
     public int getScore(){
         if (newTile){
-            if(colour == new Color(194, 214, 213)){
+            if(colour.equals(new Color(194, 214, 213))){
                 return this.score * 2;
             }
-            else if(colour == new Color(65,159,184)){
+            else if(colour.equals(new Color(65,159,184))){
                 return this.score * 3;
             }
             else{
@@ -119,11 +122,14 @@ public class Tile {
     }
 
     public void setLetter(String c){
+        oldColour = colour;
+        System.out.println(oldColour);
         colour = new Color(233,224,206);
+        
         if(oldLetter.length() != 0){
             c = c.toUpperCase();
         }
-        oldLetter = letter;
+        oldLetter = "";
         letter = c;
         if(letter.length() == 1){
             char d = letter.charAt(0);
@@ -185,16 +191,28 @@ public class Tile {
     public void setNewTile(boolean b){
         newTile = b;
     }
-    
-
-    
+    public int getMulti() {
+        if(newTile){
+            if (oldColour.equals(new Color(249, 106, 79))){
+                return 3;
+            }
+            else if (oldColour.equals(new Color(249, 188, 166))){
+                return 2;
+            }
+            else {
+                return 1;
+            }
+        }
+        return 1;
+    }
 
     public void resetTile(){
         this.setLetter(oldLetter);
     }
     public static void main(String[] args) {
-        Tile tile = new Tile("3w");
+        Tile tile = new Tile("2w");
         System.out.println(tile.getScore());
-        System.out.println(tile.getColour());
+        System.out.println(tile.getMulti());
     }
+    
 }

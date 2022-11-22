@@ -1,4 +1,4 @@
-import java.rmi.StubNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,11 +6,11 @@ import java.util.List;
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
- * @author Patrick Ma
+ * @authors Patrick Ma, Matthew Huitema, Sahil Agrawal
  */
 public class Board {
 
-    private Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
+    private Tile[][] gameBoard = new Tile[15][15];
     private boolean isTouching;
     private boolean firstTurn;
     private Dictionary dict;
@@ -144,7 +144,7 @@ public class Board {
      */
     public boolean placeTile(Coordinates coords, Tile tile){
         if (checkFree(coords)){
-            gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()] = tile;
+            gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].setLetter(tile.getString());
             return true;
         }else{
             return false;
@@ -328,7 +328,6 @@ public class Board {
 
     }
     public Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
-        System.out.println(word);
         tilesTaken = new ArrayList<>();
         word = word.toUpperCase();
         Placement place;
@@ -357,7 +356,6 @@ public class Board {
         return place;
     }
     public Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
-        System.out.println(word);
         tilesTaken = new ArrayList<>();
         Placement place;
         word = word.toUpperCase();
@@ -383,23 +381,20 @@ public class Board {
             tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
         }
         place = new Placement(true, word, 0);
+        this.printBoard();
         return place;
     }
 
     private boolean checkRight(Coordinates startingCoordinates){
-        printBoard();
         List<Coordinates> iterator = rightLeftIterator(startingCoordinates);
         String temp = "";
         for(Coordinates c: iterator){
             temp = temp + this.getLetter(c);
         }
-        
+    
         if (temp.length() > 1){
             isTouching = true;
         }
-        System.out.println(temp);
-        System.out.println(temp.length());
-        System.out.println(startingCoordinates.getXCoordinate().toString() + startingCoordinates.getYCoordinate().toString());
         if(dict.isLegalWord(temp) || temp.length() == 1){
             return true;
         }
@@ -407,7 +402,6 @@ public class Board {
     }
 
     private boolean checkDown(Coordinates startingCoordinates) {
-        printBoard();
         List<Coordinates> iterator = upDownIterator(startingCoordinates);
         String temp = "";
         for(Coordinates c: iterator){
@@ -417,9 +411,6 @@ public class Board {
         if (temp.length() > 1){
             isTouching = true;
         }
-        System.out.println(temp);
-        System.out.println(temp.length());
-        System.out.println(startingCoordinates.getXCoordinate().toString() + startingCoordinates.getYCoordinate().toString());
         if(dict.isLegalWord(temp) || temp.length() == 1){
             return true;
         }
@@ -431,20 +422,19 @@ public class Board {
         int score = 0;
         int otherWordsScore = 0;
         int multi = 1;
+        
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(this.getTile(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)).getNewTile() || this.getTile(new Coordinates(coords.getXCoordinate(),  coords.getYCoordinate().ordinal() - 1)).getNewTile()){
-                    otherWordsScore += this.scoringSecondaryDown(coords);
+                if(! checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(c.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
+                    otherWordsScore += this.scoringSecondaryDown(c);
                 }
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals(THREE_TIMES_WORD)){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
-        return score * multi + otherWordsScore;
+        System.out.println(multi);
+        score = (score * multi) + otherWordsScore;
+        return score;
     }
 
     public int scoringInitialDown(Coordinates coords){
@@ -454,18 +444,16 @@ public class Board {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(this.getTile(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())).getNewTile() || this.getTile(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate())).getNewTile()){
-                    otherWordsScore += this.scoringSecondaryRight(coords);
+                if(! checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate())) || ! checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))){                    
+                    otherWordsScore += this.scoringSecondaryRight(c);
                 }
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals(THREE_TIMES_WORD)){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
-        return score * multi + otherWordsScore;
+        System.out.println(multi);
+        score = (score * multi) + otherWordsScore;
+        return score;
     }
     public int scoringSecondaryRight(Coordinates coords) {
         List<Coordinates> iterator = rightLeftIterator(coords);
@@ -474,16 +462,13 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals(THREE_TIMES_WORD)){
-                    multi *= 3;
-                }*/
+                
+                multi = multi * this.getTile(c).getMulti();
 
             }
         }
-        
-        return score * multi;
+        score = score * multi;
+        return score;
     }
 
     public int scoringSecondaryDown(Coordinates coords){
@@ -493,15 +478,12 @@ public class Board {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals(THREE_TIMES_WORD)){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
 
             }
         }
-        return score * multi;
+        score = score * multi;
+        return score;
     }
 
     private void undoTurn(){
@@ -532,9 +514,6 @@ public class Board {
     }
 
     private Placement check1LetterPlacement(Coordinates coords, char c, Player p){
-        System.out.println(c);
-        System.out.println("wait a minute");
-        System.out.println(coords.getXCoordinate().toString() + coords.getYCoordinate().toString());
         if(this.checkFree(coords) && p.hasLetter(String.valueOf(c))){
             this.placeTile(coords, new Tile(String.valueOf(c)));
             p.removeLetter(String.valueOf(c));
@@ -543,14 +522,14 @@ public class Board {
             return new Placement(true, "Something went wrong, you shouldnt see this", 0);
 
         } else if(this.checkFree(coords) && ! p.hasLetter(String.valueOf(c))){
-            /*if(p.hasLetter("*")){
+            if(p.hasLetter("*")){
                 p.removeLetter("*");
                 this.placeTile(coords, new Tile(Character.toString(c), 0, true));
                 tilesTaken.add(new Tile("*"));
             }
             else{
                 return invalidPlacement("You dont have letter " + c, p);
-            }*/
+            }
 
         } else if(! this.checkFree(coords) && ! String.valueOf(c).equals(this.getLetter(coords))){
             return this.invalidPlacement("Word mismatch at " + c, p);
@@ -566,6 +545,7 @@ public class Board {
     private Placement invalidPlacement(String errorMessage, Player p){
         this.undoTurn();
         this.giveTilesBack(p);
+        this.confirmTurn();
         return new Placement(false, errorMessage, 0);
     }
 
@@ -580,16 +560,29 @@ public class Board {
         hand.add(new Tile("t"));
         hand.add(new Tile("e"));
         hand.add(new Tile("s"));
+        hand.add(new Tile("s"));
+        hand.add(new Tile("t"));
+        hand.add(new Tile("t"));
+        hand.add(new Tile("e"));
+        hand.add(new Tile("s"));
         p.addLettersToHand(hand);
-        System.out.println(p.hasLetter("e"));
-        System.out.println(p.removeLetter("e").getString());
         bord.printBoard();
-        System.out.println(bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p).getErrorMessage());
-        System.out.println(bord.checkPlacement(new Coordinates(10, 7), "test","down", false, p).getErrorMessage());
-        /*bord.placeTile(new Coordinates(7, 7), new Tile("t"));
+        Placement pl = bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
+        System.out.println(pl.getErrorMessage());
+        System.out.println(pl.getScore());
+        bord.printBoard();
+        pl = bord.checkPlacement(new Coordinates(11, 3), "tests","down", false, p);
+        System.out.println(pl.getErrorMessage());
+        System.out.println(pl.getScore());
+        bord.printBoard();
+        pl = bord.checkPlacement(new Coordinates(7, 7), "test","down", false, p);
+        System.out.println(pl.getErrorMessage());
+        System.out.println(pl.getScore());
+        bord.printBoard();
+        bord.placeTile(new Coordinates(7, 7), new Tile("t"));
         System.out.println( bord.checkRight(new Coordinates(7, 7)));
         bord.placeTile(new Coordinates(8, 7), new Tile("e"));
-        System.out.println(bord.checkDown(new Coordinates(8, 7)));*/
+        System.out.println(bord.checkDown(new Coordinates(8, 7)));
 
         
     }
