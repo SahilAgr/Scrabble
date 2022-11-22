@@ -135,8 +135,8 @@ class BoardTest {
         System.out.println(board.checkPlacement(new Coordinates(7, 7), "TEST123", "DOWN", true, p).isLegalPlace());
         assertEquals(false, board.checkPlacement(new Coordinates(7, 7), "TEST123", "DOWN", true, p).isLegalPlace());
         assertEquals(4, board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", true, p).getScore());
-        assertEquals("You would've got:", board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", true, p).getErrorMessage());
-        assertEquals("Placement Successful! You got:", board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", false, p).getErrorMessage());
+        assertEquals("You would've got: ", board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", true, p).getErrorMessage());
+        assertEquals("Placement Successful! You got: ", board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", false, p).getErrorMessage());
         assertEquals(4, board.checkPlacement(new Coordinates(7, 7), "TEST", "RIGHT", true, p).getScore());
 
     }
