@@ -112,132 +112,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 buttons[i][j].setOpaque(true);
             }
         }
-        /*
-        buttons[1][1].setBackground(doubleWordColor);
-        buttons[2][2].setBackground(doubleWordColor);
-        buttons[3][3].setBackground(doubleWordColor);
-        buttons[4][4].setBackground(doubleWordColor);
-        buttons[10][10].setBackground(doubleWordColor);
-        buttons[11][11].setBackground(doubleWordColor);
-        buttons[12][12].setBackground(doubleWordColor);
-        buttons[13][13].setBackground(doubleWordColor);
-        buttons[1][13].setBackground(doubleWordColor);
-        buttons[2][12].setBackground(doubleWordColor);
-        buttons[3][11].setBackground(doubleWordColor);
-        buttons[4][10].setBackground(doubleWordColor);
-        buttons[10][4].setBackground(doubleWordColor);
-        buttons[11][3].setBackground(doubleWordColor);
-        buttons[12][2].setBackground(doubleWordColor);
-        buttons[13][1].setBackground(doubleWordColor);
-        buttons[1][1].setOpaque(true);
-        buttons[2][2].setOpaque(true);
-        buttons[3][3].setOpaque(true);
-        buttons[4][4].setOpaque(true);
-        buttons[10][10].setOpaque(true);
-        buttons[11][11].setOpaque(true);
-        buttons[12][12].setOpaque(true);
-        buttons[13][13].setOpaque(true);
-        buttons[1][13].setOpaque(true);
-        buttons[2][12].setOpaque(true);
-        buttons[3][11].setOpaque(true);
-        buttons[4][10].setOpaque(true);
-        buttons[10][4].setOpaque(true);
-        buttons[11][3].setOpaque(true);
-        buttons[12][2].setOpaque(true);
-        buttons[13][1].setOpaque(true);
-        Color tripleWordColor = new Color(249,106,79);
-        buttons[0][7].setBackground(tripleWordColor);
-        buttons[7][0].setBackground(tripleWordColor);
-        buttons[14][0].setBackground(tripleWordColor);
-        buttons[0][14].setBackground(tripleWordColor);
-        buttons[14][7].setBackground(tripleWordColor);
-        buttons[7][14].setBackground(tripleWordColor);
-        buttons[14][14].setBackground(tripleWordColor);
-        buttons[0][0].setBackground(tripleWordColor);
-        buttons[0][7].setOpaque(true);
-        buttons[7][0].setOpaque(true);
-        buttons[14][0].setOpaque(true);
-        buttons[0][14].setOpaque(true);
-        buttons[14][7].setOpaque(true);
-        buttons[7][14].setOpaque(true);
-        buttons[14][14].setOpaque(true);
-        buttons[0][0].setOpaque(true);
-        Color doubleLetterColor = new Color(194,214,213);
-        buttons[0][3].setBackground(doubleLetterColor);
-        buttons[0][11].setBackground(doubleLetterColor);
-        buttons[3][0].setBackground(doubleLetterColor);
-        buttons[11][0].setBackground(doubleLetterColor);
-        buttons[3][7].setBackground(doubleLetterColor);
-        buttons[7][3].setBackground(doubleLetterColor);
-        buttons[2][8].setBackground(doubleLetterColor);
-        buttons[8][2].setBackground(doubleLetterColor);
-        buttons[2][6].setBackground(doubleLetterColor);
-        buttons[3][14].setBackground(doubleLetterColor);
-        buttons[14][3].setBackground(doubleLetterColor);
-        buttons[6][6].setBackground(doubleLetterColor);
-        buttons[6][8].setBackground(doubleLetterColor);
-        buttons[8][6].setBackground(doubleLetterColor);
-        buttons[8][8].setBackground(doubleLetterColor);
-        buttons[6][2].setBackground(doubleLetterColor);
-        buttons[14][11].setBackground(doubleLetterColor);
-        buttons[11][14].setBackground(doubleLetterColor);
-        buttons[11][7].setBackground(doubleLetterColor);
-        buttons[7][11].setBackground(doubleLetterColor);
-        buttons[12][6].setBackground(doubleLetterColor);
-        buttons[6][12].setBackground(doubleLetterColor);
-        buttons[12][8].setBackground(doubleLetterColor);
-        buttons[8][12].setBackground(doubleLetterColor);
-        buttons[0][3].setOpaque(true);
-        buttons[0][11].setOpaque(true);
-        buttons[3][0].setOpaque(true);
-        buttons[11][0].setOpaque(true);
-        buttons[3][7].setOpaque(true);
-        buttons[7][3].setOpaque(true);
-        buttons[2][8].setOpaque(true);
-        buttons[8][2].setOpaque(true);
-        buttons[2][6].setOpaque(true);
-        buttons[3][14].setOpaque(true);
-        buttons[14][3].setOpaque(true);
-        buttons[6][6].setOpaque(true);
-        buttons[6][8].setOpaque(true);
-        buttons[8][6].setOpaque(true);
-        buttons[8][8].setOpaque(true);
-        buttons[6][2].setOpaque(true);
-        buttons[14][11].setOpaque(true);
-        buttons[11][14].setOpaque(true);
-        buttons[11][7].setOpaque(true);
-        buttons[7][11].setOpaque(true);
-        buttons[12][6].setOpaque(true);
-        buttons[6][12].setOpaque(true);
-        buttons[12][8].setOpaque(true);
-        buttons[8][12].setOpaque(true);
-        Color tripleLetterColor = new Color(65,159,184);
-        buttons[1][5].setBackground(tripleLetterColor);
-        buttons[5][1].setBackground(tripleLetterColor);
-        buttons[1][9].setBackground(tripleLetterColor);
-        buttons[9][1].setBackground(tripleLetterColor);
-        buttons[5][5].setBackground(tripleLetterColor);
-        buttons[5][9].setBackground(tripleLetterColor);
-        buttons[9][5].setBackground(tripleLetterColor);
-        buttons[9][9].setBackground(tripleLetterColor);
-        buttons[13][5].setBackground(tripleLetterColor);
-        buttons[5][13].setBackground(tripleLetterColor);
-        buttons[13][9].setBackground(tripleLetterColor);
-        buttons[9][13].setBackground(tripleLetterColor);
-        buttons[1][5].setOpaque(true);
-        buttons[5][1].setOpaque(true);
-        buttons[1][9].setOpaque(true);
-        buttons[9][1].setOpaque(true);
-        buttons[5][5].setOpaque(true);
-        buttons[5][9].setOpaque(true);
-        buttons[9][5].setOpaque(true);
-        buttons[9][9].setOpaque(true);
-        buttons[13][5].setOpaque(true);
-        buttons[5][13].setOpaque(true);
-        buttons[13][9].setOpaque(true);
-        buttons[9][13].setOpaque(true);
-
-         */
 
         JLabel blank = new JLabel("");
         this.add(blank);
@@ -293,6 +167,9 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         board.printBoard();
         //The row (ABC)
+        if(!board.getLetter(new Coordinates(7,7)).equals("+")){
+            buttons[7][7].setIcon(null);
+        }
 
         for (int i = 0; i < BOARDLENGTH; i++) {
             for (int j = 0; j < BOARDLENGTH; j++) {
