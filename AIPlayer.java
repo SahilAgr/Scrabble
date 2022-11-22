@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.random.*;
 
 public class AIPlayer extends Player{
 
@@ -7,37 +8,53 @@ public class AIPlayer extends Player{
     Player player;
     Board board;
     LetterBag letters;
+    Random rand;
+
 
     static final int SIZE = 26;
 
 
     public AIPlayer(String name){
         super(name);
+        this.rand = new Random();
         this.dictionary = new Dictionary();
         this.player = new Player("Help");
         this.board = new Board();
         this.letters = new LetterBag();
+
         player.addLettersToHand(letters.getRandomLetters(7));
 
-        String testWord = createWords(player.getHand());
+        String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();
         System.out.println(findValidWords(dictionary.allWords(),testing));
 
 
     }
 
-    public void playTurn(Game game, Board board, ArrayList<Tile> hand){
+    public void playTurn(Game game, Board board, ArrayList<Tile> hand, Player player){
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
                 if(wordOnBoard(board) == ""){
+                    //place in the middle of the tile - this is for first turn
+                }else{
+                    String playerLetters = createLetterSet(player.getHand());
+                    char [] playerLetterArray = playerLetters.toCharArray();
+                    List<String> allPossibleWords = findValidWords(dictionary.allWords(),playerLetterArray);
+                    String wordToPlace = allPossibleWords.get(rand.nextInt(allPossibleWords.size()));
+                    int k=0;
+                    for(k = 0; k < wordToPlace.length();k++){
+                        if(wordOnBoard(board).charAt(0) == wordToPlace.charAt(k)){
+                            break;
+                        }
+                    }
 
                 }
             }
         }
     }
 
-    public String createWords(ArrayList<Tile> hand){
+    public String createLetterSet(ArrayList<Tile> hand){
         String set = new String();
         String c = wordOnBoard(board);
 
@@ -58,6 +75,7 @@ public class AIPlayer extends Player{
 
 
     }
+
 
     public String wordOnBoard(Board board){
         for(int i = 0; i< 15;i++){
