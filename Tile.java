@@ -1,4 +1,4 @@
-
+import java.awt.Color;
 /**
  * The Tile class that creates all available tiles and any tile manipulation
  * @authors  Matthew Huitema, Patrick Ma
@@ -7,7 +7,7 @@ public class Tile {
     private String letter;
     private int score;
     private boolean newTile;
-    private String multiplier;
+    private Color colour;
     private String oldLetter;
 
     /**
@@ -20,17 +20,16 @@ public class Tile {
         this.score = score;
         this.newTile = placed;
     }
-    public Tile(String letter, int score, String multipl){
+    public Tile(String letter, int score, Color colour){
         this.letter = letter.toUpperCase();  
         this.score = score;
         this.newTile = false;
-        this.multiplier = multipl;
+        this.colour = colour;
     }
 
     public Tile(String letter){
         letter = letter.toUpperCase();
         oldLetter = "";
-        multiplier = "none";
         this.letter = letter;
         if(letter.length() == 1){
             Character c = letter.charAt(0);
@@ -62,19 +61,19 @@ public class Tile {
                 case 'X': score = 8; break;
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
-                case '+': multiplier = "2w"; break;
+                case '+': colour = new Color(249, 188, 166); break;
                 default: score = 0; break;
             }
         }
         else {
             if(this.letter.equals("3L")){
-                multiplier = this.letter;
+                colour = new Color(65,159,184);
             } else if(this.letter.equals("2L")){
-                multiplier = this.letter;
+                colour = new Color(194, 214, 213);
             } else if(this.letter.equals("3W")){
-                multiplier = this.letter;
+                colour = new Color(249, 106, 79);
             } else if(this.letter.equals("2W")){
-                multiplier = this.letter;
+                colour = new Color(249, 188, 166);
             }
         }
         
@@ -94,10 +93,10 @@ public class Tile {
      */
     public int getScore(){
         if (newTile){
-            if(multiplier.equals("2L")){
+            if(colour == new Color(194, 214, 213)){
                 return this.score * 2;
             }
-            else if(multiplier.equals("3L")){
+            else if(colour == new Color(65,159,184)){
                 return this.score * 3;
             }
             else{
@@ -109,16 +108,17 @@ public class Tile {
         }
     }
 
-    public String getMultiplier(){
-        return multiplier;
+    public Color getColour(){
+        return colour;
     }
 
-    public void setMultiplier(String multi){
-        multiplier = multi;
+    public void setColour(Color multi){
+        colour = multi;
     }
 
     public void setLetter(String c){
         System.out.println(oldLetter);
+        colour = new Color(233,224,206);
         if(oldLetter.length() != 0){
             c = c.toUpperCase();
         }
@@ -154,19 +154,19 @@ public class Tile {
                 case 'X': score = 8; break;
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
-                case '+': multiplier = "2w"; break;
+                case '+': colour = new Color(249, 188, 166); break;
                 default: score = 0; letter = "."; break;
             }
         }
         else {
             if(this.letter.equals("3L")){
-                multiplier = this.letter;
+                colour = new Color(65,159,184);
             } else if(this.letter.equals("2L")){
-                multiplier = this.letter;
+                colour = new Color(194, 214, 213);
             } else if(this.letter.equals("3W")){
-                multiplier = this.letter;
+                colour = new Color(249, 106, 79);
             } else if(this.letter.equals("2W")){
-                multiplier = this.letter;
+                colour = new Color(249, 188, 166);
             }
             else {
                 score = 0; 
@@ -192,6 +192,6 @@ public class Tile {
     public static void main(String[] args) {
         Tile tile = new Tile("z");
         System.out.println(tile.getScore());
-        System.out.println(tile.getMultiplier());
+        System.out.println(tile.getColour());
     }
 }

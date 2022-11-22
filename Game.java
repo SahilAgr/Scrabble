@@ -137,4 +137,8 @@ public class Game {
         turnOrder(place);
     }
 
+    public Board getBoard(){
+        return board;
+    }
+
 }

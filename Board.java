@@ -16,6 +16,9 @@ public class Board {
     private ArrayList<Tile> tilesTaken;
     private LetterBag letterBag;
 
+    private final String THREE_WORD = "3w";
+    
+
     /**
      * The constructor for the Board class
      *
@@ -25,10 +28,10 @@ public class Board {
 
         for(int x=0 ; x<15 ; x++){
             for (int y=0 ; y<15 ; y++) {
-                gameBoard[x][y] = new Tile(".", 0,"1");
+                gameBoard[x][y] = new Tile(".");
             }
         }
-        /*
+        
         gameBoard[7][7].setLetter("+");
 
         gameBoard[0][7].setLetter("3w");
@@ -95,8 +98,6 @@ public class Board {
         gameBoard[13][9].setLetter("3l");
         gameBoard[9][13].setLetter("3l");
 
-
-         */
         firstTurn = true;
         dict = new Dictionary();
         letterBag = new LetterBag();
