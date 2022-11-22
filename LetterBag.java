@@ -64,7 +64,9 @@ public class LetterBag {
         for(int i = 0;i < 2;i++){
             letterBag.add(new Tile("Y"));
         } letterBag.add(new Tile("Z"));
-
+        for(int i = 0;i < 2;i++){
+            letterBag.add(new Tile("*"));
+        }
 
     }
 

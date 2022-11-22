@@ -153,7 +153,7 @@ public class Tile {
                 case 'V': score = 4; break;
                 case 'W': score = 4; break;
                 case 'X': score = 8; break;
-                case 'Y': score = 4;break;
+                case 'Y': score = 4; break;
                 case 'Z': score = 10; break;
                 case '+': colour = new Color(249, 188, 166); break;
                 default: score = 0; letter = "."; break;
