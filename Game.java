@@ -47,24 +47,7 @@ public class Game {
      */
     public void place(String direction, Coordinates coords, String word, boolean b){
         Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
-        System.out.println(word);
-        System.out.println(direction);
-        System.out.println(place.getErrorMessage());
-        if(!b){
-            if(place.isLegalPlace()){
-                if(currPlayerIndex < players.size()-1){
-                    currPlayerIndex++;
-                }else{
-                    currPlayerIndex = 0;
-                }
-                currPlayer = players.get(currPlayerIndex);
-            }
-        }
-
-        for (ScrabbleView view: views){
-            view.update(new GameEvent(this, place, currPlayer, board));
-        }
-
+        turnOrder(place);
     }
 
     /**
