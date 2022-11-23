@@ -305,10 +305,16 @@ public class Board {
         int score = 0;
         if(finalCheck){
             if(direction.equals("down")){
+                if(! this.checkDown(coords)){
+                    return invalidPlacement("Vertical Mismatch. Try placing right instead?", p);
+                }
                 score = this.scoringInitialDown(coords);
                 place = new Placement(true, "Placement Successful! You got: ", score);
             }
             if(direction.equals("right")){
+                if(! this.checkRight(coords)){
+                    return invalidPlacement("Horizontal Mismatch. Try placing down instead?", p);
+                }
                 score = this.scoringInitialRight(coords);
                 place = new Placement(true, "Placement Successful! You got: ", score);
             }
