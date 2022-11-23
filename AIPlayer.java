@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.random.*;
 
 public class AIPlayer extends Player{
 
@@ -10,6 +9,8 @@ public class AIPlayer extends Player{
     LetterBag letters;
     Random rand;
 
+
+    Placement placement;
 
     static final int SIZE = 26;
 
@@ -24,32 +25,35 @@ public class AIPlayer extends Player{
 
         player.addLettersToHand(letters.getRandomLetters(7));
 
-        String testWord = createLetterSet(player.getHand());
+       /* String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();
         System.out.println(findValidWords(dictionary.allWords(),testing));
+*/
 
 
     }
 
     public void playTurn(Game game, Board board, ArrayList<Tile> hand, Player player){
+        String playerLetters = createLetterSet(player.getHand());
+        HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
-                Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
-                if(wordOnBoard(board) == ""){
-                    //place in the middle of the tile - this is for first turn
-                }else{
-                    String playerLetters = createLetterSet(player.getHand());
-                    char [] playerLetterArray = playerLetters.toCharArray();
-                    List<String> allPossibleWords = findValidWords(dictionary.allWords(),playerLetterArray);
-                    String wordToPlace = allPossibleWords.get(rand.nextInt(allPossibleWords.size()));
-                    int k=0;
-                    for(k = 0; k < wordToPlace.length();k++){
-                        if(wordOnBoard(board).charAt(0) == wordToPlace.charAt(k)){
-                            break;
-                        }
-                    }
-
+                Coordinates coord = new Coordinates(i,j);
+                char [] playerLetterArray = new char [8];
+                playerLetterArray = playerLetters.toCharArray();
+                if (board.getLetter(coord).length() == 1){
+                    playerLetterArray[8] = board.getLetter(coord).charAt(0);
                 }
+                ArrayList<String> allPossibleWords = findValidWords(dictionary.allWords(), playerLetterArray);
+                //stack overflow told me its not good to make a nested dictionary.
+                FakeList xD = new FakeList(allPossibleWords);
+                possibleWordsAndCoordinates.put(coord, xD);
+                
+            }
+        }
+        for(Coordinates c: possibleWordsAndCoordinates.keySet()){
+            for(String s : possibleWordsAndCoordinates.get(c).getAaaaa()){
+                //its... beautiful.
             }
         }
     }
@@ -78,29 +82,28 @@ public class AIPlayer extends Player{
 
 
     public String wordOnBoard(Board board){
+        String reeee = "";
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
                 if(!board.checkFree(coord)){
-                    return board.getLetter(coord);
-                }else {
-                    return"";
+                    reeee += board.getLetter(coord);
                 }
             }
         }
-        return "";
+        return reeee;
     }
 
 
 
-    public List<String> findValidWords(List<String> dict, char letters[]){
+    public ArrayList<String> findValidWords(List<String> dict, char letters[]){
 
         int []avail = new int[26];
         for(char c : letters){
             int index = c - 'A';
             avail[index]++;
         }
-        List<String> result = new ArrayList();
+        ArrayList<String> result = new ArrayList<>();
         for(String word: dict){
             int []count = new int[26];
             boolean ok = true;
@@ -119,10 +122,23 @@ public class AIPlayer extends Player{
         }
         return result;
     }
-
+/*
     public static void main(String[] args) {
         AIPlayer play = new AIPlayer("help");
 
+
+    }*/
+
+
+    //this is litterally just so i can put a arraylist in a hashmap.
+    private class FakeList{
+        private List<String> aaaaa;
+        FakeList(ArrayList<String> aaa){
+            aaaaa = aaa;
+        }
+        public List<String> getAaaaa() {
+            return aaaaa;
+        }
 
     }
 
@@ -130,5 +146,5 @@ public class AIPlayer extends Player{
 
 
 
-
 }
+

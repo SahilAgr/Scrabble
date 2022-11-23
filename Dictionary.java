@@ -1,5 +1,6 @@
 import java.io.*;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * This is the Dictionary Class.
  * For Milestone 2, Reading the text file and checking the word
