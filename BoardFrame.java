@@ -30,10 +30,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
 
         int numPlayers = 0;
-        int numAI = -1;
-        while ((numPlayers < 1) ||  (numPlayers > 4 )) {
+        int numAI = -4;
+        while ((numPlayers < 1) ||  (numPlayers > 4)) {
             numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
         }
+
 
         while ((numAI + numPlayers < 1) ||  (numAI > 4 && numPlayers+numAI < 4 )) {
             numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (1-4)"));
