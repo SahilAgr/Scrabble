@@ -30,31 +30,29 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
 
         int numPlayers = 0;
+        int numAI = -4;
         while ((numPlayers < 1) ||  (numPlayers > 4)) {
             numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
         }
-<<<<<<< Updated upstream
-=======
+
 
         while ((numAI + numPlayers < 1) ||  (numAI > 4 && numPlayers+numAI < 4 )) {
             numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (1-4)"));
         }
 
->>>>>>> Stashed changes
         ArrayList<Player> players = new ArrayList<>();
         for (int i = 0; i < numPlayers; i++){
             String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
             players.add(new Player(playerName));
             System.out.println(playerName);
         }
-<<<<<<< Updated upstream
-=======
+
         for (int i = 0; i < numAI; i++){
             String playerName = JOptionPane.showInputDialog("Please enter AI "+(i+1)+"'s name:");
             players.add(new AIPlayer(playerName));
             System.out.println(playerName);
         }
->>>>>>> Stashed changes
+
 
         model = new Game(players);
 
@@ -148,10 +146,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
     }
-    public void returnAIMessage(Placement place){
-        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + "for "
-                + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
-    }
+
 
     public void actionPerformed(ActionEvent e)
     {
@@ -206,20 +201,20 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         for (int i = 0; i<PLAYERTILES; i++){
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
-<<<<<<< Updated upstream
+
         //if (currentPlayer instanceof AIPlayer) {
         //    returnAIMessage(place);
         //} else {
             returnMessage(place);
         //}
-=======
+
 
         if (currentPlayer instanceof AIPlayer) {
             returnAIMessage(place);
         } else {
             returnMessage(place);
         }
->>>>>>> Stashed changes
+
     }
 
 
