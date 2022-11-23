@@ -47,7 +47,19 @@ public class Game {
      */
     public void place(String direction, Coordinates coords, String word, boolean b){
         Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
-        turnOrder(place);
+        if(!b){
+            if(place.isLegalPlace()){
+                if(currPlayerIndex < players.size()-1){
+                    currPlayerIndex++;
+                }else{
+                    currPlayerIndex = 0;
+                }
+                currPlayer = players.get(currPlayerIndex);
+                if(currPlayer instanceof AIPlayer){
+                    ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+                }
+            }
+        }
     }
 
     /**
@@ -95,11 +107,6 @@ public class Game {
     }
 
     private void turnOrder(Placement place){
-        System.out.println("turnorder");
-        for (Tile t: currPlayer.getHand()){
-
-            System.out.print(t.getString());
-        }
         for (ScrabbleView view: views){
             view.update(new GameEvent(this, place, currPlayer, board));
         }
@@ -124,6 +131,9 @@ public class Game {
         currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
+        if(currPlayer instanceof AIPlayer){
+            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+        }
         
     }
 
