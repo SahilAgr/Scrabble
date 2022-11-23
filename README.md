@@ -68,4 +68,4 @@ Known Issues:
 1. pretty sure scoring is messed up - but see below for why we couldnt find the bug.
 2, junit not being fully finished - This was Anirudh's responsibility. He was asked to have this finished by sunday morning, and that my work rided on his timelyness.
 as of writing this, hes provided basic ones ~Matthew
-3. The ai is like O(X^4)... idek. Its bad. Xs are like 15, 15, 8, litterallytheentiredictionary.
+

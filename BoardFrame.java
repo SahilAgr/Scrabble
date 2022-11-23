@@ -46,15 +46,19 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             players.add(new Player(playerName));
             System.out.println(playerName);
         }
+
         for (int i = 0; i < numAI; i++){
             String playerName = JOptionPane.showInputDialog("Please enter AI "+(i+1)+"'s name:");
             players.add(new AIPlayer(playerName));
             System.out.println(playerName);
         }
 
+
         model = new Game(players);
 
         model.addScrabbleView(this);
+
+        board = model.getBoard();
 
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
@@ -143,6 +147,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         }
     }
 
+
     public void actionPerformed(ActionEvent e)
     {
         String s = e.getActionCommand();
@@ -197,12 +202,23 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
 
+        //if (currentPlayer instanceof AIPlayer) {
+        //    returnAIMessage(place);
+        //} else {
+            returnMessage(place);
+        //}
+
+
         if (currentPlayer instanceof AIPlayer) {
             returnAIMessage(place);
         } else {
             returnMessage(place);
         }
+
     }
+
+
+
     @Override
     public void gameOver(ArrayList<Player> players) {
         String message = "The game has finished. Scores are as follows:\n" ;
