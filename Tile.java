@@ -123,7 +123,6 @@ public class Tile {
 
     public void setLetter(String c){
         oldColour = colour;
-        System.out.println(oldColour);
         colour = new Color(233,224,206);
         
         if(oldLetter.length() != 0){
