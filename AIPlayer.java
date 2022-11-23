@@ -39,21 +39,41 @@ public class AIPlayer extends Player{
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(i,j);
-                char [] playerLetterArray = new char [8];
-                playerLetterArray = playerLetters.toCharArray();
+                List<Tile> playerLetterArray = player.getHand();
                 if (board.getLetter(coord).length() == 1){
-                    playerLetterArray[8] = board.getLetter(coord).charAt(0);
+                    playerLetterArray.add(board.getTile(coord));
                 }
-                ArrayList<String> allPossibleWords = findValidWords(dictionary.allWords(), playerLetterArray);
+                char [] something = new char[playerLetterArray.size()];
+                for(int k = 0; k < playerLetterArray.size(); k++){
+                    something[k] =playerLetterArray.get(i).getString().charAt(0);
+                }
+                String what =  createLetterSet(player.getHand());
+
+                ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
                 //stack overflow told me its not good to make a nested dictionary.
                 FakeList xD = new FakeList(allPossibleWords);
                 possibleWordsAndCoordinates.put(coord, xD);
                 
             }
         }
+        if(possibleWordsAndCoordinates.keySet().size() == 0){
+            Coordinates base = new Coordinates(Coordinates.xCoordinate.H,8);
+            List<String> defaultWord = findValidWords(dictionary.allWords(),player.getHand().toString().toCharArray());
+            game.place("right",base,defaultWord.get(0),false);
+        }
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
-            for(String s : possibleWordsAndCoordinates.get(c).getAaaaa()){
-                //its... beautiful.
+            ArrayList<String> thing = search((ArrayList<String>) possibleWordsAndCoordinates.get(c).getAaaaa(),board.getTile(c).getString().charAt(0));
+            for(String s : thing){
+
+                if(board.checkPlacement(c,s,"right",true, player).isLegalPlace()){
+                    System.out.println("hello right");
+                    game.place("right",c,s,false);
+                    return;
+                } else if (board.checkPlacement(c,s,"down",true, player).isLegalPlace()) {
+                    System.out.println("hello left");
+                    game.place("down",c,s,false);
+                    return;
+                }
             }
         }
     }
@@ -66,7 +86,7 @@ public class AIPlayer extends Player{
         for(int i = 0; i < 7; i++) {
             temp = hand.get(i).getString();
             set+=temp;
-            System.out.println(temp);
+            //System.out.println(temp);
         }
         if(c == ""){
             return set;
@@ -97,7 +117,9 @@ public class AIPlayer extends Player{
 
 
     public ArrayList<String> findValidWords(List<String> dict, char letters[]){
+        for(int i= 0; i <letters.length; i++){
 
+        }
         int []avail = new int[26];
         for(char c : letters){
             int index = c - 'A';
@@ -122,6 +144,17 @@ public class AIPlayer extends Player{
         }
         return result;
     }
+
+
+    public ArrayList<String> search(ArrayList<String> possible,char c){
+        ArrayList<String> finalBoss = new ArrayList<>();
+        for (String s: possible){
+            if(s.charAt(0) == c){
+                finalBoss.add(s);
+            }
+        }
+        return finalBoss;
+    }
 /*
     public static void main(String[] args) {
         AIPlayer play = new AIPlayer("help");
@@ -132,7 +165,7 @@ public class AIPlayer extends Player{
 
     //this is litterally just so i can put a arraylist in a hashmap.
     private class FakeList{
-        private List<String> aaaaa;
+        private ArrayList<String> aaaaa;
         FakeList(ArrayList<String> aaa){
             aaaaa = aaa;
         }
