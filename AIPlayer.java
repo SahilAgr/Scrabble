@@ -48,7 +48,7 @@ public class AIPlayer extends Player{
                     something[k] =playerLetterArray.get(i).getString().charAt(0);
                 }
                 String what =  createLetterSet(player.getHand());
-                System.out.println(what.toCharArray());
+                //System.out.println(what.toCharArray());
                 ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
                 //stack overflow told me its not good to make a nested dictionary.
                 FakeList xD = new FakeList(allPossibleWords);
@@ -60,6 +60,7 @@ public class AIPlayer extends Player{
             Coordinates base = new Coordinates(Coordinates.xCoordinate.H,8);
             List<String> defaultWord = findValidWords(dictionary.allWords(),player.getHand().toString().toCharArray());
             game.place("right",base,defaultWord.get(0),false);
+
         }
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
             ArrayList<String> thing = search((ArrayList<String>) possibleWordsAndCoordinates.get(c).getAaaaa(),board.getTile(c).getString().charAt(0));
@@ -68,10 +69,12 @@ public class AIPlayer extends Player{
                 if(board.checkPlacement(c,s,"right",true, player).isLegalPlace()){
                     System.out.println("hello right");
                     game.place("right",c,s,false);
+
                     return;
                 } else if (board.checkPlacement(c,s,"down",true, player).isLegalPlace()) {
                     System.out.println("hello left");
                     game.place("down",c,s,false);
+
                     return;
                 }
             }
@@ -120,6 +123,7 @@ public class AIPlayer extends Player{
         for(int i = 0; i <letters.length;i++){
             letters[i] = Character.toUpperCase(letters[i]);
         }
+        System.out.println(letters);
         int []avail = new int[26];
         for(char c : letters){
             int index = c - 'A';
