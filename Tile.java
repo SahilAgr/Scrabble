@@ -10,6 +10,14 @@ public class Tile {
     private Color colour;
     private String oldLetter;
     private Color oldColour;
+    private static final Color l3 = new Color(65,159,184);
+    private static final Color l2 = new Color(194, 214, 213);
+    private static final Color w3 = new Color(249, 106, 79);
+    private static final Color w2 = new Color(249, 188, 166);
+    private static final String L3 = "3L";
+    private static final String L2 = "2L";
+    private static final String W3 = "3W";
+    private static final String W2 = "2W";
 
     /**
      * The constructor for the tile Class
@@ -66,19 +74,19 @@ public class Tile {
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
                 case '*': score = 0; break;
-                case '+': colour = new Color(249, 188, 166); break;
+                case '+': colour = w2; break;
                 default: score = 0; break;
             }
         }
         else {
-            if(this.letter.equals("3L")){
-                colour = new Color(65,159,184);
-            } else if(this.letter.equals("2L")){
-                colour = new Color(194, 214, 213);
-            } else if(this.letter.equals("3W")){
-                colour = new Color(249, 106, 79);
-            } else if(this.letter.equals("2W")){
-                colour = new Color(249, 188, 166);
+            if(this.letter.equals(L3)){
+                colour = l3;
+            } else if(this.letter.equals(L2)){
+                colour = l2;
+            } else if(this.letter.equals(W3)){
+                colour = w3;
+            } else if(this.letter.equals(W2)){
+                colour = w2;
             }
         }
         
@@ -98,10 +106,10 @@ public class Tile {
      */
     public int getScore(){
         if (newTile){
-            if(colour.equals(new Color(194, 214, 213))){
+            if(colour.equals(l2)){
                 return this.score * 2;
             }
-            else if(colour.equals(new Color(65,159,184))){
+            else if(colour.equals(l3)){
                 return this.score * 3;
             }
             else{
@@ -128,7 +136,7 @@ public class Tile {
         if(oldLetter.length() != 0){
             c = c.toUpperCase();
         }
-        oldLetter = "";
+        oldLetter = letter;
         letter = c;
         if(letter.length() == 1){
             char d = letter.charAt(0);
@@ -161,20 +169,20 @@ public class Tile {
                 case 'Y': score = 4; break;
                 case 'Z': score = 10; break;
                 case '*': score = 0; break;
-                case '+': colour = new Color(249, 188, 166); break;
+                case '+': colour = w2; break;
                 default: score = 0; letter = "."; break;
             }
         }
         else {
 
-            if(letter.equals("3L")){
-                colour = new Color(65,159,184);
-            } else if(this.letter.equals("2L")){
-                colour = new Color(194, 214, 213);
-            } else if(this.letter.equals("3W")){
-                colour = new Color(249, 106, 79);
-            } else if(this.letter.equals("2W")){
-                colour = new Color(249, 188, 166);
+            if(letter.equals(L3)){
+                colour = l3;
+            } else if(this.letter.equals(L2)){
+                colour = l2;
+            } else if(this.letter.equals(W3)){
+                colour = w3;
+            } else if(this.letter.equals(W2)){
+                colour = w2;
             }
             else {
                 score = 0; 
@@ -192,10 +200,10 @@ public class Tile {
     }
     public int getMulti() {
         if(newTile){
-            if (oldColour.equals(new Color(249, 106, 79))){
+            if (oldColour.equals(w3)){
                 return 3;
             }
-            else if (oldColour.equals(new Color(249, 188, 166))){
+            else if (oldColour.equals(w2)){
                 return 2;
             }
             else {
@@ -207,11 +215,6 @@ public class Tile {
 
     public void resetTile(){
         this.setLetter(oldLetter);
-    }
-    public static void main(String[] args) {
-        Tile tile = new Tile("2w");
-        System.out.println(tile.getScore());
-        System.out.println(tile.getMulti());
     }
     
 }
