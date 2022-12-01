@@ -1,4 +1,12 @@
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,80 +35,27 @@ public class Board {
      * The constructor for the Board class
      *
      */
-    public Board() {
+    public Board(String boardType) {
+        JSONParser parser = new JSONParser();
+        JSONObject jsonObject = new JSONObject();
+        try{
+            jsonObject = (JSONObject) parser.parse(new FileReader(boardType));
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e){
+            e.printStackTrace();
+        }
 
-
-        for(int x=0 ; x<15 ; x++){
+        for(Integer x=0 ; x<15 ; x++){
+            JSONArray a = (JSONArray) jsonObject.get(x.toString());
             for (int y=0 ; y<15 ; y++) {
-                gameBoard[x][y] = new Tile(".");
+                gameBoard[x][y] = new Tile(a.get(y).toString());
             }
         }
         
-        gameBoard[7][7].setLetter("+");
 
-        gameBoard[0][7].setLetter(THREE_TIMES_WORD);
-        gameBoard[7][0].setLetter(THREE_TIMES_WORD);
-        gameBoard[14][0].setLetter(THREE_TIMES_WORD);
-        gameBoard[0][14].setLetter(THREE_TIMES_WORD);
-        gameBoard[14][7].setLetter(THREE_TIMES_WORD);
-        gameBoard[7][14].setLetter(THREE_TIMES_WORD);
-        gameBoard[14][14].setLetter(THREE_TIMES_WORD);
-        gameBoard[0][0].setLetter(THREE_TIMES_WORD);
-
-        gameBoard[1][1].setLetter(TWO_TIMES_WORD);
-        gameBoard[2][2].setLetter(TWO_TIMES_WORD);
-        gameBoard[3][3].setLetter(TWO_TIMES_WORD);
-        gameBoard[4][4].setLetter(TWO_TIMES_WORD);
-        gameBoard[10][10].setLetter(TWO_TIMES_WORD);
-        gameBoard[11][11].setLetter(TWO_TIMES_WORD);
-        gameBoard[12][12].setLetter(TWO_TIMES_WORD);
-        gameBoard[13][13].setLetter(TWO_TIMES_WORD);
-        gameBoard[1][13].setLetter(TWO_TIMES_WORD);
-        gameBoard[2][12].setLetter(TWO_TIMES_WORD);
-        gameBoard[3][11].setLetter(TWO_TIMES_WORD);
-        gameBoard[4][10].setLetter(TWO_TIMES_WORD);
-        gameBoard[10][4].setLetter(TWO_TIMES_WORD);
-        gameBoard[11][3].setLetter(TWO_TIMES_WORD);
-        gameBoard[12][2].setLetter(TWO_TIMES_WORD);
-        gameBoard[13][1].setLetter(TWO_TIMES_WORD);
-
-        gameBoard[0][3].setLetter(TWO_TIMES_LETTER);
-        gameBoard[0][11].setLetter(TWO_TIMES_LETTER);
-        gameBoard[3][0].setLetter(TWO_TIMES_LETTER);
-        gameBoard[11][0].setLetter(TWO_TIMES_LETTER);
-        gameBoard[3][7].setLetter(TWO_TIMES_LETTER);
-        gameBoard[7][3].setLetter(TWO_TIMES_LETTER);
-        gameBoard[2][8].setLetter(TWO_TIMES_LETTER);
-        gameBoard[8][2].setLetter(TWO_TIMES_LETTER);
-        gameBoard[2][6].setLetter(TWO_TIMES_LETTER);
-        gameBoard[3][14].setLetter(TWO_TIMES_LETTER);
-        gameBoard[14][3].setLetter(TWO_TIMES_LETTER);
-        gameBoard[6][6].setLetter(TWO_TIMES_LETTER);
-        gameBoard[6][8].setLetter(TWO_TIMES_LETTER);
-        gameBoard[8][6].setLetter(TWO_TIMES_LETTER);
-        gameBoard[8][8].setLetter(TWO_TIMES_LETTER);
-        gameBoard[6][2].setLetter(TWO_TIMES_LETTER);
-        gameBoard[14][11].setLetter(TWO_TIMES_LETTER);
-        gameBoard[11][14].setLetter(TWO_TIMES_LETTER);
-        gameBoard[11][7].setLetter(TWO_TIMES_LETTER);
-        gameBoard[7][11].setLetter(TWO_TIMES_LETTER);
-        gameBoard[12][6].setLetter(TWO_TIMES_LETTER);
-        gameBoard[6][12].setLetter(TWO_TIMES_LETTER);
-        gameBoard[12][8].setLetter(TWO_TIMES_LETTER);
-        gameBoard[8][12].setLetter(TWO_TIMES_LETTER);
-
-        gameBoard[1][5].setLetter(THREE_TIMES_LETTER);
-        gameBoard[5][1].setLetter(THREE_TIMES_LETTER);
-        gameBoard[1][9].setLetter(THREE_TIMES_LETTER);
-        gameBoard[9][1].setLetter(THREE_TIMES_LETTER);
-        gameBoard[5][5].setLetter(THREE_TIMES_LETTER);
-        gameBoard[5][9].setLetter(THREE_TIMES_LETTER);
-        gameBoard[9][5].setLetter(THREE_TIMES_LETTER);
-        gameBoard[9][9].setLetter(THREE_TIMES_LETTER);
-        gameBoard[13][5].setLetter(THREE_TIMES_LETTER);
-        gameBoard[5][13].setLetter(THREE_TIMES_LETTER);
-        gameBoard[13][9].setLetter(THREE_TIMES_LETTER);
-        gameBoard[9][13].setLetter(THREE_TIMES_LETTER);
 
         firstTurn = true;
         dict = new Dictionary();
@@ -556,7 +511,7 @@ public class Board {
     }
 
     public static void main(String[] args){
-        Board bord = new Board();
+        Board bord = new Board("./StandardBoard.json");
         Player p = new Player(null);
         ArrayList<Tile> hand = new ArrayList<>();
         hand.add(new Tile("t"));

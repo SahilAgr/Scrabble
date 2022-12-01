@@ -1,4 +1,6 @@
 
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,8 @@ public class Game {
     /**
      * The constructor for the game that will create new players, the board and all the letters
      */
-    public Game(ArrayList<Player> players){
-        this.board = new Board();
+    public Game(ArrayList<Player> players, String boardType){
+        this.board = new Board(boardType);
         this.letterBag = new LetterBag();
         this.players = players;
         this.views = new ArrayList<>();

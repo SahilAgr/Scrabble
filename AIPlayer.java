@@ -5,7 +5,6 @@ public class AIPlayer extends Player{
     private List<String> test;
     Dictionary dictionary;
     Player player;
-    Board board;
     LetterBag letters;
     Random rand;
 
@@ -20,7 +19,6 @@ public class AIPlayer extends Player{
         this.rand = new Random();
         this.dictionary = new Dictionary();
         this.player = new Player("Help");
-        this.board = new Board();
         this.letters = new LetterBag();
 
         player.addLettersToHand(letters.getRandomLetters(7));
@@ -34,7 +32,7 @@ public class AIPlayer extends Player{
     }
 
     public void playTurn(Game game, Board board, ArrayList<Tile> hand, Player player){
-        String playerLetters = createLetterSet(player.getHand());
+        String playerLetters = createLetterSet(player.getHand(), board);
         HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
@@ -47,7 +45,7 @@ public class AIPlayer extends Player{
                 for(int k = 0; k < playerLetterArray.size(); k++){
                     something[k] =playerLetterArray.get(i).getString().charAt(0);
                 }
-                String what =  createLetterSet(player.getHand());
+                String what =  createLetterSet(player.getHand(), board);
                 System.out.println(what.toCharArray());
                 ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
                 //stack overflow told me its not good to make a nested dictionary.
@@ -78,7 +76,7 @@ public class AIPlayer extends Player{
         }
     }
 
-    public String createLetterSet(ArrayList<Tile> hand){
+    public String createLetterSet(ArrayList<Tile> hand, Board board){
         String set = new String();
         String c = wordOnBoard(board);
 
