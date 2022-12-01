@@ -49,16 +49,15 @@ public class Game {
         Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
         if(!b){
             if(place.isLegalPlace()){
-                if(currPlayerIndex < players.size()-1){
-                    currPlayerIndex++;
-                }else{
-                    currPlayerIndex = 0;
-                }
-                currPlayer = players.get(currPlayerIndex);
+                iteratePlayers();
+                turnOrder(place);
                 if(currPlayer instanceof AIPlayer){
                     ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
                 }
             }
+        }
+        else{
+            turnOrder(place);
         }
     }
 
@@ -82,14 +81,9 @@ public class Game {
                     shuffled += tile.getString() + " ";
                 }
             }
+            iteratePlayers();
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
-        if(currPlayerIndex < players.size()-1){
-            currPlayerIndex++;
-        }else{
-            currPlayerIndex = 0;
-        }
-        currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "Shuffled these letters back into the bag: " + shuffled, 0);
         this.turnOrder(place);
     }
@@ -123,11 +117,7 @@ public class Game {
     }
 
     public void passTurn(){
-        if(currPlayerIndex < players.size()-1){
-            currPlayerIndex++;
-        }else{
-            currPlayerIndex = 0;
-        }
+        iteratePlayers();
         currPlayer = players.get(currPlayerIndex);
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
@@ -135,6 +125,15 @@ public class Game {
             ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
         }
         
+    }
+
+    public void iteratePlayers(){
+        if(currPlayerIndex < players.size()-1){
+            currPlayerIndex++;
+        }else{
+            currPlayerIndex = 0;
+        }
+        currPlayer = players.get(currPlayerIndex);
     }
 
     public Board getBoard(){

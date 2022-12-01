@@ -202,12 +202,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
 
-        //if (currentPlayer instanceof AIPlayer) {
-        //    returnAIMessage(place);
-        //} else {
-            returnMessage(place);
-        //}
-
 
         if (currentPlayer instanceof AIPlayer) {
             returnAIMessage(place);

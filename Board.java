@@ -545,7 +545,7 @@ public class Board {
             return new Placement(true, "Something went wrong, you shouldnt see this", 0);
 
         }
-        return new Placement(true, "", 0);
+        return new Placement(true, "Something went wrong, you shouldnt see this", 0);
     }
 
     private Placement invalidPlacement(String errorMessage, Player p){
