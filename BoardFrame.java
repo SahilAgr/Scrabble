@@ -10,6 +10,12 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public static final int BOARDLENGTH = 15;
     public static final int PLAYERTILES = 7;
+    public static final String SHUFFLE = "Shuffle";
+    public static final String PASS = "Pass";
+    public static final String HELP = "Help";
+    public static final String LOAD = "Load";
+    public static final String SAVE = "Save";
+
     private Board board;
     private JButton[][] buttons;
     private JLabel[] tileButtons;
@@ -19,7 +25,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     private JLabel name;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem m1, m2, m3;
+    private JMenuItem m1, m2, m3, m4, m5;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
@@ -31,13 +37,26 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         int numPlayers = 0;
         int numAI = -4;
-        while ((numPlayers < 1) ||  (numPlayers > 4)) {
-            numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
-        }
+
+            while ((numPlayers < 1) ||  (numPlayers > 4)) {
+                try{
+                    numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
+                }catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Try again.");
+                    nfe.printStackTrace();
+                }
+            }
 
 
-        while ((numAI + numPlayers < 1) ||  (numAI > 4 && numPlayers+numAI < 4 )) {
-            numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (1-4)"));
+
+        while ((numAI < 0) ||  (numAI > 4-numPlayers )) {
+            try{
+            numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (Up to "+
+                    (4-numPlayers) +" AI players)"));
+            }catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Invalid input. Try again.");
+                nfe.printStackTrace();
+            }
         }
 
         ArrayList<Player> players = new ArrayList<>();
@@ -62,15 +81,21 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
-        m1 = new JMenuItem("Shuffle");
-        m2 = new JMenuItem("Pass");
-        m3 = new JMenuItem("Help");
+        m1 = new JMenuItem(SHUFFLE);
+        m2 = new JMenuItem(PASS);
+        m3 = new JMenuItem(HELP);
+        m4 = new JMenuItem(SAVE);
+        m5 = new JMenuItem(LOAD);
         m1.addActionListener(this);
         m2.addActionListener(this);
         m3.addActionListener(this);
+        m4.addActionListener(this);
+        m5.addActionListener(this);
         menu.add(m1);
         menu.add(m2);
         menu.add(m3);
+        menu.add(m4);
+        menu.add(m5);
 
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
@@ -152,12 +177,18 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     {
         String s = e.getActionCommand();
         switch(s){
-            case "Shuffle": String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
+            case SHUFFLE: String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
             model.shuffleHand(letters);
                 break;
-            case "Pass": model.passTurn();
+            case PASS: model.passTurn();
                 break;
-            case "Help": help();
+            case HELP: help();
+                break;
+            case SAVE: String fileNameS = JOptionPane.showInputDialog(null, "Please enter the filename of the file you wish to save to:");
+                //model.save(fileNameS)
+                break;
+            case LOAD: String fileNameL = JOptionPane.showInputDialog(null, "Please enter the filename of the file you wish to load from:");
+                //model.Load(fileNameL)
                 break;
         }
 
@@ -216,8 +247,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         }
 
     }
-
-
 
     @Override
     public void gameOver(ArrayList<Player> players) {
