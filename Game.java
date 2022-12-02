@@ -55,6 +55,9 @@ public class Game {
                     ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
                 }
             }
+            else {
+                turnOrder(place);
+            }
         }
         else{
             turnOrder(place);
@@ -81,9 +84,9 @@ public class Game {
                     shuffled += tile.getString() + " ";
                 }
             }
-            iteratePlayers();
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
+        iteratePlayers();
         Placement place = new Placement(false, "Shuffled these letters back into the bag: " + shuffled, 0);
         this.turnOrder(place);
     }
@@ -104,16 +107,17 @@ public class Game {
         for (ScrabbleView view: views){
             view.update(new GameEvent(this, place, currPlayer, board));
         }
-        if(letterBag.isEmpty()){
-            //something that tells the users that this is their last turn?
+        if(place.isLegalPlace()){
+            if(letterBag.isEmpty()){
+                //something that tells the users that this is their last turn?
 
-            countdown -= 1;
-            if (countdown == 0){
-                for (ScrabbleView view: views){
-                    view.gameOver(players);
+                countdown -= 1;
+                if (countdown == 0){
+                    for (ScrabbleView view: views){
+                        view.gameOver(players);
+                    }
                 }
-            }
-        }
+        }}
     }
 
     public void passTurn(){
