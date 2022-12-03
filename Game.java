@@ -52,7 +52,7 @@ public class Game {
                 iteratePlayers();
                 turnOrder(place);
                 if(currPlayer instanceof AIPlayer){
-                    ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+                    ((AIPlayer) currPlayer).playTurn(this,board,currPlayer);
                 }
             }
             else {
@@ -126,7 +126,7 @@ public class Game {
         Placement place = new Placement(false, "You passed your turn.", 0);
         turnOrder(place);
         if(currPlayer instanceof AIPlayer){
-            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
+            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer);
         }
         
     }

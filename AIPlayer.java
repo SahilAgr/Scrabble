@@ -2,7 +2,7 @@ import java.util.*;
 
 public class AIPlayer extends Player{
 
-    private List<String> test;
+    //private List<String> test;
     Dictionary dictionary;
     Player player;
     Board board;
@@ -33,44 +33,51 @@ public class AIPlayer extends Player{
 
     }
 
-    public void playTurn(Game game, Board board, ArrayList<Tile> hand, Player player){
-        String playerLetters = createLetterSet(player.getHand());
+    public void playTurn(Game game, Board board, Player player){
+        ArrayList<Tile> playerLetterArray = player.getHand();
+        for(Tile t: playerLetterArray){
+            if (t.getString().charAt(0) == '*'){
+                
+            }
+        }
         HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(i,j);
-                List<Tile> playerLetterArray = player.getHand();
-                if (board.getLetter(coord).length() == 1){
+                playerLetterArray = player.getHand();
+                if (! board.checkFree(coord) ){
                     playerLetterArray.add(board.getTile(coord));
-                }
-                char [] something = new char[playerLetterArray.size()];
-                for(int k = 0; k < playerLetterArray.size(); k++){
-                    something[k] =playerLetterArray.get(i).getString().charAt(0);
-                }
-                String what =  createLetterSet(player.getHand());
-                System.out.println(what.toCharArray());
-                ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
-                //stack overflow told me its not good to make a nested dictionary.
-                FakeList xD = new FakeList(allPossibleWords);
-                possibleWordsAndCoordinates.put(coord, xD);
-                
+                    String what =  createLetterSet(playerLetterArray);
+                    ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
+                    //stack overflow told me its not good to make a nested dictionary.
+                    FakeList xD = new FakeList(allPossibleWords);
+                    possibleWordsAndCoordinates.put(coord, xD);
+                }   
             }
         }
+        for(Coordinates c: possibleWordsAndCoordinates.keySet()){
+            System.out.println(c.getXCoordinate().toString() + " " + c.getYCoordinate().toString());
+        }
         if(possibleWordsAndCoordinates.keySet().size() == 0){
+            System.out.println("after keyset.size()==0");
             Coordinates base = new Coordinates(Coordinates.xCoordinate.H,8);
             List<String> defaultWord = findValidWords(dictionary.allWords(),player.getHand().toString().toCharArray());
             game.place("right",base,defaultWord.get(0),false);
+            playerLetterArray = player.getHand();
+            return;
         }
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
+            System.out.println("");
             ArrayList<String> thing = search((ArrayList<String>) possibleWordsAndCoordinates.get(c).getAaaaa(),board.getTile(c).getString().charAt(0));
             for(String s : thing){
-
+                System.out.println(c.getXCoordinate().toString() + " " + c.getYCoordinate().toString());
+                System.out.println(s);
                 if(board.checkPlacement(c,s,"right",true, player).isLegalPlace()){
-                    System.out.println("hello right");
+                    System.out.println("placing right");
                     game.place("right",c,s,false);
                     return;
                 } else if (board.checkPlacement(c,s,"down",true, player).isLegalPlace()) {
-                    System.out.println("hello left");
+                    System.out.println("placing down");
                     game.place("down",c,s,false);
                     return;
                 }

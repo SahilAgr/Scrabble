@@ -102,6 +102,8 @@ public class Board {
         gameBoard[13][9].setLetter(THREE_TIMES_LETTER);
         gameBoard[9][13].setLetter(THREE_TIMES_LETTER);
 
+        this.confirmTurn();
+
         firstTurn = true;
         dict = new Dictionary();
         letterBag = new LetterBag();
@@ -302,6 +304,9 @@ public class Board {
 
             finalCheck = true;
         }
+        if (tilesTaken.size() == 0 ){
+            return invalidPlacement("You didnt place any tiles down.", p);
+        }
         int score = 0;
         if(finalCheck){
             if(direction.equals("down")){
@@ -317,6 +322,9 @@ public class Board {
                 }
                 score = this.scoringInitialRight(coords);
                 place = new Placement(true, "Placement Successful! You got: ", score);
+            }
+            if (tilesTaken.size() == 0 ){
+                return invalidPlacement("You didnt place any tiles down.", p);
             }
         }
         if(test){
