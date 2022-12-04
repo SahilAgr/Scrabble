@@ -84,10 +84,4 @@ public class Dictionary {
         }
         return allWords;
     }
-
-
-    public static void main(String[] args) {
-        Dictionary dict = new Dictionary();
-        System.out.println(dict.isLegalWord("KITTEN"));
-    }
 }

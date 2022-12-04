@@ -35,7 +35,7 @@ public class AIPlayer extends Player{
         ArrayList<Tile> playerLetterArray = this.getHand();
         for(Tile t: playerLetterArray){
             if (t.getString().charAt(0) == '*'){
-                game.shuffleHand(this.getHand().toString());
+                game.shuffleHand(ASTERISK);
                 return;
             }
         }
@@ -87,26 +87,40 @@ public class AIPlayer extends Player{
             verifiedWordPlacements.put(c,new FakeList(arrayList));
         }
         boolean hasAtLeastOneValidPlacement = false;
+        ArrayList<Coordinates> coordsToRemove = new ArrayList<>();
         for(Coordinates c: verifiedWordPlacements.keySet()){
             if (verifiedWordPlacements.get(c).getAaaaa().size() == 0){
-                verifiedWordPlacements.remove(c);
+                coordsToRemove.add(c);
             }
             else{
                 hasAtLeastOneValidPlacement = true;
                 System.out.println(verifiedWordPlacements.get(c).getAaaaa().toString());
             }
         }
+        for (Coordinates c: coordsToRemove){
+            verifiedWordPlacements.remove(c);
+        }
+        System.out.println(hasAtLeastOneValidPlacement);
         if(hasAtLeastOneValidPlacement){
             Integer randomCoord = rand.nextInt(verifiedWordPlacements.keySet().size());
             int iterator = 0;
             for(Coordinates c: verifiedWordPlacements.keySet()){
                 if (randomCoord == iterator){
-                    verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1));
+                    if(! board.checkPlacement(c, verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)),RIGHT,false, p).isLegalPlace()){
+                       game.place(DOWN, c,verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)), false);
+                       return;
+                    }
+                    else {
+                        game.place(RIGHT, c,verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)), false);
+                        return;
+                    }
+                    
                 }
             }
         }
         else{
             game.shuffleHand("");
+            return;
         }
     }
 

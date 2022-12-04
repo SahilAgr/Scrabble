@@ -214,18 +214,7 @@ public class Tile {
     }
 
     public void resetTile(){
-        this.setLetter(oldLetter);
-    }
-    public void clearTile(){
-        if(oldColour.equals(l2)){
-
-        } else if (oldColour.equals(l3)){
-
-        } else if (oldColour.equals(w3)){
-
-        } else if (oldColour.equals(w3)){
-
-        } else{}
+        this.letter = oldLetter;
     }
     
 }

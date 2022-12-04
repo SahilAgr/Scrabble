@@ -252,7 +252,7 @@ public class Board {
             place = placeDown(tempCord, word, test, p);
         }
         else{
-            place = new Placement(false, "Direction broke somewhere??", 0);
+            place = this.invalidPlacement("Direction broke somewhere??", p);
         }
         if (! place.isLegalPlace()){
             return place;
@@ -363,7 +363,9 @@ public class Board {
     
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
+            if(i != word.length() + 1){
+                tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
+            }
             
         }
         place = new Placement(true, word, 0);
@@ -374,8 +376,7 @@ public class Board {
         Placement place;
         word = word.toUpperCase();
         if (word.length() == 1){
-            place = new Placement(false, "Invalid Entry, words must be longer then 1.", 0);
-            return place;
+            return invalidPlacement(word, p);
         }
         Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
         
@@ -387,14 +388,17 @@ public class Board {
             if( ! checkDown(tempCord)){
                 return invalidPlacement("Invalid Placement - Vertical Word Mismatch", p);
             }
-            if(tempCord.getYCoordinate().ordinal() == 14){
+            System.out.println();
+            if(tempCord.getXCoordinate().ordinal() == 14){
                 System.out.println(i);
                 System.out.println(word.length());
                 if (i < word.length()-1){
                     return invalidPlacement("You went out of bounds! Your word is too long.", p);
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            if(i != word.length() + 1){
+                tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            }
         }
         place = new Placement(true, word, 0);
         this.printBoard();
@@ -563,44 +567,6 @@ public class Board {
         this.giveTilesBack(p);
         this.confirmTurn();
         return new Placement(false, errorMessage, 0);
-    }
-
-    public static void main(String[] args){
-        Board bord = new Board();
-        Player p = new Player(null);
-        ArrayList<Tile> hand = new ArrayList<>();
-        hand.add(new Tile("t"));
-        hand.add(new Tile("e"));
-        hand.add(new Tile("s"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("e"));
-        hand.add(new Tile("s"));
-        hand.add(new Tile("s"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("e"));
-        hand.add(new Tile("s"));
-        p.addLettersToHand(hand);
-        bord.printBoard();
-        Placement pl = bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
-        System.out.println(pl.getErrorMessage());
-        System.out.println(pl.getScore());
-        bord.printBoard();
-        pl = bord.checkPlacement(new Coordinates(11, 3), "tests","down", false, p);
-        System.out.println(pl.getErrorMessage());
-        System.out.println(pl.getScore());
-        bord.printBoard();
-        pl = bord.checkPlacement(new Coordinates(7, 7), "test","down", false, p);
-        System.out.println(pl.getErrorMessage());
-        System.out.println(pl.getScore());
-        bord.printBoard();
-        bord.placeTile(new Coordinates(7, 7), new Tile("t"));
-        System.out.println( bord.checkRight(new Coordinates(7, 7)));
-        bord.placeTile(new Coordinates(8, 7), new Tile("e"));
-        System.out.println(bord.checkDown(new Coordinates(8, 7)));
-
-        
     }
     
 }
