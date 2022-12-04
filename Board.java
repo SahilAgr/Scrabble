@@ -388,7 +388,9 @@ public class Board {
                 return invalidPlacement("Invalid Placement - Vertical Word Mismatch", p);
             }
             if(tempCord.getYCoordinate().ordinal() == 14){
-                if (i < word.length()){
+                System.out.println(i);
+                System.out.println(word.length());
+                if (i < word.length()-1){
                     return invalidPlacement("You went out of bounds! Your word is too long.", p);
                 }
             }

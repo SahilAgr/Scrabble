@@ -27,7 +27,7 @@ public class Tile {
     public Tile(String letter, int score, boolean placed) {
         this.letter = letter.toUpperCase(); 
         this.score = score;
-        this.newTile = placed;
+        this.newTile = true;
     }
     public Tile(String letter, int score, Color colour){
         this.letter = letter.toUpperCase();  
@@ -215,6 +215,17 @@ public class Tile {
 
     public void resetTile(){
         this.setLetter(oldLetter);
+    }
+    public void clearTile(){
+        if(oldColour.equals(l2)){
+
+        } else if (oldColour.equals(l3)){
+
+        } else if (oldColour.equals(w3)){
+
+        } else if (oldColour.equals(w3)){
+
+        } else{}
     }
     
 }

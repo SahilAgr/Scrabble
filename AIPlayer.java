@@ -3,11 +3,13 @@ import java.util.*;
 public class AIPlayer extends Player{
 
     //private List<String> test;
-    Dictionary dictionary;
-    Player player;
-    Board board;
-    LetterBag letters;
-    Random rand;
+
+    private static final String RIGHT = "right";
+    private static final String ASTERISK = "*";
+    private static final String DOWN = "down";
+    private Dictionary dictionary;
+    private Board board;
+    private Random rand;
 
 
     Placement placement;
@@ -19,11 +21,7 @@ public class AIPlayer extends Player{
         super(name);
         this.rand = new Random();
         this.dictionary = new Dictionary();
-        this.player = new Player("Help");
         this.board = new Board();
-        this.letters = new LetterBag();
-
-        player.addLettersToHand(letters.getRandomLetters(7));
 
        /* String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();
@@ -33,22 +31,27 @@ public class AIPlayer extends Player{
 
     }
 
-    public void playTurn(Game game, Board board, Player player){
-        ArrayList<Tile> playerLetterArray = player.getHand();
+    public void playTurn(Game game, Board board, Player p){
+        ArrayList<Tile> playerLetterArray = this.getHand();
         for(Tile t: playerLetterArray){
             if (t.getString().charAt(0) == '*'){
-                game.shuffleHand(player.getHand().toString());
+                game.shuffleHand(this.getHand().toString());
+                return;
             }
         }
         HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
                 Coordinates coord = new Coordinates(i,j);
-                playerLetterArray = player.getHand();
                 if (! board.checkFree(coord) ){
-                    playerLetterArray.add(board.getTile(coord));
-                    String what =  createLetterSet(playerLetterArray);
+                    String what = "";
+                    for(Tile t: this.getHand()){
+                        what += t.getString();
+                    }
+                    what += board.getTile(coord).getString();
+                    System.out.println(what);
                     ArrayList<String> allPossibleWords =findValidWords(dictionary.allWords(), what.toCharArray());
+                    allPossibleWords = search(allPossibleWords, board.getTile(coord).getString().charAt(0));
                     //stack overflow told me its not good to make a nested dictionary.
                     FakeList xD = new FakeList(allPossibleWords);
                     possibleWordsAndCoordinates.put(coord, xD);
@@ -57,68 +60,54 @@ public class AIPlayer extends Player{
         }
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
             System.out.println(c.getXCoordinate().toString() + " " + c.getYCoordinate().toString());
+            for(String s: possibleWordsAndCoordinates.get(c).getAaaaa()){
+                System.out.println(s);
+            }
         }
         if(possibleWordsAndCoordinates.keySet().size() == 0){
             System.out.println("after keyset.size()==0");
             Coordinates base = new Coordinates(Coordinates.xCoordinate.H,8);
-            List<String> defaultWord = findValidWords(dictionary.allWords(),player.getHand().toString().toCharArray());
-            game.place("right",base,defaultWord.get(0),false);
-            playerLetterArray = player.getHand();
+            List<String> defaultWord = findValidWords(dictionary.allWords(),this.getHand().toString().toCharArray());
+            game.place("right",base,defaultWord.get(rand.nextInt(defaultWord.size()-1)),false);
+            playerLetterArray = this.getHand();
             return;
         }
+        HashMap<Coordinates,FakeList> verifiedWordPlacements = new HashMap<>();
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
-            System.out.println("");
-            ArrayList<String> thing = search((ArrayList<String>) possibleWordsAndCoordinates.get(c).getAaaaa(),board.getTile(c).getString().charAt(0));
-            for(String s : thing){
-                System.out.println(c.getXCoordinate().toString() + " " + c.getYCoordinate().toString());
-                System.out.println(s);
-                if(board.checkPlacement(c,s,"right",true, player).isLegalPlace()){
-                    System.out.println("placing right");
-                    game.place("right",c,s,false);
-                    return;
-                } else if (board.checkPlacement(c,s,"down",true, player).isLegalPlace()) {
-                    System.out.println("placing down");
-                    game.place("down",c,s,false);
-                    return;
+            ArrayList<String> arrayList = new ArrayList<>();
+            for(String s : possibleWordsAndCoordinates.get(c).getAaaaa()){
+                
+                if(board.checkPlacement(c,s,"right",true, this).isLegalPlace()){
+                    arrayList.add(s);
+                } else if (board.checkPlacement(c,s,"down",true, this).isLegalPlace()) {
+                    arrayList.add(s);
+                }
+            }
+            System.out.println(arrayList.toString());
+            verifiedWordPlacements.put(c,new FakeList(arrayList));
+        }
+        boolean hasAtLeastOneValidPlacement = false;
+        for(Coordinates c: verifiedWordPlacements.keySet()){
+            if (verifiedWordPlacements.get(c).getAaaaa().size() == 0){
+                verifiedWordPlacements.remove(c);
+            }
+            else{
+                hasAtLeastOneValidPlacement = true;
+                System.out.println(verifiedWordPlacements.get(c).getAaaaa().toString());
+            }
+        }
+        if(hasAtLeastOneValidPlacement){
+            Integer randomCoord = rand.nextInt(verifiedWordPlacements.keySet().size());
+            int iterator = 0;
+            for(Coordinates c: verifiedWordPlacements.keySet()){
+                if (randomCoord == iterator){
+                    verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1));
                 }
             }
         }
-    }
-
-    public String createLetterSet(ArrayList<Tile> hand){
-        String set = new String();
-        String c = wordOnBoard(board);
-
-        String temp = new String();
-        for(int i = 0; i < 7; i++) {
-            temp = hand.get(i).getString();
-            set+=temp;
-            //System.out.println(temp);
+        else{
+            game.shuffleHand("");
         }
-        if(c == ""){
-            return set;
-        }
-        else {
-            temp += c;
-            return set;
-        }
-
-
-
-    }
-
-
-    public String wordOnBoard(Board board){
-        String reeee = "";
-        for(int i = 0; i< 15;i++){
-            for(int j = 0; j < 15; j++){
-                Coordinates coord = new Coordinates(Coordinates.xCoordinate.ordinalToXCoordinate(i),Coordinates.yCoordinate.ordinalToYCoordinate(j));
-                if(!board.checkFree(coord)){
-                    reeee += board.getLetter(coord);
-                }
-            }
-        }
-        return reeee;
     }
 
 
