@@ -37,7 +37,7 @@ public class AIPlayer extends Player{
         ArrayList<Tile> playerLetterArray = player.getHand();
         for(Tile t: playerLetterArray){
             if (t.getString().charAt(0) == '*'){
-                
+                game.shuffleHand(player.getHand().toString());
             }
         }
         HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
