@@ -9,7 +9,7 @@ import java.util.List;
  * @authors  Matthew Huitema, Sahil Agrawal, Patrick Ma
  */
 
-public class Game {
+public class Game implements Serializable{
     private ArrayList<Player> players;
     private Player currPlayer;
     private int currPlayerIndex;
@@ -17,6 +17,7 @@ public class Game {
     private LetterBag letterBag;
     private int countdown;
     private List<ScrabbleView> views;
+    public static final long serialVersionUID = 1L;
 
 
     /**
