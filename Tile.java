@@ -3,7 +3,8 @@ import java.awt.Color;
  * The Tile class that creates all available tiles and any tile manipulation
  * @authors  Matthew Huitema, Patrick Ma
  */
-public class Tile {
+public class Tile implements Serializable{
+    public static final long serialVersionUID = 1L;
     private String letter;
     private int score;
     private boolean newTile;
