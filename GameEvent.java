@@ -1,7 +1,8 @@
 import java.util.EventObject;
 
-public class GameEvent extends EventObject{
+public class GameEvent extends EventObject implements Serializable{
 
+    public static final long serialVersionUID = 1L;
     private Placement place;
     private Board board;
     public Placement getPlace() {
