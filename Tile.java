@@ -12,10 +12,10 @@ public class Tile implements Serializable{
     private Color colour;
     private String oldLetter;
     private Color oldColour;
-    private static final Color l3 = new Color(65,159,184);
-    private static final Color l2 = new Color(194, 214, 213);
-    private static final Color w3 = new Color(249, 106, 79);
-    private static final Color w2 = new Color(249, 188, 166);
+    public static final Color l3 = new Color(65,159,184);
+    public static final Color l2 = new Color(194, 214, 213);
+    public static final Color w3 = new Color(249, 106, 79);
+    public static final Color w2 = new Color(249, 188, 166);
     private static final String L3 = "3L";
     private static final String L2 = "2L";
     private static final String W3 = "3W";

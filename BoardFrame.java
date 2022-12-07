@@ -15,8 +15,12 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     public static final long serialVersionUID = 1L;
     public static final int BOARDLENGTH = 15;
     public static final int PLAYERTILES = 7;
+
+    public static final Color BLANKCOLOR = new Color(233,224,206);
     private Board board;
-    private JButton[][] buttons;
+    private static JButton[][] buttons;
+
+    public static JButton[][] customButtons;
     private JLabel[] tileButtons;
     private Player currentPlayer;
     private Game model;
@@ -24,11 +28,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     private JLabel name;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem m1, m2, m3, m4, m5;
+    private JMenuItem m1, m2, m3, m4, m5, m6;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
-    public BoardFrame(Game game){
+    public BoardFrame(Game game, JButton[][] buttonArray){
         super("Scrabble");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,26 +66,34 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         m3 = new JMenuItem("Help");
         m4 = new JMenuItem("Save");
         m5 = new JMenuItem("Load");
+        m6 = new JMenuItem("Create Custom Board");
 
         m1.addActionListener(this);
         m2.addActionListener(this);
         m3.addActionListener(this);
         m4.addActionListener(this);
         m5.addActionListener(this);
+        m6.addActionListener(this);
 
         menu.add(m1);
         menu.add(m2);
         menu.add(m3);
         menu.add(m4);
         menu.add(m5);
+        menu.add(m6);
 
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
         currentPlayer = model.getCurrPlayer();
-
-        buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
-        Color blankColor = new Color(233,224,206);
+        if (buttonArray == null){
+            System.out.println("here1");
+            buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
+        } else {
+            System.out.println("here2");
+            buttons = buttonArray;
+        }
+        customButtons = new JButton[BOARDLENGTH][BOARDLENGTH];
         tileButtons = new JLabel[PLAYERTILES];
 
         for (int i = 0; i < BOARDLENGTH+1; i++) {
@@ -96,7 +108,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
                 ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
                 JButton b = new JButton(" ");
                 buttons[i][j] = b;
-                b.setBackground(blankColor);
+                b.setBackground(BLANKCOLOR);
                 b.addActionListener(controller);
                 this.add(b);
             }
@@ -116,9 +128,9 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
             this.add(l);
         }
 
-        Color doubleWordColor = new Color(249,188,166);
+
         ImageIcon iconA = new ImageIcon("BlackStar.png");
-        buttons[7][7].setBackground(doubleWordColor);
+        buttons[7][7].setBackground(Tile.w2);
         buttons[7][7].setIcon(iconA);
         buttons[7][7].setText(null);
         buttons[7][7].setOpaque(true);
@@ -184,13 +196,17 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
             case "Load":
                 try {
                     Game loadedModel = (Game) DataStorage.load("SavedFile.save");
-                    new BoardFrame(loadedModel);
+                    new BoardFrame(loadedModel,null);
                     JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
 
                 } catch (Exception ex) {
                     System.out.println("Couldn't load save data: " + ex.getMessage());
                 }
 
+                break;
+            case "Create Custom Board":
+                new CustomBoardFrame();
+                this.dispose();
                 break;
 
 
@@ -239,6 +255,17 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         //}
     }
 
+    public static void updateCustom(){
+        for (int i = 0; i < BOARDLENGTH; i++) {
+            for (int j = 0; j < BOARDLENGTH; j++) {
+                buttons[i][j].setBackground(customButtons[i][j].getBackground());
+            }
+        }
+        new BoardFrame(null, BoardFrame.buttons);
+    }
+
+
+
 
 
     @Override
@@ -254,6 +281,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     }
 
     public static void main(String[] args) {
-        new BoardFrame(null);
+        new BoardFrame(null, null);
     }
 }
