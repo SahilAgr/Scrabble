@@ -74,56 +74,39 @@ public class AIPlayer extends Player implements Serializable{
             playerLetterArray = this.getHand();
             return;
         }
-        HashMap<Coordinates,FakeList> verifiedWordPlacements = new HashMap<>();
+        final String NO_POSSIBLE = "NO_POSSIBLE";
+        Placement bestPossible = new Placement(true, NO_POSSIBLE,0);
+        Coordinates coords = new Coordinates(7,7);
+        String word = NO_POSSIBLE;
+        String direction = NO_POSSIBLE;
         for(Coordinates c: possibleWordsAndCoordinates.keySet()){
-            ArrayList<String> arrayList = new ArrayList<>();
             for(String s : possibleWordsAndCoordinates.get(c).getAaaaa()){
-                
-                if(board.checkPlacement(c,s,"right",true, this).isLegalPlace()){
-                    arrayList.add(s);
-                } else if (board.checkPlacement(c,s,"down",true, this).isLegalPlace()) {
-                    arrayList.add(s);
-                }
-            }
-            System.out.println(arrayList.toString());
-            verifiedWordPlacements.put(c,new FakeList(arrayList));
-        }
-        boolean hasAtLeastOneValidPlacement = false;
-        ArrayList<Coordinates> coordsToRemove = new ArrayList<>();
-        for(Coordinates c: verifiedWordPlacements.keySet()){
-            if (verifiedWordPlacements.get(c).getAaaaa().size() == 0){
-                coordsToRemove.add(c);
-            }
-            else{
-                hasAtLeastOneValidPlacement = true;
-                System.out.println(verifiedWordPlacements.get(c).getAaaaa().toString());
-            }
-        }
-        for (Coordinates c: coordsToRemove){
-            verifiedWordPlacements.remove(c);
-        }
-        System.out.println(hasAtLeastOneValidPlacement);
-        if(hasAtLeastOneValidPlacement){
-            Integer randomCoord = rand.nextInt(verifiedWordPlacements.keySet().size());
-            int iterator = 0;
-            for(Coordinates c: verifiedWordPlacements.keySet()){
-                if (randomCoord == iterator){
-                    if(! board.checkPlacement(c, verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)),RIGHT,false, p).isLegalPlace()){
-                       game.place(DOWN, c,verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)), false);
-                       return;
+                Placement testRight = board.checkPlacement(c,s,"right",true, this);
+                Placement testDown = board.checkPlacement(c,s,"down",true, this);
+                if(testRight.isLegalPlace()){
+                    if (testRight.getScore() > bestPossible.getScore()){
+                        bestPossible = testRight;
+                        word = s;
+                        coords = c;
+                        direction = RIGHT;
                     }
-                    else {
-                        game.place(RIGHT, c,verifiedWordPlacements.get(c).getAaaaa().get(rand.nextInt(verifiedWordPlacements.get(c).getAaaaa().size() - 1)), false);
-                        return;
+                } else if (testDown.isLegalPlace()) {
+                    if(testDown.getScore() > bestPossible.getScore()){
+                        bestPossible = testRight;
+                        word = s;
+                        coords = c;
+                        direction = DOWN;
                     }
-                    
                 }
             }
         }
-        else{
+        if(bestPossible.getErrorMessage().equals(NO_POSSIBLE)){
             game.shuffleHand("");
-            return;
+        } else {
+            game.place(direction,coords,word,false);
+
         }
+
     }
 
 
