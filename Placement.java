@@ -1,6 +1,7 @@
-public class Placement {
+public class Placement implements Serializable{
     private boolean isLegalPlace;
     private String errorMessage;
+    public static final long serialVersionUID = 1L;
 
     private int score;
     public Placement(boolean isLegalPlace, String errorMessage, int score) {
