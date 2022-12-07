@@ -6,7 +6,9 @@ import java.util.Random;
  * The LetterBag Class that holds all the letters available for the game
  * @author  Matthew Huitema
  */
-public class LetterBag {
+public class LetterBag implements Serializable{
+    
+    public static final long serialVersionUID = 1L;
     
     private List<Tile> letterBag;
 
