@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class AIPlayer extends Player{
+public class AIPlayer extends Player implements Serializable{
 
     //private List<String> test;
 
@@ -10,6 +10,7 @@ public class AIPlayer extends Player{
     private Dictionary dictionary;
     private Board board;
     private Random rand;
+    public static final long serialVersionUID = 1L;
 
 
     Placement placement;
