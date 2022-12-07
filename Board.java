@@ -456,8 +456,18 @@ public class Board implements Serializable {
         
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(c.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
-                    otherWordsScore += this.scoringSecondaryDown(c);
+                if (c.getYCoordinate().ordinal() + 1 == 15){
+                    if(!checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() - 1))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else if(c.getYCoordinate().ordinal() - 1 == -1){
+                    if(!checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else {
+                    if(! checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(c.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
+                        otherWordsScore += this.scoringSecondaryDown(c);
+                    }
                 }
                 multi = multi * this.getTile(c).getMulti();
             }
@@ -475,8 +485,18 @@ public class Board implements Serializable {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate())) || ! checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))){                    
-                    otherWordsScore += this.scoringSecondaryRight(c);
+                if (c.getXCoordinate().ordinal() + 1 == 15){
+                    if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else if(c.getXCoordinate().ordinal() - 1 == -1){
+                    if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else {
+                    if (!checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate())) || !checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
                 }
                 multi = multi * this.getTile(c).getMulti();
             }

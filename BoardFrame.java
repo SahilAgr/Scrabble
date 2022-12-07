@@ -266,6 +266,10 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         }
 
         currentPlayer = e.getPlayer();
+        if (currentPlayer instanceof AIPlayer){
+            JOptionPane.showMessageDialog(this, "The AI is now placing. This WILL take a while, " +
+                    "as the AI is now about to RAW SEARCH a 280k word dictionary about 100 times. Hopefully your pc doesn't burn!");
+        }
         name.setText(currentPlayer.getName()+"\'s");
         Score.setText(valueOf(currentPlayer.getScore()));
 

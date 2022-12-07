@@ -1,11 +1,13 @@
 import java.io.Serializable;
 
 public class Placement implements Serializable{
-    private boolean isLegalPlace;
+    private final boolean isLegalPlace;
     private String errorMessage;
+    private final int score;
+
     public static final long serialVersionUID = 1L;
 
-    private int score;
+
     public Placement(boolean isLegalPlace, String errorMessage, int score) {
         this.isLegalPlace = isLegalPlace;
         this.errorMessage = errorMessage;
@@ -15,16 +17,9 @@ public class Placement implements Serializable{
     public int getScore() {
         return score;
     }
-    public void setScore(int score) {
-        this.score = score;
-    }
     
     public boolean isLegalPlace() {
         return isLegalPlace;
-    }
-
-    public void setLegalPlace(boolean isLegalPlace) {
-        this.isLegalPlace = isLegalPlace;
     }
     
     public String getErrorMessage() {
