@@ -8,7 +8,9 @@ import java.util.List;
  * @author Anirudh Bakshi (101158699)
  * @version 2.0
  */
-public class Dictionary {
+public class Dictionary implements Serializable {
+    
+    public static final long serialVersionUID = 1L;
 
 
     /**
