@@ -1,3 +1,5 @@
+
+import java.io.Serializable;
 /**
  * The Coordinates for the board each axis is an enum so there is no user error when picking where to place a piece
  * @author  Matthew Huitema

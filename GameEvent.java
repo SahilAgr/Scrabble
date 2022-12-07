@@ -1,4 +1,5 @@
 import java.util.EventObject;
+import java.io.Serializable;
 
 public class GameEvent extends EventObject implements Serializable{
 

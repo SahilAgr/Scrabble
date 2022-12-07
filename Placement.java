@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 public class Placement implements Serializable{
     private boolean isLegalPlace;
     private String errorMessage;

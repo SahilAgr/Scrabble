@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.io.Serializable;
 /**
  * The Tile class that creates all available tiles and any tile manipulation
  * @authors  Matthew Huitema, Patrick Ma

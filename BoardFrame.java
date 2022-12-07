@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 
 import static java.lang.String.valueOf;
@@ -173,7 +174,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
             case "Save":
 
                 try {
-                    DataStorage.save(this.model, "SavedFile.save");
+                    //DataStorage.save(this.model, "SavedFile.save");
                     JOptionPane.showMessageDialog(null, "Game is saved");
                 } catch (Exception ex) {
                     System.out.println("Couldn't save: " + ex.getMessage());
