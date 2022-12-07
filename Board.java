@@ -8,8 +8,9 @@ import java.util.List;
  * The Board is made up of Tiles
  * @authors Patrick Ma, Matthew Huitema, Sahil Agrawal
  */
-public class Board {
+public class Board implements Serializable {
 
+    public static final long serialVersionUID = 1L;
     private Tile[][] gameBoard = new Tile[15][15];
     private boolean isTouching;
     private boolean firstTurn;
