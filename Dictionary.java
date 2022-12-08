@@ -1,6 +1,6 @@
 import java.io.*;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.List;
 /**
  * This is the Dictionary Class.
  * For Milestone 2, Reading the text file and checking the word
@@ -8,7 +8,9 @@ import java.util.*;
  * @author Anirudh Bakshi (101158699)
  * @version 2.0
  */
-public class Dictionary {
+public class Dictionary implements Serializable {
+    
+    public static final long serialVersionUID = 1L;
 
 
     /**
@@ -83,11 +85,5 @@ public class Dictionary {
             }
         }
         return allWords;
-    }
-
-
-    public static void main(String[] args) {
-        Dictionary dict = new Dictionary();
-        System.out.println(dict.isLegalWord("KITTEN"));
     }
 }

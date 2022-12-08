@@ -1,5 +1,7 @@
+
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 
 
@@ -8,25 +10,25 @@ import java.util.List;
  * @authors  Matthew Huitema, Sahil Agrawal, Patrick Ma
  */
 
-public class Game {
-    private List<Player> players;
+public class Game implements Serializable{
+    private ArrayList<Player> players;
     private Player currPlayer;
     private int currPlayerIndex;
     private Board board;
     private LetterBag letterBag;
     private int countdown;
     private List<ScrabbleView> views;
+    public static final long serialVersionUID = 1L;
 
 
     /**
      * The constructor for the game that will create new players, the board and all the letters
      */
-    public Game(List<Player> players){
+    public Game(ArrayList<Player> players){
         this.board = new Board();
         this.letterBag = new LetterBag();
         this.players = players;
         this.views = new ArrayList<>();
-
 
         currPlayerIndex = 0;
         currPlayer = players.get(currPlayerIndex);
@@ -43,28 +45,25 @@ public class Game {
      * @param direction
      * @param coords
      * @param word
-     * @param b
+     * @param test
      */
-    public void place(String direction, Coordinates coords, String word, boolean b){
-        Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
-        System.out.println(word);
-        System.out.println(direction);
-        System.out.println(place.getErrorMessage());
-        if(!b){
+    public void place(String direction, Coordinates coords, String word, boolean test){
+        Placement place = board.checkPlacement(coords, word, direction, test, currPlayer);
+        if(!test){
             if(place.isLegalPlace()){
-                if(currPlayerIndex < players.size()-1){
-                    currPlayerIndex++;
-                }else{
-                    currPlayerIndex = 0;
+                iteratePlayers();
+                turnOrder(place);
+                if(currPlayer instanceof AIPlayer){
+                    ((AIPlayer) currPlayer).playTurn(this,board,currPlayer);
                 }
-                currPlayer = players.get(currPlayerIndex);
+            }
+            else {
+                turnOrder(place);
             }
         }
-
-        for (ScrabbleView view: views){
-            view.update(new GameEvent(this, place, currPlayer, board));
+        else{
+            turnOrder(place);
         }
-
     }
 
     /**
@@ -89,12 +88,7 @@ public class Game {
             }
             currPlayer.addLettersToHand(letterBag.getRandomLetters(letters.length()));
         }
-        if(currPlayerIndex < players.size()-1){
-            currPlayerIndex++;
-        }else{
-            currPlayerIndex = 0;
-        }
-        currPlayer = players.get(currPlayerIndex);
+        iteratePlayers();
         Placement place = new Placement(false, "Shuffled these letters back into the bag: " + shuffled, 0);
         this.turnOrder(place);
     }
@@ -113,37 +107,43 @@ public class Game {
 
     private void turnOrder(Placement place){
         for (ScrabbleView view: views){
-
             view.update(new GameEvent(this, place, currPlayer, board));
         }
-        if(letterBag.isEmpty()){
-            //something that tells the users that this is their last turn?
+        if(place.isLegalPlace()){
+            if(letterBag.isEmpty()){
+                //something that tells the users that this is their last turn?
 
-            countdown -= 1;
-            if (countdown == 0){
-                for (ScrabbleView view: views){
-                    //view.endGame();
+                countdown -= 1;
+                if (countdown == 0){
+                    for (ScrabbleView view: views){
+                        view.gameOver(players);
+                    }
                 }
-            }
-        }
-        if(currPlayer instanceof AIPlayer){
-            System.out.println("instance of in turn order");
-            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
-        }
+        }}
     }
 
     public void passTurn(){
+        iteratePlayers();
+        currPlayer = players.get(currPlayerIndex);
+        Placement place = new Placement(false, "You passed your turn.", 0);
+        turnOrder(place);
+        if(currPlayer instanceof AIPlayer){
+            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer);
+        }
+        
+    }
+
+    public void iteratePlayers(){
         if(currPlayerIndex < players.size()-1){
             currPlayerIndex++;
         }else{
             currPlayerIndex = 0;
         }
         currPlayer = players.get(currPlayerIndex);
-        Placement place = new Placement(false, "You passed your turn.", 0);
-        turnOrder(place);
-        if(currPlayer instanceof AIPlayer){
-            ((AIPlayer) currPlayer).playTurn(this,board,currPlayer.getHand(),currPlayer);
-        }
+    }
+
+    public Board getBoard(){
+        return board;
     }
 
 }

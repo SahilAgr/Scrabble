@@ -1,21 +1,29 @@
+
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-import javax.management.openmbean.SimpleType;
 
 /**
  * The Board Class that creates the board in the terminal
  * The Board is made up of Tiles
- * @author Patrick Ma
+ * @authors Patrick Ma, Matthew Huitema, Sahil Agrawal
  */
-public class Board {
+public class Board implements Serializable {
 
-    private Tile[][] gameBoard = new Tile[15][15];//in future use nested hashmap
+    public static final long serialVersionUID = 1L;
+    private Tile[][] gameBoard = new Tile[15][15];
     private boolean isTouching;
     private boolean firstTurn;
     private Dictionary dict;
     private ArrayList<Tile> tilesTaken;
     private LetterBag letterBag;
+
+    private final String THREE_TIMES_WORD = "3W";
+    private final String TWO_TIMES_WORD = "2W";
+    private final String THREE_TIMES_LETTER = "3L";
+    private final String TWO_TIMES_LETTER = "2L";
+
 
     /**
      * The constructor for the Board class
@@ -26,78 +34,78 @@ public class Board {
 
         for(int x=0 ; x<15 ; x++){
             for (int y=0 ; y<15 ; y++) {
-                gameBoard[x][y] = new Tile(".", 0,"1");
+                gameBoard[x][y] = new Tile(".");
             }
         }
-        /*
+        
         gameBoard[7][7].setLetter("+");
 
-        gameBoard[0][7].setLetter("3w");
-        gameBoard[7][0].setLetter("3w");
-        gameBoard[14][0].setLetter("3w");
-        gameBoard[0][14].setLetter("3w");
-        gameBoard[14][7].setLetter("3w");
-        gameBoard[7][14].setLetter("3w");
-        gameBoard[14][14].setLetter("3w");
-        gameBoard[0][0].setLetter("3w");
+        gameBoard[0][7].setLetter(THREE_TIMES_WORD);
+        gameBoard[7][0].setLetter(THREE_TIMES_WORD);
+        gameBoard[14][0].setLetter(THREE_TIMES_WORD);
+        gameBoard[0][14].setLetter(THREE_TIMES_WORD);
+        gameBoard[14][7].setLetter(THREE_TIMES_WORD);
+        gameBoard[7][14].setLetter(THREE_TIMES_WORD);
+        gameBoard[14][14].setLetter(THREE_TIMES_WORD);
+        gameBoard[0][0].setLetter(THREE_TIMES_WORD);
 
-        gameBoard[1][1].setLetter("2w");
-        gameBoard[2][2].setLetter("2w");
-        gameBoard[3][3].setLetter("2w");
-        gameBoard[4][4].setLetter("2w");
-        gameBoard[10][10].setLetter("2w");
-        gameBoard[11][11].setLetter("2w");
-        gameBoard[12][12].setLetter("2w");
-        gameBoard[13][13].setLetter("2w");
-        gameBoard[1][13].setLetter("2w");
-        gameBoard[2][12].setLetter("2w");
-        gameBoard[3][11].setLetter("2w");
-        gameBoard[4][10].setLetter("2w");
-        gameBoard[10][4].setLetter("2w");
-        gameBoard[11][3].setLetter("2w");
-        gameBoard[12][2].setLetter("2w");
-        gameBoard[13][1].setLetter("2w");
+        gameBoard[1][1].setLetter(TWO_TIMES_WORD);
+        gameBoard[2][2].setLetter(TWO_TIMES_WORD);
+        gameBoard[3][3].setLetter(TWO_TIMES_WORD);
+        gameBoard[4][4].setLetter(TWO_TIMES_WORD);
+        gameBoard[10][10].setLetter(TWO_TIMES_WORD);
+        gameBoard[11][11].setLetter(TWO_TIMES_WORD);
+        gameBoard[12][12].setLetter(TWO_TIMES_WORD);
+        gameBoard[13][13].setLetter(TWO_TIMES_WORD);
+        gameBoard[1][13].setLetter(TWO_TIMES_WORD);
+        gameBoard[2][12].setLetter(TWO_TIMES_WORD);
+        gameBoard[3][11].setLetter(TWO_TIMES_WORD);
+        gameBoard[4][10].setLetter(TWO_TIMES_WORD);
+        gameBoard[10][4].setLetter(TWO_TIMES_WORD);
+        gameBoard[11][3].setLetter(TWO_TIMES_WORD);
+        gameBoard[12][2].setLetter(TWO_TIMES_WORD);
+        gameBoard[13][1].setLetter(TWO_TIMES_WORD);
 
-        gameBoard[0][3].setLetter("2l");
-        gameBoard[0][11].setLetter("2l");
-        gameBoard[3][0].setLetter("2l");
-        gameBoard[11][0].setLetter("2l");
-        gameBoard[3][7].setLetter("2l");
-        gameBoard[7][3].setLetter("2l");
-        gameBoard[2][8].setLetter("2l");
-        gameBoard[8][2].setLetter("2l");
-        gameBoard[2][6].setLetter("2l");
-        gameBoard[3][14].setLetter("2l");
-        gameBoard[14][3].setLetter("2l");
-        gameBoard[6][6].setLetter("2l");
-        gameBoard[6][8].setLetter("2l");
-        gameBoard[8][6].setLetter("2l");
-        gameBoard[8][8].setLetter("2l");
-        gameBoard[6][2].setLetter("2l");
-        gameBoard[14][11].setLetter("2l");
-        gameBoard[11][14].setLetter("2l");
-        gameBoard[11][7].setLetter("2l");
-        gameBoard[7][11].setLetter("2l");
-        gameBoard[12][6].setLetter("2l");
-        gameBoard[6][12].setLetter("2l");
-        gameBoard[12][8].setLetter("2l");
-        gameBoard[8][12].setLetter("2l");
+        gameBoard[0][3].setLetter(TWO_TIMES_LETTER);
+        gameBoard[0][11].setLetter(TWO_TIMES_LETTER);
+        gameBoard[3][0].setLetter(TWO_TIMES_LETTER);
+        gameBoard[11][0].setLetter(TWO_TIMES_LETTER);
+        gameBoard[3][7].setLetter(TWO_TIMES_LETTER);
+        gameBoard[7][3].setLetter(TWO_TIMES_LETTER);
+        gameBoard[2][8].setLetter(TWO_TIMES_LETTER);
+        gameBoard[8][2].setLetter(TWO_TIMES_LETTER);
+        gameBoard[2][6].setLetter(TWO_TIMES_LETTER);
+        gameBoard[3][14].setLetter(TWO_TIMES_LETTER);
+        gameBoard[14][3].setLetter(TWO_TIMES_LETTER);
+        gameBoard[6][6].setLetter(TWO_TIMES_LETTER);
+        gameBoard[6][8].setLetter(TWO_TIMES_LETTER);
+        gameBoard[8][6].setLetter(TWO_TIMES_LETTER);
+        gameBoard[8][8].setLetter(TWO_TIMES_LETTER);
+        gameBoard[6][2].setLetter(TWO_TIMES_LETTER);
+        gameBoard[14][11].setLetter(TWO_TIMES_LETTER);
+        gameBoard[11][14].setLetter(TWO_TIMES_LETTER);
+        gameBoard[11][7].setLetter(TWO_TIMES_LETTER);
+        gameBoard[7][11].setLetter(TWO_TIMES_LETTER);
+        gameBoard[12][6].setLetter(TWO_TIMES_LETTER);
+        gameBoard[6][12].setLetter(TWO_TIMES_LETTER);
+        gameBoard[12][8].setLetter(TWO_TIMES_LETTER);
+        gameBoard[8][12].setLetter(TWO_TIMES_LETTER);
 
-        gameBoard[1][5].setLetter("3l");
-        gameBoard[5][1].setLetter("3l");
-        gameBoard[1][9].setLetter("3l");
-        gameBoard[9][1].setLetter("3l");
-        gameBoard[5][5].setLetter("3l");
-        gameBoard[5][9].setLetter("3l");
-        gameBoard[9][5].setLetter("3l");
-        gameBoard[9][9].setLetter("3l");
-        gameBoard[13][5].setLetter("3l");
-        gameBoard[5][13].setLetter("3l");
-        gameBoard[13][9].setLetter("3l");
-        gameBoard[9][13].setLetter("3l");
+        gameBoard[1][5].setLetter(THREE_TIMES_LETTER);
+        gameBoard[5][1].setLetter(THREE_TIMES_LETTER);
+        gameBoard[1][9].setLetter(THREE_TIMES_LETTER);
+        gameBoard[9][1].setLetter(THREE_TIMES_LETTER);
+        gameBoard[5][5].setLetter(THREE_TIMES_LETTER);
+        gameBoard[5][9].setLetter(THREE_TIMES_LETTER);
+        gameBoard[9][5].setLetter(THREE_TIMES_LETTER);
+        gameBoard[9][9].setLetter(THREE_TIMES_LETTER);
+        gameBoard[13][5].setLetter(THREE_TIMES_LETTER);
+        gameBoard[5][13].setLetter(THREE_TIMES_LETTER);
+        gameBoard[13][9].setLetter(THREE_TIMES_LETTER);
+        gameBoard[9][13].setLetter(THREE_TIMES_LETTER);
 
+        this.confirmTurn();
 
-         */
         firstTurn = true;
         dict = new Dictionary();
         letterBag = new LetterBag();
@@ -140,7 +148,7 @@ public class Board {
      */
     public boolean placeTile(Coordinates coords, Tile tile){
         if (checkFree(coords)){
-            gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()] = tile;
+            gameBoard[coords.getXCoordinate().ordinal()][coords.getYCoordinate().ordinal()].setLetter(tile.getString());
             return true;
         }else{
             return false;
@@ -174,7 +182,7 @@ public class Board {
         List<Coordinates> iterator = new ArrayList<>();
         Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
         while( ! this.checkFree(tempCoordinates)) {
-            if(tempCoordinates.getXCoordinate().ordinal() >= 1){
+            if(tempCoordinates.getXCoordinate().ordinal() > 1){
                 tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() - 1);
             } else {
                 break;
@@ -186,7 +194,7 @@ public class Board {
         
         while( ! this.checkFree(tempCoordinates)) {
             iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
-            if(tempCoordinates.getXCoordinate().ordinal() <= 14){
+            if(tempCoordinates.getXCoordinate().ordinal() < 14){
                 tempCoordinates.setXCoordinate(tempCoordinates.getXCoordinate().ordinal() + 1);
             }
             else{
@@ -201,7 +209,7 @@ public class Board {
         List<Coordinates> iterator = new ArrayList<>();
         Coordinates tempCoordinates = new Coordinates(startingCords.getXCoordinate(), startingCords.getYCoordinate());
         while( ! this.checkFree(tempCoordinates)) {
-            if(tempCoordinates.getYCoordinate().ordinal() >= 1){
+            if(tempCoordinates.getYCoordinate().ordinal() > 1){
                 tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() - 1);
             } else {
                 break;
@@ -212,7 +220,7 @@ public class Board {
         tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() + 1);
 
         while( ! this.checkFree(tempCoordinates)) {
-            if(tempCoordinates.getYCoordinate().ordinal() <= 14){
+            if(tempCoordinates.getYCoordinate().ordinal() < 14){
                 iterator.add(new Coordinates(tempCoordinates.getXCoordinate(), tempCoordinates.getYCoordinate()));
                 tempCoordinates.setYCoordinate(tempCoordinates.getYCoordinate().ordinal() + 1);
             }
@@ -246,45 +254,38 @@ public class Board {
             place = placeDown(tempCord, word, test, p);
         }
         else{
-            place = new Placement(false, "Direction broke somewhere??", 0);
-            this.undoTurn();
-            return place;
+            place = this.invalidPlacement("Direction broke somewhere??", p);
         }
         if (! place.isLegalPlace()){
-            this.undoTurn();
             return place;
         }
 
         boolean finalCheck = false;
         if(! firstTurn){
             tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
+            if(! isTouching){
+                return this.invalidPlacement("Invalid Placement - Floating Word.", p);
+            }
             for(int i = 0; i < word.length(); i++){
                 if (direction.equals("right")){
                     if(! checkDown(coords)){
-                        this.giveTilesBack(p);
-                        place = new Placement(false, "Invalid Placement - Vertial Invalid Word" , 0);
-                        this.undoTurn();
-                        return place;
+                        return this.invalidPlacement("Invalid Placement - Vertical Invalid Word", p);
                     }
-                    tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                    if(i < word.length() - 1) {
+                        tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                    }
                     
                 }
                 if (direction.equals("down")){
                     if (! checkRight(tempCord)){
-                        this.giveTilesBack(p);
-                        place = new Placement(false, "Invalid Placement - Horizontal Invalid Word" , 0);
-                        this.undoTurn();
-                        return place;
+                        return this.invalidPlacement("Invalid Placement - Horizontal Invalid Word", p);
                     }
-                    tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                    if(i < word.length() - 1) {
+                        tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                    }
                 }
             }
-            if(! isTouching){
-                this.giveTilesBack(p);
-                place = new Placement(false, "Invalid Placement - Floating Word." , 0);
-                this.undoTurn();
-                return place;
-            }
+            
             finalCheck = true;
         } else{
             boolean crossesStart = false;
@@ -294,33 +295,46 @@ public class Board {
                     if ((tempCord.getXCoordinate().ordinal() == 7) && tempCord.getYCoordinate().ordinal() == 7){
                         crossesStart = true;
                     }
-                    tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                    if(i < word.length() - 1) {
+                        tempCord.setXCoordinate(tempCord.getXCoordinate().ordinal() + 1);
+                    }
                 }
                 else if (direction.equals("down")){
                     if (tempCord.getXCoordinate().ordinal() == 7 && tempCord.getYCoordinate().ordinal() == 7){
                         crossesStart = true;
                     }
-                    tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                    if(i < word.length() - 1) {
+                        tempCord.setYCoordinate(tempCord.getYCoordinate().ordinal() + 1);
+                    }
                 }
             }
             if(! crossesStart){
-                place = new Placement(false, "The placed word must cross start (H 08)." , 0);
-                this.undoTurn();
-                this.giveTilesBack(p);
-                return place;
+                return this.invalidPlacement("The placed word must cross start (H 08).", p);
             }
 
             finalCheck = true;
         }
+        if (tilesTaken.size() == 0 ){
+            return invalidPlacement("You didnt place any tiles down.", p);
+        }
         int score = 0;
         if(finalCheck){
             if(direction.equals("down")){
+                if(! this.checkDown(coords)){
+                    return invalidPlacement("Vertical Mismatch. Try placing right instead?", p);
+                }
                 score = this.scoringInitialDown(coords);
                 place = new Placement(true, "Placement Successful! You got: ", score);
             }
             if(direction.equals("right")){
+                if(! this.checkRight(coords)){
+                    return invalidPlacement("Horizontal Mismatch. Try placing down instead?", p);
+                }
                 score = this.scoringInitialRight(coords);
                 place = new Placement(true, "Placement Successful! You got: ", score);
+            }
+            if (tilesTaken.size() == 0 ){
+                return invalidPlacement("You didnt place any tiles down.", p);
             }
         }
         if(test){
@@ -332,110 +346,73 @@ public class Board {
             confirmTurn();
             p.addScore(score);
             p.addLettersToHand(letterBag.getRandomLetters(tilesTaken.size()));
+            place.setErrorMessage(word);
         }
         return place;
 
 
     }
-    private Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
-        System.out.println(word);
+    public Placement placeDown(Coordinates coords, String word, boolean test, Player p) {
         tilesTaken = new ArrayList<>();
         word = word.toUpperCase();
         Placement place;
         Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
         if (word.length() == 1){
-            place = new Placement(false, "Invalid Entry, words must be longer then 1.", 0);
-            this.undoTurn();
-            return place;
+            return invalidPlacement("Word must be longer than 1 letter.", p);
         }
-        for(int i = 0; i < word.length();) {
-            if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
-                this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
-                p.removeLetter(String.valueOf(word.charAt(i)));
-                tilesTaken.add(new Tile (this.getTile(tempCord).getString()));
-                this.getTile(tempCord).setNewTile(true);
-            } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
+        for(int i = 0; i < word.length(); i++) {
+            place = check1LetterPlacement(tempCord, word.charAt(i), p);
+            if (! place.isLegalPlace()){
                 return place;
-            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
-                return place;
-            } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
-                isTouching = true;
             }
             if( ! checkRight(tempCord)){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
-                return place;
+                return invalidPlacement("Invalid Placement - Horizontal Word Mismatch", p);
             }
             if(tempCord.getYCoordinate().ordinal() == 14){
                 if (i < word.length()){
-                    this.undoTurn();
-                    this.giveTilesBack(p);
-                    return new Placement(false, "You went out of bounds! Your word is too long.", 0);
-
+                    return invalidPlacement("You went out of bounds! Your word is too long.", p);
+    
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
-            i++;
-            
-            
+            if(i != word.length() + 1){
+                tempCord = new Coordinates(tempCord.getXCoordinate(), tempCord.getYCoordinate().ordinal() + 1);
+            }
             
         }
         place = new Placement(true, word, 0);
         return place;
     }
-    private Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
+    public Placement placeRight(Coordinates coords, String word, boolean test, Player p) {
         tilesTaken = new ArrayList<>();
         Placement place;
         word = word.toUpperCase();
         if (word.length() == 1){
-            place = new Placement(false, "Invalid Entry, words must be longer then 1.", 0);
-            return place;
+            return invalidPlacement(word, p);
         }
         Coordinates tempCord = new Coordinates(coords.getXCoordinate(), coords.getYCoordinate());
-        for(int i = 0; i < word.length();) {
-            if(this.checkFree(tempCord) && p.hasLetter(String.valueOf(word.charAt(i)))){
-                this.placeTile(tempCord, new Tile(String.valueOf(word.charAt(i))));
-                p.removeLetter(String.valueOf(word.charAt(i)));
-                tilesTaken.add(new Tile (this.getTile(tempCord).getString()));
-                this.getTile(tempCord).setNewTile(true);
-            } else if(this.checkFree(tempCord) && ! p.hasLetter(String.valueOf(word.charAt(i)))){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "You dont have letter " + word.charAt(i), 0);
+        
+        for(int i = 0; i < word.length(); i++) {
+            place = check1LetterPlacement(tempCord, word.charAt(i), p);
+            if (! place.isLegalPlace()){
                 return place;
-            } else if(! this.checkFree(tempCord) && ! String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "Word mismatch at " + word.charAt(i), 0);
-                return place;
-            } else if(!this.checkFree(tempCord) && String.valueOf(word.charAt(i)).equals(this.getLetter(tempCord))){
-                isTouching = true;
             }
             if( ! checkDown(tempCord)){
-                this.giveTilesBack(p);
-                this.undoTurn();
-                place = new Placement(false, "Invalid Placement - Vertical Word Mismatch", 0);
-                return place;
+                return invalidPlacement("Invalid Placement - Vertical Word Mismatch", p);
             }
+            System.out.println();
             if(tempCord.getXCoordinate().ordinal() == 14){
-                if (i < word.length()){
-                    this.undoTurn();
-                    this.giveTilesBack(p);
-                    return new Placement(false, "You went out of bounds! Your word is too long.", 0);
-
+                System.out.println(i);
+                System.out.println(word.length());
+                if (i < word.length() -1 ){
+                    return invalidPlacement("You went out of bounds! Your word is too long.", p);
                 }
             }
-            tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
-            i++;
+            if(i != word.length() - 1){
+                tempCord = new Coordinates(tempCord.getXCoordinate().ordinal() + 1, tempCord.getYCoordinate());
+            }
         }
         place = new Placement(true, word, 0);
+        this.printBoard();
         return place;
     }
 
@@ -445,12 +422,10 @@ public class Board {
         for(Coordinates c: iterator){
             temp = temp + this.getLetter(c);
         }
-        
+    
         if (temp.length() > 1){
             isTouching = true;
         }
-        System.out.println(temp);
-        System.out.println(dict.isLegalWord(temp));
         if(dict.isLegalWord(temp) || temp.length() == 1){
             return true;
         }
@@ -467,91 +442,99 @@ public class Board {
         if (temp.length() > 1){
             isTouching = true;
         }
-        System.out.println(temp);
-        System.out.println(dict.isLegalWord(temp));
         if(dict.isLegalWord(temp) || temp.length() == 1){
             return true;
         }
         return false;
     }
 
-    private int scoringInitialRight(Coordinates coords){
+    public int scoringInitialRight(Coordinates coords){
         List<Coordinates> iterator = rightLeftIterator(coords);
         int score = 0;
         int otherWordsScore = 0;
         int multi = 1;
+        
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(coords.getXCoordinate(), coords.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(coords.getXCoordinate(),  coords.getYCoordinate().ordinal() - 1))){
-                    otherWordsScore += this.scoringSecondaryDown(coords);
+                if (c.getYCoordinate().ordinal() + 1 == 15){
+                    if(!checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() - 1))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else if(c.getYCoordinate().ordinal() - 1 == -1){
+                    if(!checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else {
+                    if(! checkFree(new Coordinates(c.getXCoordinate(), c.getYCoordinate().ordinal() + 1)) || ! checkFree(new Coordinates(c.getXCoordinate(), coords.getYCoordinate().ordinal() - 1))){
+                        otherWordsScore += this.scoringSecondaryDown(c);
+                    }
                 }
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals("3w")){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
-        return score * multi + otherWordsScore;
+        System.out.println(multi);
+        score = (score * multi) + otherWordsScore;
+        return score;
     }
 
-    private int scoringInitialDown(Coordinates coords){
+    public int scoringInitialDown(Coordinates coords){
         List<Coordinates> iterator = upDownIterator(coords);
         int score = 0;
         int otherWordsScore = 0;
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                if(! checkFree(new Coordinates(coords.getXCoordinate().ordinal() + 1, coords.getYCoordinate())) || ! checkFree(new Coordinates(coords.getXCoordinate().ordinal() - 1, coords.getYCoordinate()))){
-                    otherWordsScore += this.scoringSecondaryRight(coords);
+                if (c.getXCoordinate().ordinal() + 1 == 15){
+                    if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else if(c.getXCoordinate().ordinal() - 1 == -1){
+                    if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
+                } else {
+                    if (!checkFree(new Coordinates(c.getXCoordinate().ordinal() + 1, c.getYCoordinate())) || !checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
+                        otherWordsScore += this.scoringSecondaryRight(c);
+                    }
                 }
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals("3w")){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
-        return score * multi + otherWordsScore;
+        System.out.println(multi);
+        score = (score * multi) + otherWordsScore;
+        return score;
     }
-    private int scoringSecondaryRight(Coordinates coords) {
+    public int scoringSecondaryRight(Coordinates coords) {
         List<Coordinates> iterator = rightLeftIterator(coords);
         int score = 0;
         int multi = 1;
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals("3w")){
-                    multi *= 3;
-                }*/
+                
+                multi = multi * this.getTile(c).getMulti();
 
             }
         }
-        System.out.println(score * multi);
-        return score * multi;
+        score = score * multi;
+        return score;
     }
 
-    private int scoringSecondaryDown(Coordinates coords){
+    public int scoringSecondaryDown(Coordinates coords){
         List<Coordinates> iterator = upDownIterator(coords);
         int score = 0;
         int multi = 1;
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                /*if(this.getTile(c).getMultiplier().equals("2w")){
-                    multi *= 2;
-                } else if(this.getTile(c).getMultiplier().equals("3w")){
-                    multi *= 3;
-                }*/
+                multi = multi * this.getTile(c).getMulti();
 
             }
         }
-        System.out.println(score * multi);
-        return score * multi;
+        score = score * multi;
+        return score;
     }
 
     private void undoTurn(){
@@ -581,24 +564,40 @@ public class Board {
         p.addLettersToHand(hand);
     }
 
-    public static void main(String[] args){
-        Board bord = new Board();
-        Player p = new Player(null);
-        ArrayList<Tile> hand = new ArrayList<>();
-        bord.printBoard();
-        hand.add(new Tile("t"));
-        hand.add(new Tile("e"));
-        hand.add(new Tile("s"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("t"));
-        hand.add(new Tile("e"));
-        hand.add(new Tile("s"));
-        p.addLettersToHand(hand);
-        bord.checkPlacement(new Coordinates(7, 7), "test","right", false, p);
-        bord.checkPlacement(new Coordinates(10, 7), "test","down", false, p);
-        bord.printBoard();
+    private Placement check1LetterPlacement(Coordinates coords, char c, Player p){
+        if(this.checkFree(coords) && p.hasLetter(String.valueOf(c))){
+            this.placeTile(coords, new Tile(String.valueOf(c)));
+            p.removeLetter(String.valueOf(c));
+            tilesTaken.add(new Tile (this.getTile(coords).getString()));
+            this.getTile(coords).setNewTile(true);
+            return new Placement(true, "Something went wrong, you shouldnt see this", 0);
 
-        
+        } else if(this.checkFree(coords) && ! p.hasLetter(String.valueOf(c))){
+            if(p.hasLetter("*")){
+                p.removeLetter("*");
+                this.placeTile(coords, new Tile(Character.toString(c), 0, true));
+                tilesTaken.add(new Tile("*"));
+            }
+            else{
+                return invalidPlacement("You dont have letter " + c, p);
+            }
+
+        } else if(! this.checkFree(coords) && ! String.valueOf(c).equals(this.getLetter(coords))){
+            return this.invalidPlacement("Word mismatch at " + c, p);
+
+        } else if(!this.checkFree(coords) && String.valueOf(c).equals(this.getLetter(coords))){
+            isTouching = true;
+            return new Placement(true, "Something went wrong, you shouldnt see this", 0);
+
+        }
+        return new Placement(true, "Something went wrong, you shouldnt see this", 0);
+    }
+
+    private Placement invalidPlacement(String errorMessage, Player p){
+        this.undoTurn();
+        this.giveTilesBack(p);
+        this.confirmTurn();
+        return new Placement(false, errorMessage, 0);
     }
     
 }

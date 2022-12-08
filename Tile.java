@@ -1,14 +1,25 @@
-
+import java.awt.Color;
+import java.io.Serializable;
 /**
  * The Tile class that creates all available tiles and any tile manipulation
  * @authors  Matthew Huitema, Patrick Ma
  */
-public class Tile {
+public class Tile implements Serializable{
+    public static final long serialVersionUID = 1L;
     private String letter;
     private int score;
     private boolean newTile;
-    private String multiplier;
+    private Color colour;
     private String oldLetter;
+    private Color oldColour;
+    private static final Color l3 = new Color(65,159,184);
+    private static final Color l2 = new Color(194, 214, 213);
+    private static final Color w3 = new Color(249, 106, 79);
+    private static final Color w2 = new Color(249, 188, 166);
+    private static final String L3 = "3L";
+    private static final String L2 = "2L";
+    private static final String W3 = "3W";
+    private static final String W2 = "2W";
 
     /**
      * The constructor for the tile Class
@@ -18,19 +29,21 @@ public class Tile {
     public Tile(String letter, int score, boolean placed) {
         this.letter = letter.toUpperCase(); 
         this.score = score;
-        this.newTile = placed;
+        this.newTile = true;
     }
-    public Tile(String letter, int score, String multipl){
+    public Tile(String letter, int score, Color colour){
         this.letter = letter.toUpperCase();  
         this.score = score;
         this.newTile = false;
-        this.multiplier = multipl;
+        this.colour = colour;
     }
 
     public Tile(String letter){
         letter = letter.toUpperCase();
+        colour = new Color(233,224,206);
         oldLetter = "";
-        multiplier = "none";
+        oldColour = null;
+        newTile = true;
         this.letter = letter;
         if(letter.length() == 1){
             Character c = letter.charAt(0);
@@ -62,19 +75,20 @@ public class Tile {
                 case 'X': score = 8; break;
                 case 'Y': score = 4;break;
                 case 'Z': score = 10; break;
-                case '+': multiplier = "2w"; break;
+                case '*': score = 0; break;
+                case '+': colour = w2; break;
                 default: score = 0; break;
             }
         }
         else {
-            if(this.letter.equals("3L")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("2L")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("3W")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("2W")){
-                multiplier = this.letter;
+            if(this.letter.equals(L3)){
+                colour = l3;
+            } else if(this.letter.equals(L2)){
+                colour = l2;
+            } else if(this.letter.equals(W3)){
+                colour = w3;
+            } else if(this.letter.equals(W2)){
+                colour = w2;
             }
         }
         
@@ -94,10 +108,10 @@ public class Tile {
      */
     public int getScore(){
         if (newTile){
-            if(multiplier.equals("2L")){
+            if(colour.equals(l2)){
                 return this.score * 2;
             }
-            else if(multiplier.equals("3L")){
+            else if(colour.equals(l3)){
                 return this.score * 3;
             }
             else{
@@ -109,16 +123,18 @@ public class Tile {
         }
     }
 
-    public String getMultiplier(){
-        return multiplier;
+    public Color getColour(){
+        return colour;
     }
 
-    public void setMultiplier(String multi){
-        multiplier = multi;
+    public void setColour(Color multi){
+        colour = multi;
     }
 
     public void setLetter(String c){
-        System.out.println(oldLetter);
+        oldColour = colour;
+        colour = new Color(233,224,206);
+        
         if(oldLetter.length() != 0){
             c = c.toUpperCase();
         }
@@ -152,21 +168,23 @@ public class Tile {
                 case 'V': score = 4; break;
                 case 'W': score = 4; break;
                 case 'X': score = 8; break;
-                case 'Y': score = 4;break;
+                case 'Y': score = 4; break;
                 case 'Z': score = 10; break;
-                case '+': multiplier = "2w"; break;
+                case '*': score = 0; break;
+                case '+': colour = w2; break;
                 default: score = 0; letter = "."; break;
             }
         }
         else {
-            if(this.letter.equals("3L")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("2L")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("3W")){
-                multiplier = this.letter;
-            } else if(this.letter.equals("2W")){
-                multiplier = this.letter;
+
+            if(letter.equals(L3)){
+                colour = l3;
+            } else if(this.letter.equals(L2)){
+                colour = l2;
+            } else if(this.letter.equals(W3)){
+                colour = w3;
+            } else if(this.letter.equals(W2)){
+                colour = w2;
             }
             else {
                 score = 0; 
@@ -182,16 +200,23 @@ public class Tile {
     public void setNewTile(boolean b){
         newTile = b;
     }
-    
-
-    
+    public int getMulti() {
+        if(newTile){
+            if (oldColour.equals(w3)){
+                return 3;
+            }
+            else if (oldColour.equals(w2)){
+                return 2;
+            }
+            else {
+                return 1;
+            }
+        }
+        return 1;
+    }
 
     public void resetTile(){
-        this.setLetter(oldLetter);
+        this.letter = oldLetter;
     }
-    public static void main(String[] args) {
-        Tile tile = new Tile("z");
-        System.out.println(tile.getScore());
-        System.out.println(tile.getMultiplier());
-    }
+    
 }

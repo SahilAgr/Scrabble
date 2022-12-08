@@ -1,8 +1,12 @@
+
+import java.io.Serializable;
 /**
  * The Coordinates for the board each axis is an enum so there is no user error when picking where to place a piece
  * @author  Matthew Huitema
  */
-public class Coordinates {
+public class Coordinates implements Serializable {
+    
+    public static final long serialVersionUID = 1L;
 
     //enums for the x and y co-ords. Enums doesnt like it when I use integers. ~MH
     public enum yCoordinate{ONE,TWO,THREE,FOUR,FIVE,SIX,SEVEN,EIGHT,NINE,TEN,ELEVEN,TWELVE,THIRTEEN,FOURTEEN,FIFTEEN;
@@ -108,12 +112,5 @@ public class Coordinates {
 
     public void setYCoordinate(Integer yCo){
         yCoord = yCoordinate.ordinalToYCoordinate(yCo);
-    }
-
-    public static void main (String[] args){
-        Coordinates coord = new Coordinates(1, 1);
-        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
-        coord = new Coordinates(coord.getXCoordinate().ordinal() + 1, coord.getYCoordinate().ordinal() + 1);
-        System.out.println(coord.getXCoordinate().toString() + coord.getYCoordinate().toString());
     }
 }

@@ -1,10 +1,14 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.Serializable;
 
-public class ScrabbleController implements ActionListener {
+public class ScrabbleController implements ActionListener, Serializable {
     private Game model;
     private Coordinates coords;
+    public static final long serialVersionUID = 1L;
+
+
     public ScrabbleController(Game model, Coordinates coords) {
         this.model=model;
         this.coords=coords;

@@ -1,14 +1,16 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * The Player Class that assigns a player letters and scores
  * @authors  Matthew Huitema, Patrick Ma, Sahil Agrawal
  */
-public class Player {
+public class Player implements Serializable {
     
     private Integer score;
     private ArrayList<Tile> hand;
     private String name;
+    public static final long serialVersionUID = 1L;
 
     /**
      * The constructor for the Player class
