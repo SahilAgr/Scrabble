@@ -34,7 +34,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
-    public BoardFrame(){
+    public BoardFrame(Game game){
         super("Scrabble");
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
@@ -188,13 +188,14 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public void returnMessage(Placement place){
         if (place.isLegalPlace()){
-            JOptionPane.showMessageDialog(null, place.getErrorMessage()+ place.getScore()+ " points");
+            JOptionPane.showMessageDialog(null, currentPlayer.getName() +" placed: " + place.getErrorMessage() + " for "
+                    + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
         } else {
             JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
     }
     public void returnAIMessage(Placement place){
-        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + "for "
+        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + " for "
                 + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
     }
 
@@ -211,7 +212,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 break;
             case SAVE: String fileNameS = JOptionPane.showInputDialog(null, "Please enter the filename of the file you wish to save to:");
                 try {
-                    //DataStorage.save(this.model, "SavedFile.save");
+                    DataStorage.save(this.model, "SavedFile.save");
                     JOptionPane.showMessageDialog(null, "Game is saved");
                 } catch (Exception ex) {
                     System.out.println("Couldn't save: " + ex.getMessage());
@@ -219,7 +220,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 break;
             case LOAD: try {
                 Game loadedModel = (Game) DataStorage.load("SavedFile.save");
-                new BoardFrame();
+                new BoardFrame(loadedModel);
                 JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
 
             } catch (Exception ex) {
@@ -291,6 +292,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     }
 
     public static void main(String[] args) {
-        new BoardFrame();
+        new BoardFrame(null);
     }
 }
