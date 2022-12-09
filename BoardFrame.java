@@ -18,7 +18,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     public static final String SAVE = "Save";
 
     private Board board;
-    private HashMap<String,String> boardConfigs;
+    private HashMap<String,String> boardConfigs= new HashMap<>();;
     private JButton[][] buttons;
     private JLabel[] tileButtons;
     private Player currentPlayer;
@@ -33,8 +33,9 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public BoardFrame(){
         super("Scrabble");
-
-        boardConfigs.put("Basic Board", "./StandardBoard.json");
+        boardConfigs.put("Standard", "./StandardBoard.json");
+        boardConfigs.put("Modern Art", "./InverseStandard.json");
+        boardConfigs.put("High Scoring", "./CrazyBoard.json");
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
@@ -77,7 +78,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         }
 
 
-        model = new Game(players, "./StandardBoard.json");
+        model = new Game(players, "./InverseStandard.json");
 
         model.addScrabbleView(this);
 
