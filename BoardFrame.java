@@ -24,6 +24,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     private static final String SAVE = "Save";
     private static final String CUSTOM = "Create Custom Board";
     private static final String PRESET = "Choose Preset Board";
+    private static final String NEWGAME = "New Game";
 
 
     private HashMap<String, String> boardTypes;
@@ -39,7 +40,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     private JLabel name;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem m1, m2, m3, m4, m5, m6, m7;
+    private JMenuItem m1, m2, m3, m4, m5, m6, m7, m8;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
@@ -61,6 +62,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         m5 = new JMenuItem(LOAD);
         m6 = new JMenuItem(CUSTOM);
         m7 = new JMenuItem(PRESET);
+        m8 = new JMenuItem(NEWGAME);
         m1.addActionListener(this);
         m2.addActionListener(this);
         m3.addActionListener(this);
@@ -68,6 +70,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         m5.addActionListener(this);
         m6.addActionListener(this);
         m7.addActionListener(this);
+        m8.addActionListener(this);
         menu.add(m1);
         menu.add(m2);
         menu.add(m3);
@@ -75,6 +78,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         menu.add(m5);
         menu.add(m6);
         menu.add(m7);
+        menu.add(m8);
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
@@ -102,8 +106,25 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
              */
         } else {
-            //offer options here
-            String boardType = "./InverseStandard.json";
+            if (!skipLoad) {
+                String[] loadOptions1 = {"Standard", "Preset Custom"};
+                String[] loadOptions2 = {"Modern Art", "Crazy Points"};
+                String boardType;
+                int isBoardStandard = 0;
+                isBoardStandard = JOptionPane.showOptionDialog(null, "Would you like a standard board, or a Preset Custom Board?", "Select an option",
+                        JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, loadOptions1, loadOptions1[1]);
+                if (isBoardStandard == 0) {
+                    boardType = "./StandardBoard.json";
+                } else{
+                    isBoardStandard = JOptionPane.showOptionDialog(null, "Which custom board would you like to use?", "Select an option",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, loadOptions2, loadOptions2[1]);
+                    if(isBoardStandard == 0){
+                        boardType = "./InverseStandard.json";
+                    } else { boardType = "./CrazyBoard.json";}
+                }
+
+                customBoard = new Board(boardType);
+            }
 
             int numPlayers = 0;
             int numAI = -4;
@@ -264,6 +285,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             case PRESET:
                 skipLoad = true;
                 //MATHEW CODE HERE
+                break;
+            case NEWGAME:
+                skipLoad = false;
+                new BoardFrame();
+                this.dispose();
                 break;
 
         }
