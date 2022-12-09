@@ -82,17 +82,18 @@ public class CustomBoardFrame extends JFrame implements ActionListener{
         Object o = e.getSource();
         if (o instanceof JButton) {
             switch (((JButton) o).getText()) {
-                case "C" -> {
+                case "C":
                     this.dispose();
-                }
-                case "S" -> {
+                    break;
+                case "S":
                     BoardFrame.customBoard = new Board(buttons);
                     this.dispose();
                     BoardFrame.updateCustom();
+                    break;
 
-
-                }
-                default -> System.out.println("Error");
+                default:
+                    System.out.println("Error");
+                    break;
             }
         }
     }
