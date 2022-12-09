@@ -86,7 +86,7 @@ public class CustomBoardFrame extends JFrame implements ActionListener{
                     this.dispose();
                 }
                 case "S" -> {
-                    BoardFrame.customButtons = buttons;
+                    BoardFrame.customBoard = new Board(buttons);
                     this.dispose();
                     BoardFrame.updateCustom();
 

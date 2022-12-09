@@ -22,23 +22,26 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     private static final String LOAD = "Load";
     private static final String SAVE = "Save";
     private static final String CUSTOM = "Create Custom Board";
+    private static final String PRESET = "Choose Preset Board";
+
 
     private Board board;
     private JButton[][] buttons;
 
-    public static JButton[][] customButtons;
+    public static Board customBoard;
     private JLabel[] tileButtons;
     private Player currentPlayer;
     private Game model;
+    public static boolean skipLoad;
     private JLabel Score;
     private JLabel name;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem m1, m2, m3, m4, m5, m6;
+    private JMenuItem m1, m2, m3, m4, m5, m6, m7;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
-    public BoardFrame(JButton[][] buttonBoard, boolean skipLoad){
+    public BoardFrame(){
         super("Scrabble");
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
@@ -48,18 +51,21 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         m4 = new JMenuItem(SAVE);
         m5 = new JMenuItem(LOAD);
         m6 = new JMenuItem(CUSTOM);
+        m7 = new JMenuItem(PRESET);
         m1.addActionListener(this);
         m2.addActionListener(this);
         m3.addActionListener(this);
         m4.addActionListener(this);
         m5.addActionListener(this);
         m6.addActionListener(this);
+        m7.addActionListener(this);
         menu.add(m1);
         menu.add(m2);
         menu.add(m3);
         menu.add(m4);
         menu.add(m5);
         menu.add(m6);
+        menu.add(m7);
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
@@ -122,7 +128,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 System.out.println(playerName);
             }
 
-            model = new Game(players, buttonBoard);
+            model = new Game(players, customBoard);
 
             model.addScrabbleView(this);
 
@@ -231,17 +237,21 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
                 break;
             case LOAD: try {
                 Game loadedModel = (Game) DataStorage.load("SavedFile.save");
-                new BoardFrame(null, true);
+                new BoardFrame();
                 JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
 
             } catch (Exception ex) {
                 System.out.println("Couldn't load save data: " + ex.getMessage());
             }
                 break;
-            case CUSTOM: new CustomBoardFrame();
+            case CUSTOM:
+                skipLoad = true;
+                new CustomBoardFrame();
             this.dispose();
-
-
+                break;
+            case PRESET:
+                skipLoad = true;
+                //MATHEW CODE HERE
                 break;
 
         }
@@ -295,7 +305,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     }
 
     public static void updateCustom() {
-        new BoardFrame(customButtons, true);
+        new BoardFrame();
     }
 
     @Override
@@ -311,6 +321,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     }
 
     public static void main(String[] args) {
-        new BoardFrame(null,false);
+        new BoardFrame();
     }
 }

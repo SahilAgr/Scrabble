@@ -25,12 +25,12 @@ public class Game implements Serializable{
     /**
      * The constructor for the game that will create new players, the board and all the letters
      */
-    public Game(ArrayList<Player> players, JButton[][] board){
+    public Game(ArrayList<Player> players, Board board){
         if (board==null) {
             this.board = new Board();
             System.out.println("HERE1");
         } else {
-            this.board = new Board(board);
+            this.board = board;
             System.out.println("HERE2");
         }
         this.letterBag = new LetterBag();
