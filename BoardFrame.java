@@ -117,7 +117,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
             model=game;
         } else {
 
-            model=new Game(players, boardType);
+            model=new Game(players);
         }
 
         model.addScrabbleView(this);

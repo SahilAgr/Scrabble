@@ -17,7 +17,7 @@ class BoardTest {
 
     @BeforeEach
     void setUp() {
-        board = new Board("./InverseStandard.json");
+        board = new Board();
     }
 
     @AfterEach

@@ -24,8 +24,8 @@ public class Game implements Serializable{
     /**
      * The constructor for the game that will create new players, the board and all the letters
      */
-    public Game(ArrayList<Player> players, String boardType){
-        this.board = new Board(boardType);
+    public Game(ArrayList<Player> players){
+        this.board = new Board();
         this.letterBag = new LetterBag();
         this.players = players;
         this.views = new ArrayList<>();
