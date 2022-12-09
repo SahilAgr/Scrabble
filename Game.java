@@ -45,11 +45,11 @@ public class Game implements Serializable{
      * @param direction
      * @param coords
      * @param word
-     * @param b
+     * @param test
      */
-    public void place(String direction, Coordinates coords, String word, boolean b){
-        Placement place = board.checkPlacement(coords, word, direction, b, currPlayer);
-        if(!b){
+    public void place(String direction, Coordinates coords, String word, boolean test){
+        Placement place = board.checkPlacement(coords, word, direction, test, currPlayer);
+        if(!test){
             if(place.isLegalPlace()){
                 iteratePlayers();
                 turnOrder(place);

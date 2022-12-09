@@ -10,17 +10,19 @@ import java.io.Serializable;
 
 import static java.lang.String.valueOf;
 
-public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, Serializable {
+public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public static final long serialVersionUID = 1L;
-    public static final int BOARDLENGTH = 15;
-    public static final int PLAYERTILES = 7;
+    private static final int BOARDLENGTH = 15;
+    private static final int PLAYERTILES = 7;
+    private static final String SHUFFLE = "Shuffle";
+    private static final String PASS = "Pass";
+    private static final String HELP = "Help";
+    private static final String LOAD = "Load";
+    private static final String SAVE = "Save";
 
-    public static final Color BLANKCOLOR = new Color(233,224,206);
     private Board board;
-    private static JButton[][] buttons;
-
-    public static JButton[][] customButtons;
+    private JButton[][] buttons;
     private JLabel[] tileButtons;
     private Player currentPlayer;
     private Game model;
@@ -28,163 +30,187 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     private JLabel name;
     private JMenuBar menuBar;
     private JMenu menu;
-    private JMenuItem m1, m2, m3, m4, m5, m6;
+    private JMenuItem m1, m2, m3, m4, m5;
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
 
-    public BoardFrame(Game game, JButton[][] buttonArray){
+    public BoardFrame(){
         super("Scrabble");
-
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
-
-        int numPlayers = 0;
-        while ((numPlayers < 1) ||  (numPlayers > 4)) {
-            numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
-        }
-        ArrayList<Player> players = new ArrayList<>();
-        for (int i = 0; i < numPlayers; i++){
-            String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
-            players.add(new Player(playerName));
-            System.out.println(playerName);
-        }
-
-        if(game == null) {
-            model = new Game(players);
-        } else {
-            model = game;
-        }
-
-        model.addScrabbleView(this);
-
-        board = model.getBoard();
-
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
-        m1 = new JMenuItem("Shuffle");
-        m2 = new JMenuItem("Pass");
-        m3 = new JMenuItem("Help");
-        m4 = new JMenuItem("Save");
-        m5 = new JMenuItem("Load");
-        m6 = new JMenuItem("Create Custom Board");
-
+        m1 = new JMenuItem(SHUFFLE);
+        m2 = new JMenuItem(PASS);
+        m3 = new JMenuItem(HELP);
+        m4 = new JMenuItem(SAVE);
+        m5 = new JMenuItem(LOAD);
         m1.addActionListener(this);
         m2.addActionListener(this);
         m3.addActionListener(this);
         m4.addActionListener(this);
         m5.addActionListener(this);
-        m6.addActionListener(this);
-
         menu.add(m1);
         menu.add(m2);
         menu.add(m3);
         menu.add(m4);
         menu.add(m5);
-        menu.add(m6);
-
         menuBar.add(menu);
         this.setJMenuBar(menuBar);
 
-        currentPlayer = model.getCurrPlayer();
-        if (buttonArray == null){
-            System.out.println("here1");
-            buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
+
+        String[] loadOptions = {"New Game", "Load Game"};
+        int testPlace = JOptionPane.showOptionDialog(null, "Would you start a new game or load from a previous game?",
+                "Select an Option",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null, loadOptions, loadOptions[1]);
+
+        if (testPlace==1){
+            /*loadoldgame();
+            board = ;
+            buttons = ;
+            tileButtons = ;
+            currentPlayer = ;
+            model = ;
+            Score = ;
+            name = ;
+            menuBar = ;
+            private JMenu menu;
+            private JMenuItem m1, m2, m3, m4, m5;
+
+             */
         } else {
-            System.out.println("here2");
-            buttons = buttonArray;
-        }
-        customButtons = new JButton[BOARDLENGTH][BOARDLENGTH];
-        tileButtons = new JLabel[PLAYERTILES];
+            int numPlayers = 0;
+            int numAI = -4;
 
-        for (int i = 0; i < BOARDLENGTH+1; i++) {
-            JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
-            this.add(label);
-        }
-
-        for (int i = 0; i < BOARDLENGTH; i++) {
-            JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
-            this.add(label);
-            for (int j = 0; j < BOARDLENGTH; j++) {
-                ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
-                JButton b = new JButton(" ");
-                buttons[i][j] = b;
-                b.setBackground(BLANKCOLOR);
-                b.addActionListener(controller);
-                this.add(b);
+            while ((numPlayers < 1) ||  (numPlayers > 4)) {
+                try{
+                    numPlayers = Integer.parseInt(JOptionPane.showInputDialog("How many players? (1-4)"));
+                }catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Try again.");
+                    nfe.printStackTrace();
+                }
             }
-        }
-        for (int i = 0; i<4; i++){
-            JLabel l = new JLabel("");
-            this.add(l);
-        }
 
-        name = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
-        JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
-        this.add(name);
-        this.add(turnDisplay);
-        for (int i = 0; i<PLAYERTILES; i++){
-            JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
-            tileButtons[i] = l;
-            this.add(l);
-        }
-
-
-        ImageIcon iconA = new ImageIcon("BlackStar.png");
-        buttons[7][7].setBackground(Tile.w2);
-        buttons[7][7].setIcon(iconA);
-        buttons[7][7].setText(null);
-        buttons[7][7].setOpaque(true);
-
-        for (int i = 0; i < BOARDLENGTH; i++) {
-            for (int j = 0; j < BOARDLENGTH; j++) {
-                buttons[i][j].setBackground(board.getGameBoard()[i][j].getColour());
-                buttons[i][j].setOpaque(true);
+            while ((numAI < 0) ||  (numAI > 4-numPlayers )) {
+                try{
+                    numAI = Integer.parseInt(JOptionPane.showInputDialog("How many AI player(s)? (Up to "+
+                            (4-numPlayers) +" AI players)"));
+                }catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Try again.");
+                    nfe.printStackTrace();
+                }
             }
+
+            ArrayList<Player> players = new ArrayList<>();
+            for (int i = 0; i < numPlayers; i++){
+                String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
+                players.add(new Player(playerName));
+                System.out.println(playerName);
+            }
+
+            for (int i = 0; i < numAI; i++){
+                String playerName = JOptionPane.showInputDialog("Please enter AI "+(i+1)+"'s name:");
+                players.add(new AIPlayer(playerName));
+                System.out.println(playerName);
+            }
+
+            model = new Game(players);
+
+            model.addScrabbleView(this);
+
+            board = model.getBoard();
+
+            currentPlayer = model.getCurrPlayer();
+
+            buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
+            Color blankColor = new Color(233,224,206);
+            tileButtons = new JLabel[PLAYERTILES];
+
+            for (int i = 0; i < BOARDLENGTH+1; i++) {
+                JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
+                this.add(label);
+            }
+
+            for (int i = 0; i < BOARDLENGTH; i++) {
+                JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
+                this.add(label);
+                for (int j = 0; j < BOARDLENGTH; j++) {
+                    ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
+                    JButton b = new JButton(" ");
+                    buttons[i][j] = b;
+                    b.setBackground(blankColor);
+                    b.addActionListener(controller);
+                    this.add(b);
+                }
+            }
+            for (int i = 0; i<4; i++){
+                JLabel l = new JLabel("");
+                this.add(l);
+            }
+
+            name = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
+            JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
+            this.add(name);
+            this.add(turnDisplay);
+            for (int i = 0; i<PLAYERTILES; i++){
+                JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
+                tileButtons[i] = l;
+                this.add(l);
+            }
+
+            Color doubleWordColor = new Color(249,188,166);
+            ImageIcon iconA = new ImageIcon("BlackStar.png");
+            buttons[7][7].setBackground(doubleWordColor);
+            buttons[7][7].setIcon(iconA);
+            buttons[7][7].setText(null);
+            buttons[7][7].setOpaque(true);
+
+            for (int i = 0; i < BOARDLENGTH; i++) {
+                for (int j = 0; j < BOARDLENGTH; j++) {
+                    buttons[i][j].setBackground(board.getGameBoard()[i][j].getColour());
+                    buttons[i][j].setOpaque(true);
+                }
+            }
+
+            JLabel blank = new JLabel("");
+            this.add(blank);
+            JLabel score = new JLabel("Score:", SwingConstants.CENTER);
+            this.add(score);
+            Score = new JLabel(valueOf(currentPlayer.getScore()), SwingConstants.CENTER);
+            this.add(Score);
+
+            //set larger
+            setSize(750,800);
+            this.setVisible(true);
         }
 
-        JLabel blank = new JLabel("");
-        this.add(blank);
-        JLabel score = new JLabel("Score:", SwingConstants.CENTER);
-        this.add(score);
-        Score = new JLabel(valueOf(currentPlayer.getScore()), SwingConstants.CENTER);
-        this.add(Score);
 
-        //set larger
-        setSize(750,800);
-        this.setVisible(true);
     }
 
     public void returnMessage(Placement place){
         if (place.isLegalPlace()){
-            JOptionPane.showMessageDialog(null, place.getErrorMessage()+ place.getScore()+ " points");
+            JOptionPane.showMessageDialog(null, currentPlayer.getName() +" placed: " + place.getErrorMessage() + " for "
+                    + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
         } else {
             JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
     }
     public void returnAIMessage(Placement place){
-        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + "for "
+        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + " for "
                 + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
     }
 
     public void actionPerformed(ActionEvent e)
     {
-
         String s = e.getActionCommand();
-
         switch(s){
-
-            case "Shuffle": String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
-                model.shuffleHand(letters);
+            case SHUFFLE: String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
+            model.shuffleHand(letters);
                 break;
-
-            case "Pass": model.passTurn();
+            case PASS: model.passTurn();
                 break;
-
-            case "Help": help();
+            case HELP: help();
                 break;
-
-            case "Save":
-
+            case SAVE: String fileNameS = JOptionPane.showInputDialog(null, "Please enter the filename of the file you wish to save to:");
                 try {
                     //DataStorage.save(this.model, "SavedFile.save");
                     JOptionPane.showMessageDialog(null, "Game is saved");
@@ -192,28 +218,20 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
                     System.out.println("Couldn't save: " + ex.getMessage());
                 }
                 break;
+            case LOAD: try {
+                Game loadedModel = (Game) DataStorage.load("SavedFile.save");
+                new BoardFrame();
+                JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
 
-            case "Load":
-                try {
-                    Game loadedModel = (Game) DataStorage.load("SavedFile.save");
-                    new BoardFrame(loadedModel,null);
-                    JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
-
-                } catch (Exception ex) {
-                    System.out.println("Couldn't load save data: " + ex.getMessage());
-                }
+            } catch (Exception ex) {
+                System.out.println("Couldn't load save data: " + ex.getMessage());
+            }
 
                 break;
-            case "Create Custom Board":
-                new CustomBoardFrame();
-                this.dispose();
-                break;
-
 
         }
 
     }
-
     public void help(){
         JOptionPane.showMessageDialog(null, "How to Play: Look at the board and select a square " +
                 "to which you would like place \na legal word that can be generated using your tiles (Displayed at the" +
@@ -221,7 +239,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     }
 
     public void update(GameEvent e) {
-        currentPlayer = e.getPlayer();
+
 
         Placement place = e.getPlace();
         board = e.getBoard();
@@ -242,31 +260,24 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
                 }
             }
         }
+        if (currentPlayer instanceof AIPlayer) {
+            returnAIMessage(place);
+        } else {
+            returnMessage(place);
+        }
+
+        currentPlayer = e.getPlayer();
+        if (currentPlayer instanceof AIPlayer){
+            JOptionPane.showMessageDialog(this, "The AI is now placing. This WILL take a while, " +
+                    "as the AI is now about to RAW SEARCH a 280k word dictionary about 100 times. Hopefully your pc doesn't burn!");
+        }
         name.setText(currentPlayer.getName()+"\'s");
         Score.setText(valueOf(currentPlayer.getScore()));
 
         for (int i = 0; i<PLAYERTILES; i++){
             tileButtons[i].setText(currentPlayer.getHand().get(i).getString());
         }
-        //if (currentPlayer instanceof AIPlayer) {
-        //    returnAIMessage(place);
-        //} else {
-        returnMessage(place);
-        //}
     }
-
-    public static void updateCustom(){
-        for (int i = 0; i < BOARDLENGTH; i++) {
-            for (int j = 0; j < BOARDLENGTH; j++) {
-                buttons[i][j].setBackground(customButtons[i][j].getBackground());
-            }
-        }
-        new BoardFrame(null, BoardFrame.buttons);
-    }
-
-
-
-
 
     @Override
     public void gameOver(ArrayList<Player> players) {
@@ -281,6 +292,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     }
 
     public static void main(String[] args) {
-        new BoardFrame(null, null);
+        new BoardFrame();
     }
 }
