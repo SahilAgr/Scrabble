@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 import static java.lang.String.valueOf;
 
-public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, Serializable {
+public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public static final long serialVersionUID = 1L;
     private static final int BOARDLENGTH = 15;
@@ -31,26 +31,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem m1, m2, m3, m4, m5;
-    ArrayList<Player> players = new ArrayList<>();
 
     private char rows[] = {' ','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O'};
-    int testPlace = 10;
-    public BoardFrame(Game game, boolean gameLoaded){
+
+    public BoardFrame(){
         super("Scrabble");
-        String[] loadOptions = {"New Game", "Load Game"};
-
-
-
-        if(!gameLoaded) {
-            testPlace = JOptionPane.showOptionDialog(null, "Would you start a new game or load from a previous game?",
-                    "Select an Option",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null, loadOptions, loadOptions[1]);
-// if loadGame then call Load function and return
-        }
-        if (testPlace==1){
-            loadgame();
-            return;
-        }
-        model=game;
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         m1 = new JMenuItem(SHUFFLE);
@@ -74,9 +59,25 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new GridLayout(BOARDLENGTH+2,BOARDLENGTH+1));
 
+        String[] loadOptions = {"New Game", "Load Game"};
+        int testPlace = JOptionPane.showOptionDialog(null, "Would you start a new game or load from a previous game?",
+                "Select an Option",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,null, loadOptions, loadOptions[1]);
 
-        if(!gameLoaded) {
+        if (testPlace==1){
+            /*loadoldgame();
+            board = ;
+            buttons = ;
+            tileButtons = ;
+            currentPlayer = ;
+            model = ;
+            Score = ;
+            name = ;
+            menuBar = ;
+            private JMenu menu;
+            private JMenuItem m1, m2, m3, m4, m5;
 
+             */
+        } else {
             int numPlayers = 0;
             int numAI = -4;
 
@@ -99,7 +100,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
                 }
             }
 
-
+            ArrayList<Player> players = new ArrayList<>();
             for (int i = 0; i < numPlayers; i++){
                 String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
                 players.add(new Player(playerName));
@@ -111,82 +112,76 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
                 players.add(new AIPlayer(playerName));
                 System.out.println(playerName);
             }
-        }
 
-        if(game != null) {
-            model=game;
-        } else {
+            model = new Game(players);
 
-            model=new Game(players);
-        }
+            model.addScrabbleView(this);
 
-        model.addScrabbleView(this);
+            board = model.getBoard();
 
-        board = model.getBoard();
+            currentPlayer = model.getCurrPlayer();
 
-        currentPlayer = model.getCurrPlayer();
+            buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
+            Color blankColor = new Color(233,224,206);
+            tileButtons = new JLabel[PLAYERTILES];
 
-        buttons = new JButton[BOARDLENGTH][BOARDLENGTH];
-        Color blankColor = new Color(233,224,206);
-        tileButtons = new JLabel[PLAYERTILES];
-
-        for (int i = 0; i < BOARDLENGTH+1; i++) {
-            JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
-            this.add(label);
-        }
-
-        for (int i = 0; i < BOARDLENGTH; i++) {
-            JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
-            this.add(label);
-            for (int j = 0; j < BOARDLENGTH; j++) {
-                ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
-                JButton b = new JButton(" ");
-                buttons[i][j] = b;
-                b.setBackground(blankColor);
-                b.addActionListener(controller);
-                this.add(b);
+            for (int i = 0; i < BOARDLENGTH+1; i++) {
+                JLabel label = new JLabel(valueOf(rows[i]),SwingConstants.CENTER);
+                this.add(label);
             }
-        }
-        for (int i = 0; i<4; i++){
-            JLabel l = new JLabel("");
-            this.add(l);
-        }
 
-        name = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
-        JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
-        this.add(name);
-        this.add(turnDisplay);
-        for (int i = 0; i<PLAYERTILES; i++){
-            JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
-            tileButtons[i] = l;
-            this.add(l);
-        }
-
-        Color doubleWordColor = new Color(249,188,166);
-        ImageIcon iconA = new ImageIcon("BlackStar.png");
-        buttons[7][7].setBackground(doubleWordColor);
-        buttons[7][7].setIcon(iconA);
-        buttons[7][7].setText(null);
-        buttons[7][7].setOpaque(true);
-
-        for (int i = 0; i < BOARDLENGTH; i++) {
-            for (int j = 0; j < BOARDLENGTH; j++) {
-                buttons[i][j].setBackground(board.getGameBoard()[i][j].getColour());
-                buttons[i][j].setOpaque(true);
+            for (int i = 0; i < BOARDLENGTH; i++) {
+                JLabel label = new JLabel(valueOf(i+1),SwingConstants.CENTER);
+                this.add(label);
+                for (int j = 0; j < BOARDLENGTH; j++) {
+                    ScrabbleController controller = new ScrabbleController(model,new Coordinates(j,i));
+                    JButton b = new JButton(" ");
+                    buttons[i][j] = b;
+                    b.setBackground(blankColor);
+                    b.addActionListener(controller);
+                    this.add(b);
+                }
             }
+            for (int i = 0; i<4; i++){
+                JLabel l = new JLabel("");
+                this.add(l);
+            }
+
+            name = new JLabel(currentPlayer.getName()+"\'s",SwingConstants.CENTER);
+            JLabel turnDisplay = new JLabel("turn:", SwingConstants.CENTER);
+            this.add(name);
+            this.add(turnDisplay);
+            for (int i = 0; i<PLAYERTILES; i++){
+                JLabel l = new JLabel(valueOf(currentPlayer.getHand().get(i).getString()),SwingConstants.CENTER);
+                tileButtons[i] = l;
+                this.add(l);
+            }
+
+            Color doubleWordColor = new Color(249,188,166);
+            ImageIcon iconA = new ImageIcon("BlackStar.png");
+            buttons[7][7].setBackground(doubleWordColor);
+            buttons[7][7].setIcon(iconA);
+            buttons[7][7].setText(null);
+            buttons[7][7].setOpaque(true);
+
+            for (int i = 0; i < BOARDLENGTH; i++) {
+                for (int j = 0; j < BOARDLENGTH; j++) {
+                    buttons[i][j].setBackground(board.getGameBoard()[i][j].getColour());
+                    buttons[i][j].setOpaque(true);
+                }
+            }
+
+            JLabel blank = new JLabel("");
+            this.add(blank);
+            JLabel score = new JLabel("Score:", SwingConstants.CENTER);
+            this.add(score);
+            Score = new JLabel(valueOf(currentPlayer.getScore()), SwingConstants.CENTER);
+            this.add(Score);
+
+            //set larger
+            setSize(750,800);
+            this.setVisible(true);
         }
-
-        JLabel blank = new JLabel("");
-        this.add(blank);
-        JLabel score = new JLabel("Score:", SwingConstants.CENTER);
-        this.add(score);
-        Score = new JLabel(valueOf(currentPlayer.getScore()), SwingConstants.CENTER);
-        this.add(Score);
-
-        //set larger
-        setSize(750,800);
-        this.setVisible(true);
-
 
 
     }
@@ -209,23 +204,25 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         String s = e.getActionCommand();
         switch(s){
             case SHUFFLE: String letters = JOptionPane.showInputDialog(null, "What letters would you like to shuffle? (Leave blank for full shuffle):");
-                model.shuffleHand(letters);
+            model.shuffleHand(letters);
                 break;
-            case PASS:
-                model.passTurn();
+            case PASS: model.passTurn();
                 break;
             case HELP: help();
                 break;
             case SAVE: String fileNameS = JOptionPane.showInputDialog(null, "Please enter the filename of the file you wish to save to:");
                 try {
-                    DataStorage.save(this.model, "SavedFile.save");
+                    //DataStorage.save(this.model, "SavedFile.save");
                     JOptionPane.showMessageDialog(null, "Game is saved");
                 } catch (Exception ex) {
                     System.out.println("Couldn't save: " + ex.getMessage());
                 }
                 break;
             case LOAD: try {
-                loadgame();
+                Game loadedModel = (Game) DataStorage.load("SavedFile.save");
+                new BoardFrame();
+                JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
+
             } catch (Exception ex) {
                 System.out.println("Couldn't load save data: " + ex.getMessage());
             }
@@ -235,22 +232,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         }
 
     }
-    private void loadgame() {
-        // TODO Auto-generated method stub
-        Game loadedModel = null;
-        try {
-            loadedModel = (Game) DataStorage.load("SavedFile.save");
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        new BoardFrame(loadedModel, true);
-        loadedModel.passTurn();
-//           update(loadedModel.getBoard());
-        JOptionPane.showMessageDialog(null, "Game is loaded (Test 'LOAD' word anywhere in the board down/right to load the game)");
-
-    }
-
     public void help(){
         JOptionPane.showMessageDialog(null, "How to Play: Look at the board and select a square " +
                 "to which you would like place \na legal word that can be generated using your tiles (Displayed at the" +
@@ -259,9 +240,9 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
 
     public void update(GameEvent e) {
 
-        Player currentPlayer = e.getPlayer();
+
         Placement place = e.getPlace();
-        Board board = e.getBoard();
+        board = e.getBoard();
         Color tileColor = new Color(247, 243, 237);
 
         board.printBoard();
@@ -298,8 +279,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
         }
     }
 
-
-
     @Override
     public void gameOver(ArrayList<Player> players) {
         String message = "The game has finished. Scores are as follows:\n" ;
@@ -313,6 +292,6 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener, 
     }
 
     public static void main(String[] args) {
-        new BoardFrame(null, false);
+        new BoardFrame();
     }
 }
