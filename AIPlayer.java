@@ -23,7 +23,6 @@ public class AIPlayer extends Player implements Serializable{
         super(name);
         this.rand = new Random();
         this.dictionary = new Dictionary();
-        this.board = new Board();
 
        /* String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();
