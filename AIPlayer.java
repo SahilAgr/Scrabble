@@ -9,8 +9,6 @@ public class AIPlayer extends Player implements Serializable{
     private static final String ASTERISK = "*";
     private static final String DOWN = "down";
     private Dictionary dictionary;
-    private Board board;
-    private Random rand;
     public static final long serialVersionUID = 1L;
 
 
@@ -21,9 +19,7 @@ public class AIPlayer extends Player implements Serializable{
 
     public AIPlayer(String name){
         super(name);
-        this.rand = new Random();
         this.dictionary = new Dictionary();
-        this.board = new Board();
 
        /* String testWord = createLetterSet(player.getHand());
         char[] testing = testWord.toCharArray();

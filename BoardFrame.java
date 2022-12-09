@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.HashMap;
 
 
 import static java.lang.String.valueOf;
@@ -25,6 +26,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     private static final String PRESET = "Choose Preset Board";
 
 
+    private HashMap<String, String> boardTypes;
     private Board board;
     private JButton[][] buttons;
 
@@ -43,6 +45,13 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public BoardFrame(){
         super("Scrabble");
+
+        boardTypes = new HashMap<>();
+
+        boardTypes.put("Standard", "./StandardBoard.json");
+        boardTypes.put("Modern Art", "./InverseStandard.json");
+        boardTypes.put("High Scoring", "./CrazyBoard.json");
+
         menuBar = new JMenuBar();
         menu = new JMenu("Menu");
         m1 = new JMenuItem(SHUFFLE);
@@ -93,6 +102,9 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
              */
         } else {
+            //offer options here
+            String boardType = "./InverseStandard.json";
+
             int numPlayers = 0;
             int numAI = -4;
 
