@@ -188,13 +188,14 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
     public void returnMessage(Placement place){
         if (place.isLegalPlace()){
-            JOptionPane.showMessageDialog(null, place.getErrorMessage()+ place.getScore()+ " points");
+            JOptionPane.showMessageDialog(null, currentPlayer.getName() +" placed: " + place.getErrorMessage() + " for "
+                    + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
         } else {
             JOptionPane.showMessageDialog(null, place.getErrorMessage());
         }
     }
     public void returnAIMessage(Placement place){
-        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + "for "
+        JOptionPane.showMessageDialog(null, "AI placed: " + place.getErrorMessage() + " for "
                 + place.getScore()+ " points\nTotal points: " + currentPlayer.getScore());
     }
 

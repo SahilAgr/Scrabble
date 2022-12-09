@@ -399,10 +399,7 @@ public class Board implements Serializable {
             if( ! checkDown(tempCord)){
                 return invalidPlacement("Invalid Placement - Vertical Word Mismatch", p);
             }
-            System.out.println();
             if(tempCord.getXCoordinate().ordinal() == 14){
-                System.out.println(i);
-                System.out.println(word.length());
                 if (i < word.length() -1 ){
                     return invalidPlacement("You went out of bounds! Your word is too long.", p);
                 }
@@ -412,7 +409,6 @@ public class Board implements Serializable {
             }
         }
         place = new Placement(true, word, 0);
-        this.printBoard();
         return place;
     }
 
@@ -473,7 +469,6 @@ public class Board implements Serializable {
             }
             score += this.getTile(c).getScore();
         }
-        System.out.println(multi);
         score = (score * multi) + otherWordsScore;
         return score;
     }
@@ -502,7 +497,6 @@ public class Board implements Serializable {
             }
             score += this.getTile(c).getScore();
         }
-        System.out.println(multi);
         score = (score * multi) + otherWordsScore;
         return score;
     }

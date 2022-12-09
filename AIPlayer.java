@@ -41,6 +41,27 @@ public class AIPlayer extends Player implements Serializable{
                 return;
             }
         }
+        Coordinates center = new Coordinates(7,7);
+        if(board.checkFree(center)){
+            String hand = "";
+            for(Tile t: this.getHand()){
+                hand += t.getString();
+            }
+            ArrayList<String> allPossibleWords = findValidWords(dictionary.allWords(), hand.toCharArray());
+            String highestScoringWord = "";
+            int highestScore = 0;
+            for(String s: allPossibleWords){
+                Placement pl = board.checkPlacement(center, s,"right",true, p);
+                if(pl.isLegalPlace() && pl.getScore() > highestScore){
+                    highestScoringWord = s;
+                }
+            }
+            if (highestScoringWord.equals("")){
+                game.shuffleHand("");
+            } else {
+                game.place("right", center, highestScoringWord, false);
+            }
+        }
         HashMap<Coordinates, FakeList> possibleWordsAndCoordinates = new HashMap<>();
         for(int i = 0; i< 15;i++){
             for(int j = 0; j < 15; j++){
@@ -59,20 +80,6 @@ public class AIPlayer extends Player implements Serializable{
                     possibleWordsAndCoordinates.put(coord, xD);
                 }   
             }
-        }
-        for(Coordinates c: possibleWordsAndCoordinates.keySet()){
-            System.out.println(c.getXCoordinate().toString() + " " + c.getYCoordinate().toString());
-            for(String s: possibleWordsAndCoordinates.get(c).getAaaaa()){
-                System.out.println(s);
-            }
-        }
-        if(possibleWordsAndCoordinates.keySet().size() == 0){
-            System.out.println("after keyset.size()==0");
-            Coordinates base = new Coordinates(Coordinates.xCoordinate.H,8);
-            List<String> defaultWord = findValidWords(dictionary.allWords(),this.getHand().toString().toCharArray());
-            game.place("right",base,defaultWord.get(rand.nextInt(defaultWord.size()-1)),false);
-            playerLetterArray = this.getHand();
-            return;
         }
         final String NO_POSSIBLE = "NO_POSSIBLE";
         Placement bestPossible = new Placement(true, NO_POSSIBLE,0);
