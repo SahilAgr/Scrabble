@@ -1,4 +1,6 @@
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
@@ -114,6 +116,37 @@ public class Board implements Serializable {
     public Board(Tile[][] tileArray){
         gameBoard = tileArray;
         dict = new Dictionary();
+    }
+
+    public Board(JButton[][] buttonArray){
+    Tile[][] tileArray = new Tile[BoardFrame.BOARDLENGTH][BoardFrame.BOARDLENGTH];
+        for (int i = 0; i<BoardFrame.BOARDLENGTH; i++){
+            for (int j = 0; j<BoardFrame.BOARDLENGTH; j++) {
+                tileArray[i][j] = new Tile(".");
+                tileArray[i][j].setLetter(getLetterFromColor(buttonArray[i][j].getBackground()));
+            }
+        }
+
+        gameBoard = tileArray;
+        gameBoard[7][7].setLetter("+");
+        this.confirmTurn();
+
+        firstTurn = true;
+        dict = new Dictionary();
+        letterBag = new LetterBag();
+    }
+
+    public String getLetterFromColor(Color color){
+        if(color == Tile.l2){
+            return TWO_TIMES_LETTER;
+        } else if (color == Tile.l3){
+            return THREE_TIMES_LETTER;
+        } else if(color == Tile.w2){
+            return TWO_TIMES_WORD;
+        } else if(color == Tile.w3){
+            return THREE_TIMES_WORD;
+        }
+        return ".";
     }
 
     /**
