@@ -80,4 +80,5 @@ Known Issues:
 2. We have no undo/redo because we were planning on using serialization to acomplish this. See Known Issue 1.
 (couldve just used an arraylist + a simple function because tiles are built to be undone for test but by the time anirudh "finished" his code it was friday 
 afternoon)
+3. If you skip player one and player 2 happens to be the AI the game does not like that 
 
