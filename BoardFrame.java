@@ -152,13 +152,11 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
             for (int i = 0; i < numPlayers; i++){
                 String playerName = JOptionPane.showInputDialog("Please enter P"+(i+1)+"'s name:");
                 players.add(new Player(playerName));
-                System.out.println(playerName);
             }
 
             for (int i = 0; i < numAI; i++){
                 String playerName = JOptionPane.showInputDialog("Please enter AI "+(i+1)+"'s name:");
                 players.add(new AIPlayer(playerName));
-                System.out.println(playerName);
             }
 
             model = new Game(players, customBoard);

@@ -467,7 +467,6 @@ public class Board implements Serializable {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
-                System.out.println("hi");
                 if (c.getXCoordinate().ordinal() + 1 == 15){
                     if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
                         otherWordsScore += this.scoringSecondaryRight(c);
@@ -481,12 +480,10 @@ public class Board implements Serializable {
                         otherWordsScore += this.scoringSecondaryRight(c);
                     }
                 }
-                System.out.println(this.getTile(c).getMulti());
                 multi *= this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
-        System.out.println(multi);
         score = (score * multi) + otherWordsScore;
         return score;
     }
@@ -497,7 +494,6 @@ public class Board implements Serializable {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                System.out.println("hi");
                 multi *= this.getTile(c).getMulti();
             }
         }
@@ -512,7 +508,6 @@ public class Board implements Serializable {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                System.out.println("hi");
                 multi *= this.getTile(c).getMulti();
 
             }

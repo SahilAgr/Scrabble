@@ -28,10 +28,8 @@ public class Game implements Serializable{
     public Game(ArrayList<Player> players, Board board){
         if (board==null) {
             this.board = new Board("./InverseStandard.Json");
-            System.out.println("HERE1");
         } else {
             this.board = board;
-            System.out.println("HERE2");
         }
         this.letterBag = new LetterBag();
         this.players = players;
