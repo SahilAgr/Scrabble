@@ -1,16 +1,15 @@
 Authors: 
 Sahil Agrawal
 Patrick Ma
-Anirudh Bakshi 
 Matthew Huitema
+
+Anirudh Bakshi 
 
 Design Decisions:
 
-The choice to have a central game class was made early on. Game handles all the logic. It handles what happens and when.
-We decided to make sure it did as little as possible, which in most cases other then board was done. Several things are going
-to change when we move to GUI, mainly including the way board works. We also will delete parser as user inputs will be from the GUI.
+We followed MVC as best we could.
+We couldn't decide whether 
 
-Also, we decided that a player must play from H EIGHT as that was the way we interprited the rules.
 
 Files Included:
 
@@ -31,6 +30,9 @@ Files Included:
     14b: 
 15: BlackStar.png: the black star image for the starting space.
 16-21: all the different tests: tests.
+22: DataStorage: the class which stores save files.
+23: CustomBoardFrame: The class which handles the creation of custom boards.
+24-26: x y z board.json: The 3 preset board json files.
 
 User Manual:
 
@@ -42,11 +44,14 @@ Click the Select Archive File and browse for the zip file that was downloaded in
 The new project should now be visible in the Package Explorer. All the files mentioned above should be in that project. 
 Run the main method inside the BoardFrame class to play the game.
 
-In set up, you will be prompted with a choice how how many players, and then how many AI players. The game ends after 1 full turn cycle with the letterbag being empty.
+In set up, you will be prompted with a choice to choose what kind of board you want to play on. They are: a standard scrabble board, a piece I like to call
+modern art, and a board where you will get SO MANY points. You then have a choice how how many players, and then how many AI players. 
+
+The game ends after 1 full turn cycle with the letterbag being empty. (We never actually tested this. I hope it works.)
 
 Click on a letter to place or test your word. More on that later.
 
-Click on the menu at the top to either pass, shuffle, or read the help module.
+Click on the menu at the top to either pass, shuffle, or read the help module. (There are some other options - more on those latter).
 
 As for place: you either have the chance test your word, or to place it.
 Functionally they are very similar - test simply removes your letters afterwards and lets you know how many points you wouldve got, if valid.
@@ -62,11 +67,17 @@ These only are in effect on the turn the letter is placed down.
 The player with the highest score at the end of the game is the winner.
 
 
+You also have the opportunity to save/load a game from the menu. See known issues.
+
+You can create a new custom board from the menu. When you click this, a new screen will show up with a blank scrabble board. Click on a tile once to get a
+2 times letter multiplier, twice for a 3 time letter, thrice for a 2 times word multiplier, four times for a 3 times word multiplier, and a 5th click gets
+you back to no multiplier. Whenever you are done, you click the "S" in the bottom of the screen and are then brought into a new game (with new player 
+prompts)
 
 
 Known Issues: 
-1. pretty sure scoring is messed up - but see below for why we couldnt find the bug.
-2, junit not being fully finished - This was Anirudh's responsibility. He was asked to have this finished by sunday morning, and that my work rided on his timelyness.
-as of writing this, hes provided basic ones ~Matthew
-3. AI is broken. Also its like O(x^4).
+1. Save/Load does not function. Maybe if it had a constructor, it wouldve.
+2. We have no undo/redo because we were planning on using serialization to acomplish this. See Known Issue 1.
+(couldve just used an arraylist + a simple function because tiles are built to be undone for test but by the time anirudh "finished" his code it was friday 
+afternoon)
 

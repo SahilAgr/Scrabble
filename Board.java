@@ -452,7 +452,7 @@ public class Board implements Serializable {
                         otherWordsScore += this.scoringSecondaryDown(c);
                     }
                 }
-                multi = multi * this.getTile(c).getMulti();
+                multi *= this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
@@ -467,6 +467,7 @@ public class Board implements Serializable {
         int multi = 1;
         for(Coordinates c: iterator){
             if(this.getTile(c).getNewTile()){
+                System.out.println("hi");
                 if (c.getXCoordinate().ordinal() + 1 == 15){
                     if(!checkFree(new Coordinates(c.getXCoordinate().ordinal() - 1, c.getYCoordinate()))) {
                         otherWordsScore += this.scoringSecondaryRight(c);
@@ -480,10 +481,12 @@ public class Board implements Serializable {
                         otherWordsScore += this.scoringSecondaryRight(c);
                     }
                 }
-                multi = multi * this.getTile(c).getMulti();
+                System.out.println(this.getTile(c).getMulti());
+                multi *= this.getTile(c).getMulti();
             }
             score += this.getTile(c).getScore();
         }
+        System.out.println(multi);
         score = (score * multi) + otherWordsScore;
         return score;
     }
@@ -494,9 +497,8 @@ public class Board implements Serializable {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                
-                multi = multi * this.getTile(c).getMulti();
-
+                System.out.println("hi");
+                multi *= this.getTile(c).getMulti();
             }
         }
         score = score * multi;
@@ -510,7 +512,8 @@ public class Board implements Serializable {
         for(Coordinates c: iterator){
             score += this.getTile(c).getScore();
             if (this.getTile(c).getNewTile()){
-                multi = multi * this.getTile(c).getMulti();
+                System.out.println("hi");
+                multi *= this.getTile(c).getMulti();
 
             }
         }
@@ -568,10 +571,10 @@ public class Board implements Serializable {
 
         } else if(!this.checkFree(coords) && String.valueOf(c).equals(this.getLetter(coords))){
             isTouching = true;
-            return new Placement(true, "Something went wrong, you shouldnt see this", 0);
+            return new Placement(true, "Something went wrong, you shouldn't see this", 0);
 
         }
-        return new Placement(true, "Something went wrong, you shouldnt see this", 0);
+        return new Placement(true, "Something went wrong, you shouldn't see this", 0);
     }
 
     private Placement invalidPlacement(String errorMessage, Player p){
@@ -579,6 +582,11 @@ public class Board implements Serializable {
         this.giveTilesBack(p);
         this.confirmTurn();
         return new Placement(false, errorMessage, 0);
+    }
+
+    public static void main(String[] args) {
+        Board bord = new Board("./StandardBoard.json");
+        int leftIndex = 0;
     }
     
 }

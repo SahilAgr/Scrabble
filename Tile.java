@@ -108,10 +108,10 @@ public class Tile implements Serializable{
      */
     public int getScore(){
         if (newTile){
-            if(colour.equals(l2)){
+            if(oldLetter.equals(L2)){
                 return this.score * 2;
             }
-            else if(colour.equals(l3)){
+            else if(oldLetter.equals(L3)){
                 return this.score * 3;
             }
             else{
@@ -202,10 +202,10 @@ public class Tile implements Serializable{
     }
     public int getMulti() {
         if(newTile){
-            if (colour.equals(w3)){
+            if (oldLetter.equals(W3)){
                 return 3;
             }
-            else if (colour.equals(w2)){
+            else if (oldLetter.equals(W2)){
                 return 2;
             }
             else {

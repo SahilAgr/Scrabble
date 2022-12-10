@@ -308,8 +308,8 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
         board = e.getBoard();
         Color tileColor = new Color(247, 243, 237);
 
-        board.printBoard();
-        //The row (ABC)
+
+
         if(!board.getLetter(new Coordinates(7,7)).equals("+")){
             buttons[7][7].setIcon(null);
         }
@@ -348,10 +348,17 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
     @Override
     public void gameOver(ArrayList<Player> players) {
         String message = "The game has finished. Scores are as follows:\n" ;
+        int i = 0;
         for(Player p: players){
-            message += "Player " + p.getName() + " Scored " + p.getScore() +",\n";
+            message += "Player " + p.getName() + " Scored " + p.getScore() +"";
+            i++;
+            if(i != players.size()){
+                message += ",";
+            }
+            message +="\n";
+
         }
-        JOptionPane.showMessageDialog(null, message , "Game Over", ABORT);
+        JOptionPane.showMessageDialog(null, message , "Game Over", JOptionPane.PLAIN_MESSAGE);
         this.dispose();
         this.setVisible(false);
 

@@ -37,6 +37,7 @@ public class Game implements Serializable{
         this.players = players;
         this.views = new ArrayList<>();
 
+        countdown = players.size();
         currPlayerIndex = 0;
         currPlayer = players.get(currPlayerIndex);
 
