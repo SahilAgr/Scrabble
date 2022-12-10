@@ -316,8 +316,7 @@ public class BoardFrame extends JFrame implements ScrabbleView, ActionListener {
 
         for (int i = 0; i < BOARDLENGTH; i++) {
             for (int j = 0; j < BOARDLENGTH; j++) {
-                String s = board.getLetter(new Coordinates(j,i));
-                if(!(s.equals(".") || s.equals("3W") || s.equals("2W") || s.equals("3L") || s.equals("2L") || s.equals("+"))) {
+                if(! board.checkFree(new Coordinates(j,i))){
                     buttons[i][j].setText(board.getLetter(new Coordinates(j, i)));
                     buttons[i][j].setBackground(tileColor);
                 }

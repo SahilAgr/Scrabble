@@ -202,10 +202,10 @@ public class Tile implements Serializable{
     }
     public int getMulti() {
         if(newTile){
-            if (oldColour.equals(w3)){
+            if (colour.equals(w3)){
                 return 3;
             }
-            else if (oldColour.equals(w2)){
+            else if (colour.equals(w2)){
                 return 2;
             }
             else {
